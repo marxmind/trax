@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h = "http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      >
+ 
+    <ui:composition>
+   
+   		<p:megaMenu>
+				<p:submenu label="Work Tagging" icon="ui-icon-check">
+					<p:column>
+						<p:submenu label="Spray">
+						<p:menuitem value="Spray Activity Recording" action="#{menuBean.timesheet}"/>
+						</p:submenu>
+					</p:column>
+					<p:column>	
+						<p:submenu label="Field">
+							<p:menuitem value="Field Activity Recording" action="#{menuBean.fieldtimesheet}"/>
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				
+				<p:menuitem value="Reports" action="#{menuBean.reports}"/>
+				<p:menuitem value="Inventory" action="#{menuBean.inventory}"/>
+				<p:submenu label="Data Management">
+					<p:column>
+						<p:submenu label="Download">
+							<p:menuitem value="Database Backup" oncomplete="PF('downloadDlg').show();" actionListener="#{dataBean.loadFiles}" update="slqDataId"/>
+						</p:submenu>
+					</p:column>	
+					<p:column>
+						<p:submenu label="Upload">
+							<p:menuitem value="Upload Database Backup" oncomplete="PF('uploadDlg').show();" actionListener="#{dataBean.loadUploadFiles}" update="listData"/>
+						</p:submenu>
+					</p:column>	
+				</p:submenu>
+				<p:submenu label="Setup" icon="ui-icon-check">
+					<p:column>
+						<p:submenu label="Application User">
+							<p:menuitem value="User Recording" action="#{menuBean.adminuser}"/>
+						</p:submenu>
+					</p:column>
+					<p:column>
+						<p:submenu label="Information Recording">
+							<p:menuitem value="Employee" action="#{menuBean.adminEmployees}"/>
+							<p:menuitem value="Material" action="#{menuBean.materials}"/>
+							<p:menuitem value="Position" action="#{menuBean.position}"/>
+							<p:menuitem value="Activity" action="#{menuBean.activty}"/>
+							<p:menuitem value="Location" action="#{menuBean.location}"/>
+						</p:submenu>
+					</p:column>
+				</p:submenu>
+				<p:menuitem value="Logout" action="#{loginBean.logout}"/>
+			</p:megaMenu>
+   
+   
+   <ui:include src="download.xhtml" />
+    <ui:include src="upload.xhtml" />
+   </ui:composition>
+</html> 

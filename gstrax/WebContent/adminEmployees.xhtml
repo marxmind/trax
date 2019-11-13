@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui = "http://java.sun.com/jsf/facelets"
+  xmlns:h = "http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui" 
+xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+xmlns:my="http://java.sun.com/jsf/composite/my"  
+  >
+<h:head>
+<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>#{versionBean.copyright.appname} Employee</title>
+	</f:facet>
+	
+	<f:facet name="middle">
+            <h:outputStylesheet name="bootstrap/css/bootstrap.css"/>
+            <h:outputStylesheet name="css/menu.css"/>
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.js" target="head"/>
+            <h:outputStylesheet name="css/growl.css"/>
+    </f:facet>
+        
+    <f:facet name="last">
+ 		<h:outputStylesheet name="css/font-awesome.css" />
+    </f:facet>
+    <title>#{versionBean.copyright.appname} Employee</title>
+
+<style>
+<!-- 
+
+ -->
+ </style>
+
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>#{versionBean.copyright.appname} Employee</title>
+
+</h:head>
+
+<h:body>
+	
+
+<h:form prependId="false" id="formId" >
+	
+	<p:growl id="msg" showDetail="true"/>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+       	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+       	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+	<p:focus context="tb"/>
+<p:layout fullPage="true">
+			
+			<p:layoutUnit position="east" size="0" visible="false" >
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="north" size="100" visible="false">
+				<p:graphicImage name="logo/logo.png" style="width: 5em; height: 5em" styleClass="img-circle"/>
+				<p:outputLabel value="#{versionBean.copyright.appname} Employee Profile" style="#{skin.pageTitle}"/>
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="south" size="50">
+				<p:outputLabel style="#{skin.copyrightLabel}" value="#{versionBean.copyright.appname} | #{versionBean.copyright.copyrightname} | #{versionBean.copyright.author} | version:#{versionBean.copyright.currentversion}"/>
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="center">
+			<ui:include src="menu.xhtml" />
+				<p:toolbar id="tb" style="#{skin.toolbar}">
+    		<f:facet name="left">
+		        
+        		<p:inputText value="#{empBean.searchName}" a:placeholder="Search Employee Name" style="width: 20em">
+    					<p:ajax event="keyup" listener="#{empBean.init}" update="cusId usercusId" delay="800"/>
+    			</p:inputText>
+    		</f:facet>
+    		<f:facet name="right">
+    			
+    		</f:facet>
+		</p:toolbar> 
+		<p:sticky target="tb" />
+		
+		
+		
+		<p:dataTable id="cusId" value="#{empBean.employees}" var="rpt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" style="#{skin.table}" paginatorAlwaysVisible="false" paginatorPosition="top"
+                         >
+                         	
+          					<p:column headerText="[*]" width="40">
+            					<p:commandButton update=":formId:usercusId :formId:cusId msg" icon="fa fa-trash"  actionListener="#{empBean.deleteRow(rpt)}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            					</p:commandButton>
+            				</p:column>
+            				
+            				<p:column headerText="View" width="40">
+            			 		<p:commandButton icon="fa fa-hand-pointer-o" update="usercusId cardData" actionListener="#{empBean.clickItem(rpt)}"/>
+            			 	</p:column>
+            				
+            				<p:column headerText="Registered" width="70">
+            						<p:outputLabel value="#{rpt.dateRegistered}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Employee" width="100">
+            						<p:outputLabel value="#{rpt.firstName} #{rpt.middleName} #{rpt.lastName}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Position" width="70">
+            						<p:outputLabel value="#{rpt.job.jobname}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Salary" width="70">
+            						<p:outputLabel  value="#{rpt.salary}"/>
+            				</p:column>
+                         	
+                         	
+            				<p:column headerText="Gender" width="50">
+                         			 <f:view>
+                         			 <my:if condition="#{rpt.gender==1}">
+                         			 	<f:facet name="then">
+            								<p:outputLabel  value="Male"/>
+            							</f:facet>
+            							<f:facet name="else">
+            								<p:outputLabel  value="Female"/>
+            							</f:facet>
+            						  </my:if>
+            						  </f:view>			
+            				</p:column> 
+            				
+            				
+            				<p:column headerText="Address" width="100">
+            						<p:outputLabel value="#{rpt.purok}, #{rpt.barangay.name}, #{rpt.municipality.name},  #{rpt.province.name}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Contact No" width="70">
+            						<p:outputLabel  value="#{rpt.contactNo}"/>
+            				</p:column>
+            				
+            				<p:column headerText="Resigned" width="70">
+            						<p:outputLabel  value="#{rpt.dateResigned}" />
+            				</p:column>
+            				
+					</p:dataTable>
+	
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="west" size="600">
+			
+			<p:toolbar id="tbM" style="#{skin.toolbar}">
+		    		<f:facet name="left">
+				        
+		    		</f:facet>
+		    		<f:facet name="right">
+		    		
+		    			<p:commandButton update=":formId:usercusId"  value="New" actionListener="#{empBean.clearFields}" icon="fa fa-file"/>
+		    			<p:commandButton update="usercusId" value="Clear" icon="fa fa-trash" actionListener="#{empBean.clearFields}"/>
+		    			<p:commandButton update="usercusId cusId msg" value="Save"  icon="fa fa-floppy-o" actionListener="#{empBean.saveData}">
+        					<p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+        				</p:commandButton>	
+		    			
+		    		</f:facet>
+			</p:toolbar>
+			
+			<p:panelGrid id="usercusId" columns="4" styleClass="ui-noborder">
+				
+				<p:outputLabel value="Registered Date:" style="#{skin.label}"/>
+				<p:inputText value="#{empBean.dateRegistered}"  a:type="date" style="#{skin.textInput}"/>
+				
+				<h:outputLabel value="Resigned Date:" style="#{skin.label}"/>
+				<p:inputText value="#{empBean.dateResigned}" a:type="date" style="#{skin.textInput}"/>
+				
+				<p:outputLabel value="Resigned:" style="#{skin.label}"/>
+				<p:selectBooleanCheckbox value="#{empBean.resigned}" style="#{skin.checkbox}"/>
+						
+				<p:outputLabel value="First Name:" style="#{skin.label}"/>
+            	<p:inputText value="#{empBean.firstName}" required="true" label="text" style="#{skin.textInput}"/>
+        		
+        		<p:outputLabel value="Middle Name:" style="#{skin.label}"/>
+            	<p:inputText value="#{empBean.middleName}" label="text" style="#{skin.textInput}"/>
+        		
+        		
+        		<p:outputLabel  value="Last Name:" style="#{skin.label}"/>
+            	<p:inputText value="#{empBean.lastName}" required="true" label="text" style="#{skin.textInput}"/>
+        		
+        		
+        		<p:outputLabel value="Age:" style="#{skin.label}"/>
+        		<p:inputText value="#{empBean.age}" a:type="number" required="true" label="text" style="#{skin.textInput}"/>
+        		
+        		<p:outputLabel value="Salary:" style="#{skin.label}"/>
+        		<p:inputText value="#{empBean.salary}" a:type="number" required="true" label="text" style="#{skin.textInput}"/>
+        		
+        		<p:outputLabel value="Over Time Rate:" style="#{skin.label}"/>
+        		<p:inputText value="#{empBean.overtime}" a:type="number" required="true" label="text" style="#{skin.textInput}"/>
+        		
+        		<p:outputLabel  value="Gender: " style="#{skin.label}"/>
+            		<p:selectOneMenu value="#{empBean.genderId}" style="width: 15em;#{skin.select}">
+            			<f:selectItem itemLabel="Select..."/>
+                		<f:selectItems value="#{empBean.genders}"/>
+            		</p:selectOneMenu>
+        		
+        		<p:outputLabel  value="Position: " style="#{skin.label}"/>
+            		<p:selectOneMenu value="#{empBean.positionId}" style="width: 15em;#{skin.select}" filter="true" filterMatchMode="contains">
+            			<f:selectItem itemLabel="Select..."/>
+                		<f:selectItems value="#{empBean.positions}"/>
+            		</p:selectOneMenu>
+        		
+        		<p:outputLabel value="Purok:" style="#{skin.label}"/>
+            	<p:inputText value="#{empBean.purok}" required="true" label="text" style="#{skin.textInput}"/>
+        		
+        		<p:outputLabel  value="Barangay: " style="#{skin.label}"/>
+            		<p:selectOneMenu value="#{empBean.barangayId}" style="width: 15em;#{skin.select}" filter="true" filterMatchMode="contains">
+            			<f:selectItem itemLabel="Select..."/>
+                		<f:selectItems value="#{empBean.barangays}"/>
+            		</p:selectOneMenu>
+        		
+        		<p:outputLabel  value="Municipality: " style="#{skin.label}"/>
+            		<p:selectOneMenu value="#{empBean.municipalityId}" style="width: 15em;#{skin.select}" filter="true" filterMatchMode="contains">
+            			<f:selectItem itemLabel="Select..."/>
+                		<f:selectItems value="#{empBean.municipalitys}"/>
+            		</p:selectOneMenu>
+        		
+        		<p:outputLabel  value="Province: " style="#{skin.label}"/>
+            		<p:selectOneMenu value="#{empBean.provinceId}" style="width: 15em;#{skin.select}" filter="true" filterMatchMode="contains">
+            			<f:selectItem itemLabel="Select..."/>
+                		<f:selectItems value="#{empBean.provinces}"/>
+            		</p:selectOneMenu>
+        		
+        		<p:outputLabel value="Contact No:" style="#{skin.label}"/>
+            	<p:inputText value="#{empBean.contactNo}" label="text" style="#{skin.textInput}"/>
+        		
+				   	
+     		</p:panelGrid> 
+			
+			<p:toolbar id="tbCard" style="#{skin.toolbar}">
+		    		<f:facet name="left">
+				        
+		    		</f:facet>
+		    		<f:facet name="right">
+		    		
+		    			<p:commandButton update="cardData"  value="New" actionListener="#{empBean.addCard}" icon="ui-icon-document"/>
+		    			
+		    		</f:facet>
+			</p:toolbar>
+			
+			<p:dataTable id="cardData" var="crd" value="#{empBean.cardSheets}" editable="true" 
+		       editMode="cell" widgetVar="cellTrans" scrollable="true"  style="#{skin.table}" 
+		       paginatorAlwaysVisible="false" paginatorPosition="top"
+		       >
+		       
+		       <p:ajax event="cellEdit"  listener="#{empBean.onCellEdit}" update="cardData" />
+               
+                <p:column headerText="[*]" width="20" exportable="false">
+	        		<p:commandButton update="cardData msg" icon="fa fa-trash"  actionListener="#{empBean.deleteCard(crd)}">
+	        			<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+	        		</p:commandButton>
+        		</p:column>
+               
+               <p:column headerText="Card" width="70">
+		        	<p:cellEditor>
+		        		<f:facet name="output"><p:outputLabel value="#{crd.cardTypeName}" /></f:facet>
+		                <f:facet name="input">
+				        <p:selectOneMenu value="#{empBean.cardId}" style="width:120%;color:black">
+				            	<f:selectItems value="#{empBean.cardTypes}"/>
+				        </p:selectOneMenu>
+				        </f:facet>
+		        	</p:cellEditor>
+	        	</p:column>
+                
+                 <p:column headerText="Account No" width="70">
+	              	<p:cellEditor>
+	              	  <f:facet name="output"><p:outputLabel value="#{crd.accountNumber}" /></f:facet>
+	                  <f:facet name="input">
+	                  		<h:inputText value="#{crd.accountNumber}" style="width:120%;color:black"/>
+	                  </f:facet>
+	                </p:cellEditor>
+         		</p:column>
+                
+                <p:column headerText="Action" width="100">
+		        	<p:commandButton value="Save" icon="fa fa-floppy-o" actionListener="#{empBean.saveCard(crd)}" update="cardData msg">
+		        		<p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+		        	</p:commandButton>
+        		</p:column>
+                         
+            </p:dataTable>             
+			
+			</p:layoutUnit>
+				    
+</p:layout>		
+	
+<ui:include src="loader.xhtml" />
+
+</h:form>
+
+<br/><br/><br/><br/>
+
+<!-- </div> -->
+		
+</h:body>
+</html>

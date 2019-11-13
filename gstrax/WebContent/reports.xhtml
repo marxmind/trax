@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui = "http://java.sun.com/jsf/facelets"
+  xmlns:h = "http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui" 
+xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+xmlns:my="http://java.sun.com/jsf/composite/my"  
+  >
+<h:head>
+<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>#{versionBean.copyright.appname} Report Generation</title>
+	</f:facet>
+	
+	<f:facet name="middle">
+            <h:outputStylesheet name="bootstrap/css/bootstrap.css"/>
+            <h:outputStylesheet name="css/menu.css"/>
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.js" target="head"/>
+            <h:outputStylesheet name="css/growl.css"/>
+    </f:facet>
+        
+    <f:facet name="last">
+ 		<h:outputStylesheet name="css/font-awesome.css" />
+    </f:facet>
+    <title>#{versionBean.copyright.appname} Report Generation</title>
+
+<style>
+<!-- 
+
+ -->
+ </style>
+
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>#{versionBean.copyright.appname} Report Generation</title>
+
+</h:head>
+
+<h:body>
+	
+
+<h:form prependId="false" id="formId" >
+	
+	<p:growl id="msg" showDetail="true"/>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+       	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+       	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+	<p:focus context="tb" />
+	
+	<p:layout fullPage="true">
+			
+			<p:layoutUnit position="east" size="0" visible="false" >
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="west" size="0" visible="false" >
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="north" size="100" visible="false">
+				<p:graphicImage name="logo/logo.png" style="width: 5em; height: 5em" styleClass="img-circle"/>
+				<p:outputLabel value="#{versionBean.copyright.appname} Report Generation" style="#{skin.pageTitle}"/>
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="south" size="50">
+				<p:outputLabel style="#{skin.copyrightLabel}" value="#{versionBean.copyright.appname} | #{versionBean.copyright.copyrightname} | #{versionBean.copyright.author} | version:#{versionBean.copyright.currentversion}"/>
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="center" >
+				<ui:include src="menu.xhtml" />
+				<p:toolbar id="tb" style="#{skin.toolbar}">
+		    		<f:facet name="left">
+				        
+				        <p:selectOneMenu value="#{rptBean.typeId}" style="width: 15em; color: black" filter="true" filterMatchMode="contains">
+		            		<f:selectItems value="#{rptBean.rptTypes}"/>
+		            		<p:ajax event="change" listener="#{rptBean.init}" update="activityData"/>
+		            	</p:selectOneMenu>&nbsp;&nbsp;
+		            	
+		    		</f:facet>
+		    		<f:facet name="right">
+		    			<p:inputText value="#{rptBean.searchDescription}" a:placeholder="Search..." style="width: 15em">
+		    				<p:ajax event="keyup" listener="#{rptBean.init}" update="activityData" delay="800"/>
+		    			</p:inputText>
+		            	
+				        <p:calendar value="#{rptBean.dateFrom}" pattern="yyyy-MM-dd" effect="slideDown"/>
+				        <p:calendar value="#{rptBean.dateTo}" pattern="yyyy-MM-dd" effect="slideDown"/>
+				        
+				        <p:outputLabel value="Detailed"/>&nbsp;
+				        <p:selectBooleanCheckbox value="#{rptBean.activateDetailsReport}">
+		                  		<p:ajax update="activityData,msg" listener="#{rptBean.activateDetails}"/>
+		                </p:selectBooleanCheckbox>&nbsp;&nbsp;
+				        <p:commandButton update="activityData" icon="fa fa-search" action="#{rptBean.init}"/>
+		    		</f:facet>
+				</p:toolbar> 
+				<p:sticky target="tb" />
+		
+				<p:dataTable id="activityData" value="#{rptBean.reports}" var="tm" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" style="#{skin.table}" paginatorAlwaysVisible="true" paginatorPosition="top"
+                         >
+                         
+                         <f:facet name="{Exporters}">
+            						<h:commandLink title="Export Report to excel format">
+                						    <p:graphicImage name="img/xls.jpg" width="24" height="24"/>
+                							<p:dataExporter type="xls" target="activityData" fileName="Activity Report" postProcessor="#{rptBean.postProcessXLS}"  options="#{rptBean.excelOptions}"/>
+            						</h:commandLink>
+            						<h:commandLink title="Export Report in pdf format" target="_blank" ajax="false" immediate="false"  actionListener="#{rptBean.print}">
+                						    <p:graphicImage name="img/pdf.jpg" width="24" height="24"/>
+            						</h:commandLink>
+            				</f:facet>
+                         
+                          <p:column headerText="#{rptBean.columnName1}" width="100">
+            						<p:outputLabel  value="#{tm.f1}" />
+            			  </p:column>
+            			  
+            			  <p:column headerText="#{rptBean.columnName5}" width="70" visible="#{rptBean.colDate}">
+            						<p:outputLabel  value="#{tm.f6}" />
+            			  </p:column>
+            			  
+            			  <p:column headerText="#{rptBean.columnName6}" width="70" visible="#{rptBean.colTimeInOut}">
+            						<p:outputLabel  value="#{tm.f8}" />
+            			  </p:column>
+            			  
+            			  <p:column headerText="#{rptBean.columnName2}" width="100">
+            						<p:outputLabel  value="#{tm.f2}" />
+            			  </p:column>
+                         
+                          <p:column headerText="#{rptBean.columnName3}" width="70">
+            						<p:outputLabel  value="#{tm.f3}" />
+            			  </p:column>
+            			  
+            			  <p:column headerText="#{rptBean.columnName7}" width="70" visible="#{rptBean.colCuts}">
+            						<p:outputLabel value="#{tm.f7}" />
+            			  </p:column>
+            			  
+                          <p:column headerText="#{rptBean.columnName4}" width="50">
+            						<p:outputLabel value="#{tm.f4}" />
+            			  </p:column>
+            			  
+            			  <p:column headerText="#{rptBean.columnName8}" width="70">
+            						<p:outputLabel value="#{tm.f5}" />
+            			  </p:column>
+                         
+                          <p:columnGroup type="footer">
+                        		<p:row>
+            						<p:column colspan="1" style="text-align:right" footerText="" width="20"/>
+            					</p:row>
+                        		<p:row>
+                					<p:column footerText="Total Cost: Php#{rptBean.totalActivityCost}"/>
+            					</p:row>
+                        </p:columnGroup>
+                         
+         			</p:dataTable>   
+			
+			</p:layoutUnit>
+	</p:layout>	
+	
+		
+<ui:include src="loader.xhtml" />
+</h:form>
+
+<br/><br/><br/><br/>		
+</h:body>
+</html>	

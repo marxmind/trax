@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h = "http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      >
+ 
+    <ui:composition>
+		
+		<p:dialog header="Upload Database" position="center center" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="uploadDlg" closable="false" Height="500" width="500">
+		<p:toolbar id="empUp">
+    		<f:facet name="left">
+    			<p:fileUpload fileUploadListener="#{dataBean.uploadData}"
+					                    			mode="advanced" auto="true" sizeLimit="50000000" label="Upload Backup Database here"
+					                    			update="listData msg" dragDropSupport="true" style="#{skin.button}"
+					                    			allowTypes="/(\.|\/)(sql)$/" />
+    		</f:facet>
+    		<f:facet name="right">
+    			<p:commandButton style="#{skin.button}" value="Refresh" icon="fa fa-refresh" actionListener="#{dataBean.loadUploadFiles}" update="listData"/>
+    			<p:commandButton style="#{skin.button}" value="Close" onclick="PF('uploadDlg').hide()"/>
+    		</f:facet>
+		</p:toolbar>
+		
+		<p:dataList id="listData" value="#{dataBean.slqData}" var="dm" type="ordered" a:data-inset="true">
+					
+						<p:commandButton update="listData" icon="fa fa-trash"  actionListener="#{dataBean.deleteUploadFile(dm)}" title="Click this button to delete">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            			</p:commandButton>
+					
+	        			<p:commandLink value="#{dm.f2}" ajax="false" actionListener="#{dataBean.fileDownloadUpload(dm.f2)}">
+	        				<p:fileDownload value="#{dataBean.sqlFile}"/>
+	        			</p:commandLink>
+	        			
+	        		</p:dataList>
+		
+		</p:dialog>	
+    </ui:composition>
+</html>

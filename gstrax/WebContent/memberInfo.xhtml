@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui = "http://java.sun.com/jsf/facelets"
+  xmlns:h = "http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui" 
+xmlns:a="http://xmlns.jcp.org/jsf/passthrough"  
+  >
+<h:head>
+<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>#{versionBean.copyright.appname} Member Capturing</title>
+	</f:facet>
+	
+	<f:facet name="middle">
+            <h:outputStylesheet name="bootstrap/css/bootstrap.css"/>
+            <h:outputStylesheet name="css/dashboard.css"/>
+            <h:outputStylesheet name="css/panel.css"/>
+            <h:outputStylesheet name="css/dataTables.bootstrap.mini.css"/>
+            <h:outputStylesheet name="css/menu.css"/>
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.js" target="head"/>
+            
+            
+    </f:facet>
+        
+    <f:facet name="last">
+ 		<h:outputStylesheet name="css/font-awesome.css" />
+    </f:facet>
+    <title>#{versionBean.copyright.appname} Member Capturing</title>
+
+<style>
+<!-- 
+.dataDesignTable{
+	font-style: normal; 	
+	font-family: Times New Roman; 
+	font-size: 80%;
+	font-weight: bold;
+}
+
+.centerPage{
+	position: relative;
+	margin-left: 5px;
+	margin-bottom: 5px;
+	width: 100%;
+	height: 100%;
+	border: 3px solid black;
+	padding: 1px;
+}
+
+ -->
+ </style>
+ <!-- 
+ <h:outputScript library="js" name="classie.js"/>
+<h:outputStylesheet library="css" name="normalize.css" />
+<h:outputStylesheet library="css" name="set2.css" /> -->
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>#{versionBean.copyright.appname} Member Capturing</title>
+
+</h:head>
+
+<h:body>
+	
+
+<h:form prependId="false" id="formIdMain">
+		<p:growl id="msgs" showDetail="true"/>
+		
+		<p:panel id="panel" header="Coop Member Capturing"/>
+		<p:focus context="panel"/>
+		
+		<h:panelGrid columns="5" cellpadding="5">
+        <p:photoCam widgetVar="pc" listener="#{photoCamViewBean.oncapture}" jpegQuality="1024" update="photo capId" />
+        <p:commandButton type="button" value="Capture" onclick="PF('pc').capture()"/>
+        <p:outputPanel id="photo">
+            <p:imageCropper id="capId" value="#{photoCamViewBean.croppedImage}"  image="#{photoCamViewBean.capturedImagePathName}" backgroundColor="blue" aspectRatio="1.0" initialCoords="225,75,300,125"  />
+        </p:outputPanel>
+        <p:commandButton value="Crop" action="#{photoCamViewBean.crop}" update="cropped msgs" icon="ui-icon-scissors"/>
+        <h:panelGroup id="cropped">
+            <p:graphicImage rendered="#{not empty photoCamViewBean.newImageName}" name="images/crop/#{photoCamViewBean.newImageName}.jpg" />
+        </h:panelGroup>
+        </h:panelGrid>
+ 	
+	
+<p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" /> 
+<p:dialog style="background: transparent; !important;" position="right bottom" widgetVar="statusDialog" modal="false" draggable="false" closable="false" resizable="false" showHeader="false">
+    <p:graphicImage name="/gif/loading.gif" style="width: 3em;height: 3em"/>
+</p:dialog>
+</h:form>
+		
+</h:body>
+</html>

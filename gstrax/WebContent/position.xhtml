@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui = "http://java.sun.com/jsf/facelets"
+  xmlns:h = "http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui" 
+xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+xmlns:my="http://java.sun.com/jsf/composite/my"  
+  >
+<h:head>
+<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>#{versionBean.copyright.appname} Position</title>
+	</f:facet>
+	
+	<f:facet name="middle">
+            <h:outputStylesheet name="bootstrap/css/bootstrap.css"/>
+            <h:outputStylesheet name="css/menu.css"/>
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="bootstrap/js/bootstrap.js" target="head"/>
+            <h:outputStylesheet name="css/growl.css"/>
+    </f:facet>
+        
+    <f:facet name="last">
+ 		<h:outputStylesheet name="css/font-awesome.css" />
+    </f:facet>
+    <title>#{versionBean.copyright.appname} Position</title>
+
+<style>
+<!-- 
+
+ -->
+ </style>
+
+ 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>#{versionBean.copyright.appname} Position</title>
+
+</h:head>
+
+<h:body>
+	
+
+<h:form prependId="false" id="formId" >
+	
+	<p:growl id="msg" showDetail="true"/>
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+       	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+       	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+	<p:focus context="tb"/>
+	<p:layout fullPage="true">
+			
+			<p:layoutUnit position="east" size="0" visible="false" >
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="north" size="100" visible="false">
+				<p:graphicImage name="logo/logo.png" style="width: 5em; height: 5em" styleClass="img-circle"/>
+				<p:outputLabel value="#{versionBean.copyright.appname} Position Profile" style="#{skin.pageTitle}"/>
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="south" size="50">
+				<p:outputLabel style="#{skin.copyrightLabel}" value="#{versionBean.copyright.appname} | #{versionBean.copyright.copyrightname} | #{versionBean.copyright.author} | version:#{versionBean.copyright.currentversion}"/>
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="west" size="300">
+			
+			<p:toolbar id="tbM" style="#{skin.toolbar}">
+		    		<f:facet name="left">
+				        
+		    		</f:facet>
+		    		<f:facet name="right">
+		    		
+		    			<p:commandButton update="fldDataId"  value="New" actionListener="#{posBean.clear}" icon="fa fa-file"/>
+		    			<p:commandButton update="fldDataId" value="Clear" icon="fa fa-trash" actionListener="#{posBean.clear}"/>
+		    			<p:commandButton update="fldDataId posDataId msg" value="Save" icon="fa fa-floppy-o" actionListener="#{posBean.saveData}">
+        					<p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+        				</p:commandButton>
+		    			
+		    		</f:facet>
+			</p:toolbar>
+			<p:panelGrid id="fldDataId" columns="2" cellpadding="0">
+			
+				<p:outputLabel value="Name:" style="#{skin.label}"/>
+				<p:inputText value="#{posBean.jobName}" style="#{skin.textInput}"/>
+				
+			</p:panelGrid>
+			
+			</p:layoutUnit>
+			
+			<p:layoutUnit position="center" >
+			<ui:include src="menu.xhtml" />
+			<p:toolbar id="tb" style="#{skin.toolbar}">
+    		<f:facet name="left">
+		       
+        		<p:inputText value="#{posBean.searchPosition}" a:placeholder="Search Position" style="width: 20em">
+    					<p:ajax event="keyup" listener="#{posBean.init}" update="posDataId fldDataId" delay="800"/>
+    			</p:inputText>
+    		</f:facet>
+    		<f:facet name="right">
+    			
+    		</f:facet>
+		</p:toolbar> 
+		
+		<p:dataTable id="posDataId" value="#{posBean.positions}" var="rpt" stickyHeader="false"
+							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15,20,50,100"
+                         scrollable="true" style="#{skin.table}" paginatorAlwaysVisible="false" paginatorPosition="top"
+                         >
+                         
+                         <p:column headerText="[*]" width="20" exportable="false">
+            					<p:commandButton update=":formId:fldDataId :formId:posDataId msg" icon="fa fa-trash"  actionListener="#{posBean.deleteRow(rpt)}">
+            						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
+            					</p:commandButton>
+            			 </p:column>
+            			 
+            			 <p:column headerText="View" width="20" exportable="false">
+            			 	<p:commandButton icon="fa fa-hand-pointer-o" update="fldDataId" actionListener="#{posBean.clickItem(rpt)}"/>
+            			 </p:column>
+            			 
+            			 <p:column headerText="Position" width="100">
+            						<p:outputLabel value="#{rpt.jobname}"/>
+            			 </p:column>
+                         
+        </p:dataTable>   
+		</p:layoutUnit>	
+	</p:layout>
+
+
+<ui:include src="loader.xhtml" />
+</h:form>
+<br/><br/><br/><br/>
+
+<!-- </div> -->
+		
+</h:body>
+</html>
