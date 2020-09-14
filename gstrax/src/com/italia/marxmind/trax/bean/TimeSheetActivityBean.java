@@ -117,6 +117,7 @@ public class TimeSheetActivityBean implements Serializable{
 	private final static String FORCING1 = ReadConfig.value(Gstrax.FORCING1);
 	private final static String FORCING2 = ReadConfig.value(Gstrax.FORCING2);
 	private final static double FORCING_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.FORCING_RATE_PER_DRUM));
+	private final static double OTHER_SPRAY_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.OTHER_SPRAY_RATE_PER_DRUM));
 	
 	//use only for init
 	private double NUMBER_OF_FORCING_EMPLOYEE=0d;
@@ -530,7 +531,20 @@ public class TimeSheetActivityBean implements Serializable{
 				
 				hourlyRate = FORCING_RATE_PER_DRUM;
 				servicesAmnt = salaryPerEmployee;
+			
+			}else if("Spray Foliar".equalsIgnoreCase(forcing) 
+					|| "Spray Fungicide".equalsIgnoreCase(forcing)
+					|| "Spray Herbicide".equalsIgnoreCase(forcing)
+					|| "Spray Insecticide".equalsIgnoreCase(forcing)
+					|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)) {	
 				
+				double drums = Double.valueOf(act.getDrums());
+				double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
+				double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+				double salaryPerEmployee = totalRate / totalEmployee;
+				
+				hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+				servicesAmnt = salaryPerEmployee;
 				
 			}else{
 			
@@ -843,6 +857,20 @@ public class TimeSheetActivityBean implements Serializable{
 				hourlyRate = FORCING_RATE_PER_DRUM;
 				servicesAmnt = salaryPerEmployee;
 				
+			}else if("Spray Foliar".equalsIgnoreCase(forcing) 
+					|| "Spray Fungicide".equalsIgnoreCase(forcing)
+					|| "Spray Herbicide".equalsIgnoreCase(forcing)
+					|| "Spray Insecticide".equalsIgnoreCase(forcing)
+					|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)) {	
+				
+				double drums = Double.valueOf(getDrums());
+				double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
+				double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+				double salaryPerEmployee = totalRate / totalEmployee;
+				
+				hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+				servicesAmnt = salaryPerEmployee;	
+				
 				
 			}else{
 			
@@ -1111,6 +1139,20 @@ public class TimeSheetActivityBean implements Serializable{
 					servicesAmnt = salaryPerEmployee;
 					
 					System.out.println("Pasok sa forcing : " + forcing);
+					
+				}else if("Spray Foliar".equalsIgnoreCase(forcing) 
+						|| "Spray Fungicide".equalsIgnoreCase(forcing)
+						|| "Spray Herbicide".equalsIgnoreCase(forcing)
+						|| "Spray Insecticide".equalsIgnoreCase(forcing)
+						|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)) {	
+					
+					double drums = Double.valueOf(getDrums());
+					double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
+					double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+					double salaryPerEmployee = totalRate / totalEmployee;
+					
+					hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+					servicesAmnt = salaryPerEmployee;		
 					
 				}else{
 				
