@@ -54,7 +54,8 @@ public enum Gstrax {
 	FORCING1("forcing1"),
 	FORCING2("forcing2"),
 	FORCING_RATE_PER_DRUM("forcingrateperdrum"),
-	FIELD_SPRAY_DRIVER("fieldspraydriver");
+	FIELD_SPRAY_DRIVER("fieldspraydriver"),
+	OTHER_SPRAY_RATE_PER_DRUM("othersprayrate");
 	private String name;
 	
 	
