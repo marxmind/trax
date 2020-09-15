@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<business>
+	<line id="0">
+		<name>GS Fruits Dev</name>
+		<description>GS Fruits</description>
+		<address>Sinolon, Tboli, South Cotabato</address>
+		<owner>GS</owner>
+		<contact>0</contact>
+		<database>gstrax</database>
+		<driver>Y29tLm15c3FsLmpkYmMuRHJpdmVy</driver>
+		<url>amRiYzpteXNxbDovL2xvY2FsaG9zdA==</url>
+		<port>MzMwNg==</port>
+		<SSL>useSSL=false</SSL>
+		<username>cm9vdA==</username>
+		<password>b2N0b2JlcjE4MTk4Nio=</password>
+	</line>
+	<line id="1">
+		<name>GS Fruits Prod</name>
+		<description>GS Fruits</description>
+		<address>Sinolon, Tboli, South Cotabato</address>
+		<owner>GS</owner>
+		<contact>0</contact>
+		<database>gstraxprod</database>
+		<driver>Y29tLm15c3FsLmpkYmMuRHJpdmVy</driver>
+		<url>amRiYzpteXNxbDovL2xvY2FsaG9zdA==</url>
+		<port>MzMwNg==</port>
+		<SSL>useSSL=false</SSL>
+		<username>cm9vdA==</username>
+		<password>b2N0b2JlcjE4MTk4Nio=</password>
+	</line>
+</business>

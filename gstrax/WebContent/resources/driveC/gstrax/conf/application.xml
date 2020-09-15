@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><databaseDetails>
+	<databaseName>gstrax</databaseName>
+	<driver>org.mariadb.jdbc.Driver</driver>
+	<url>jdbc:mariadb://localhost</url>
+	<port>MzMwNg==</port>
+	<SSL>useSSL=false</SSL>
+	<username>cm9vdA==</username>
+	<password>b2N0b2JlcjE4MTk4Nio=</password>
+	<applicationExp>02r03i-01a08i-02r00m01a07l</applicationExp>
+	<applicationVersion>Version 1.0</applicationVersion>
+	<copyright>Copyright © 2016. All Rights Reserved.</copyright>
+	<author>Mark Italia</author>
+	<supportEamil>markritalia@gamil.com</supportEamil>
+	<supportNo>09175121252</supportNo>
+	<includeLog>yes</includeLog>
+	<logPath>C:\gstrax\log\</logPath>
+	<imgPath>C:\gstrax\img\</imgPath>
+	<reports>C:\gstrax\reports\</reports>
+	<businessType>0</businessType><!--default [0]open [1]specific-->
+	<businessName>GS Fruits Dev</businessName>
+	<businessWallpaperFile>wallpaper.png</businessWallpaperFile>
+	<themeStyle>nova-dark</themeStyle>
+	<receiptLog>C:\gstrax\receipts\</receiptLog>
+	<hourperday>8.0</hourperday><!--number hours of work per day -->
+	<otstart>14.5</otstart><!--2:30PM -->
+	<laborspraymandailyrate>250.00</laborspraymandailyrate>
+	<laborharvesterdailyrate>250.00</laborharvesterdailyrate>
+	<driverperdrumrate>50.00</driverperdrumrate>
+	<perdrumdivider>6</perdrumdivider>
+	<forcing1>Spray Forcing 1</forcing1>
+	<forcing2>Spray Forcing 2</forcing2>
+	<forcingrateperdrum>60.00</forcingrateperdrum>
+	<fieldspraydriver>40.00</fieldspraydriver>
+	<othersprayrate>40.00</othersprayrate>
+</databaseDetails>

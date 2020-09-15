@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<reports>
+	<activity>activity</activity>
+	<area>area</area>
+	<names>names</names>
+	<materials>materials</materials>
+	<warehousemat>warehousemat</warehousemat>
+</reports>
