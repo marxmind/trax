@@ -11,7 +11,7 @@
 		<p:dialog header="Upload Database" position="center center" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="uploadDlg" closable="false" Height="500" width="500">
 		<p:toolbar id="empUp">
     		<f:facet name="left">
-    			<p:fileUpload fileUploadListener="#{dataBean.uploadData}"
+    			<p:fileUpload listener="#{dataBean.uploadData}"
 					                    			mode="advanced" auto="true" sizeLimit="50000000" label="Upload Backup Database here"
 					                    			update="listData msg" dragDropSupport="true" style="#{skin.button}"
 					                    			allowTypes="/(\.|\/)(sql)$/" />
