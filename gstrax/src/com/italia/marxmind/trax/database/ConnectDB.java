@@ -21,13 +21,13 @@ public class ConnectDB {
 		
 		try{
 			String driver = ReadConfig.value(Gstrax.DB_DRIVER);
-				   driver = SecureChar.decode(driver);
+				   //driver = SecureChar.decode(driver);
 			Class.forName(driver);
 			String db_url = ReadConfig.value(Gstrax.DB_URL);
-				   db_url = SecureChar.decode(db_url);
+				   //db_url = SecureChar.decode(db_url);
 			String port = ReadConfig.value(Gstrax.DB_PORT);
 			       port = SecureChar.decode(port);
-			String url = db_url + ":" + port + "/" +ReadConfig.value(Gstrax.DB_NAME)+ "?" + ReadConfig.value(Gstrax.DB_SSL);
+			String url = db_url + ":" + port + "/" +ReadConfig.value(Gstrax.DB_NAME)+ "?serverTimezone=UTC&" + ReadConfig.value(Gstrax.DB_SSL);
 			String u_name = ReadConfig.value(Gstrax.USER_NAME);
 				   u_name = SecureChar.decode(u_name);
 				   u_name = u_name.replaceAll("mark", "");
