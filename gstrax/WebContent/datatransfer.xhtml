@@ -79,7 +79,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 			    </h:panelGrid>
 			    <br/><br/><br/><br/>
 			    <h:panelGrid  columns="1" style="width:100%">
-			    	<p:fileUpload fileUploadListener="#{dataBean.uploadData}"
+			    	<p:fileUpload listener="#{dataBean.uploadData}"
 					                    			mode="advanced" auto="true" sizeLimit="50000000" label="Upload Data"
 					                    			update="msg" dragDropSupport="true" style="#{skin.button}"
 					                    			allowTypes="/(\.|\/)(sql)$/" />

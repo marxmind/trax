@@ -196,7 +196,7 @@ public class DataTransferBean implements Serializable{
 	public void uploadData(FileUploadEvent event){
 	
 		 try {
-			 InputStream stream = event.getFile().getInputstream();
+			 InputStream stream = event.getFile().getInputStream();
 			 //String ext = FilenameUtils.getExtension(event.getFile().getFileName());
 			 String file = event.getFile().getFileName();
 			 
