@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui = "http://java.sun.com/jsf/facelets"
+  xmlns:h = "http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui" 
+xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+xmlns:my="http://java.sun.com/jsf/composite/my"  
+  >
+ <f:view contentType="text/html"> 
+<h:head>
+<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>#{versionBean.copyright.appname} Home</title>
+	</f:facet>
+	
+	<f:facet name="middle">
+			<h:outputStylesheet name="sb-admin/bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="sb-admin/font-awesome/css/all.min.css" />
+            <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
+            <h:outputStylesheet name="sb-admin/css/bg-sidebar.css"/>
+            
+            <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+     </f:facet>
+     <f:facet name="last">       
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="sb-admin/bootstrap/js/bootstrap.bundle.min.js"/>
+            <h:outputScript name="sb-admin/jquery-easing/jquery.easing.min.js"/>
+            <h:outputScript name="sb-admin/js/sb-admin.min.js"/>
+    </f:facet>
+   
+<style>
+<!-- 
+
+.ui-growl{
+	top: 100px;
+	right: 500px; important!;
+	z-index: 1500; important!;
+}
+
+.ui-container{
+	top: 100px;
+	right: 500px; important!;
+}
+
+.top {
+    filter:alpha(opacity=80);
+    opacity:80;
+    padding:50px 0 0 50px;
+    z-index: 1000;
+}
+
+
+
+ -->
+ </style>
+ 
+<title>#{versionBean.copyright.appname} Home</title>
+
+</h:head>
+
+<h:body id="page-top">
+<h:form prependId="false" id="formIdMain">
+<p:growl id="msg" showDetail="true"/>
+<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+       	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+       	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+ </p:confirmDialog>	
+<nav class="navbar navbar-expand navbar-intel bg-intel static-top">
+		
+	  
+      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+
+      <!-- Navbar Search -->
+      <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+      
+      </div>
+      <ui:include src="menutop.xhtml" />
+  </nav>
+  
+  <div id="wrapper">
+  
+  		<div id="content-wrapper">
+  		<p:graphicImage name="wallpaper/wallpaper4.png" style="width: 100%; height: 100%"/>
+  		</div>
+  		
+  		<!-- Sticky Footer -->
+        <ui:include src="copyright.xhtml" />
+  		
+  </div>
+  
+   <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+    
+    <p:dialog header="Update Notice" position="center center" showEffect="clip" hideEffect="clip" widgetVar="updateNoticeDlg" closable="true" Height="500" width="700">
+    	<div class="resume-item d-flex flex-column flex-md-row mb-5">
+            <div class="resume-content mr-auto">
+              <div>Latest Build</div>
+              <p class="text-primary">#{versionBean.copyright.currentversion}</p>
+              <div>Recent Build</div>
+              <p class="text-primary">#{versionBean.copyright.oldversion}</p>
+            </div>
+            <div class="resume-date text-md-right">
+              <span class="text-primary">#{versionBean.versionController.buildapplieddate}</span>
+            </div>
+          </div>
+    	<p:dataList value="#{versionBean.fixes}" var="rv" type="ordered">
+        			<f:facet name="header">Build Details</f:facet>
+        			#{rv.fixdesc}
+        </p:dataList>
+        <p:outputLabel value="Unchecked me to hide on the next startup"/>&nbsp;
+				        <p:selectBooleanCheckbox value="#{mainBean.active}">
+		                  		<p:ajax listener="#{mainBean.changeActive}"/>
+		                </p:selectBooleanCheckbox>
+    </p:dialog>
+    
+ <ui:include src="loader.xhtml" />
+  </h:form>  
+</h:body>
+</f:view>
+</html>   
+  	    

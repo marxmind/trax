@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!-- Created with Jaspersoft Studio version 6.12.2.final using JasperReports Library version 6.12.2-75c5e90a222ab406e416cbf590a5397028a52de3  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="activity" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fb8fdd7b-795c-4c25-baf7-0eaee9cf6f5f">
 	<parameter name="PARAM_DATE_PRINTED" class="java.lang.String"/>
 	<parameter name="PARAM_DATE" class="java.lang.String"/>
@@ -34,7 +34,7 @@
 	</background>
 	<title>
 		<band height="85" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="130" y="12" width="303" height="26" uuid="10abb0b7-f8d5-43c6-8a9a-bdad26cf250f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -43,7 +43,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_COMPANY}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="129" y="36" width="303" height="18" uuid="ffbbbf51-2f7c-4a5c-9a76-db5bcfaa7c8c">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -52,7 +52,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_COMPANY_ADDRESS}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="400" y="0" width="150" height="14" uuid="4d218f73-7927-4e19-afef-b2810cab11e7">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -61,7 +61,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_DATE_PRINTED}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="0" y="60" width="150" height="14" uuid="e664a7f8-ada7-4b95-a0c0-b80787b19557">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -70,7 +70,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_PREPARED_BY}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="161" y="53" width="238" height="18" uuid="31e518c1-36fb-4933-9b7f-c61725138f82">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -79,7 +79,7 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{PARAM_DATE}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="304" y="62" width="248" height="16" uuid="16573bc1-e3a0-4d03-aae2-fc45e88a6e8f">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -171,8 +171,8 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="11" splitType="Stretch">
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+		<band height="14" splitType="Stretch">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="140" height="11" uuid="3ef01568-214f-4345-8405-d554302efb64">
 					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
 				</reportElement>
@@ -181,34 +181,39 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f1}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="140" y="0" width="164" height="11" uuid="94bf338d-6322-4549-9ba2-0b8d3bc9e019"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f2}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="304" y="0" width="68" height="11" uuid="84e497bf-9726-4b4b-8c61-6a3f6db1b472"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f3}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="372" y="0" width="68" height="11" uuid="0fa1c47f-3891-4925-997c-050457a32b70"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f4}]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 				<reportElement x="440" y="0" width="112" height="11" uuid="fe9970bc-c0d9-4eab-a853-bb8be2f0ebdb"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{f5}]]></textFieldExpression>
 			</textField>
+			<line>
+				<reportElement x="0" y="12" width="552" height="1" uuid="ffed40c6-10de-4529-b045-41bcd98a2072">
+					<printWhenExpression><![CDATA["Total".equals($F{f1})]]></printWhenExpression>
+				</reportElement>
+			</line>
 		</band>
 	</detail>
 	<columnFooter>

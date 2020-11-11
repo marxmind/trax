@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:ui = "http://java.sun.com/jsf/facelets"
+  xmlns:h = "http://java.sun.com/jsf/html"
+  xmlns:f="http://java.sun.com/jsf/core"
+xmlns:p="http://primefaces.org/ui" 
+xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+xmlns:my="http://java.sun.com/jsf/composite/my"  
+  >
+ <f:view contentType="text/html"> 
+<h:head>
+<link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+	<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>#{versionBean.copyright.appname} Home</title>
+	</f:facet>
+	
+	<f:facet name="middle">
+			<h:outputStylesheet name="sb-admin/bootstrap/css/bootstrap.min.css"/>
+            <h:outputStylesheet name="sb-admin/font-awesome/css/all.min.css" />
+            <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
+            <h:outputStylesheet name="sb-admin/css/bg-sidebar.css"/>
+            
+            <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
+     </f:facet>
+     <f:facet name="last">       
+            <h:outputScript name="jquery/jquery.min.js" target="head"/>
+            <h:outputScript name="sb-admin/bootstrap/js/bootstrap.bundle.min.js"/>
+            <h:outputScript name="sb-admin/jquery-easing/jquery.easing.min.js"/>
+            <h:outputScript name="sb-admin/js/sb-admin.min.js"/>
+    </f:facet>
+   
+<style>
+<!-- 
+
+.ui-growl{
+	top: 100px;
+	right: 500px; important!;
+	z-index: 1500; important!;
+}
+
+.ui-container{
+	top: 100px;
+	right: 500px; important!;
+}
+
+.top {
+    filter:alpha(opacity=80);
+    opacity:80;
+    padding:50px 0 0 50px;
+    z-index: 1000;
+}
+
+.graphPos{
+	left:0;
+    right:0;
+	position: absolute;
+	margin:0 auto;
+	width: 50%; 
+	height: 10%; 
+	background-color: black;
+	text-overflow:ellipsis;
+    overflow:hidden;
+}
+
+ -->
+ </style>
+ 
+<title>#{versionBean.copyright.appname} Home</title>
+
+</h:head>
+
+<h:body id="page-top">
+<h:form prependId="false" id="formId">
+<p:growl id="msg" showDetail="true" />
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+       	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+       	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+ </p:confirmDialog>	
+ 
+ 
+ <nav class="navbar navbar-expand navbar-intel bg-intel static-top">
+
+      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+      
+      <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
+        	  
+        	  
+        	  <div class="input-group">
+        	  			<p:selectOneMenu value="#{graphBean.modeId}" style="width: 15em; height: 2em"  filter="true" filterMatchMode="contains">
+			            	<f:selectItems value="#{graphBean.modes}"/>
+			            </p:selectOneMenu>
+        	  			<p:calendar value="#{graphBean.timeSheetFrom}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 10em"/>
+				        <p:calendar value="#{graphBean.timeSheetTo}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 10em"/>
+				        <p:commandButton update="activityBarId" icon="fa fa-search" actionListener="#{graphBean.loadSearch}"/>
+          	  </div>
+     </div>
+
+      
+      <ui:include src="menutop.xhtml" />
+		
+	 	
+    </nav>
+      
+    <div id="wrapper">
+		
+      <div id="content-wrapper">        
+		  <div class="container-fluid">
+		      
+		   <div id="panelHide" style="display: none">
+		   		
+		   </div>
+		   
+		   <div id="paneltable" style="display: block; background-color: white;">
+		   			<p:barChart id="activityBarId" model="#{graphBean.barModel}" style="width: 100%; height: 500px;"/>
+		   </div>
+		        
+		         
+		</div><!-- Fluid end -->
+	</div><!-- End content wrapper -->
+	
+	<!-- Sticky Footer -->
+        <ui:include src="copyright.xhtml" />
+	
+	</div><!-- wrapper -->	   
+	
+	<!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+      <i class="fas fa-angle-up"></i>
+    </a>
+ 	
+ 	
+ 	
+ 	<script>
+	
+ 	function hideOnlyPdf(){
+		$("#panelHidePdf").hide(1000);
+		$("#paneltable").show(1000);
+	}
+ 	
+ 	function hidePdf(){
+		 $("#panelHidePdf").hide(1000);
+		 $("#panelHide").hide(1000);
+		 $("#paneltable").show(1000);
+	 }
+	 
+	 function showPdf(){
+		 $("#panelHidePdf").show(1000);
+		 $("#panelHide").hide(1000);
+		 $("#paneltable").hide(1000);
+	 }
+ 	
+	 function addNew(){
+		 callTop();
+		 showDetails();
+		 showButton();
+		 hideOnlyPdf();
+	 }
+	 
+	 function showDetails(){
+	 		$("#panelHide").show(1000);
+	 }
+	 
+	 $(".input-group").click(function(){
+		 hideWizard();
+		 callTop();
+	 });
+	 
+	 function hideWizard(){
+	 		$("#panelHide").hide(1000);
+	 		hideButton();
+	 }		
+	 
+	
+	 function hideButton(){
+		 $('#clearButtonId').fadeOut();
+	     $('#saveButtonId').fadeOut();
+	     $('#hideButtonId').fadeOut();
+	 }
+	 
+	 function showButton(){
+		 $('#clearButtonId').fadeIn();
+	     $('#saveButtonId').fadeIn();
+	     $('#hideButtonId').fadeIn();
+	 }
+	 
+	 function callTop(){ 
+		        $('html').animate({ scrollTop: 0 }, 'slow'); return true; 
+			    $('body').animate({ scrollTop: 0 }, 'slow'); return true; 
+			    $('document').animate({ scrollTop: 0 }, 'slow'); return true; 
+			    $('window').animate({ scrollTop: 0 }, 'slow'); return true;
+	 }
+	 
+	//hiding wizard when scrolling down
+	  $(document).on('scroll',function() {
+	    var scrollDistance = $(this).scrollTop();
+	    if (scrollDistance > 120) {
+	    	hideButton();
+	    } else {
+	    	$('#addButtonId').fadeIn();
+	    	
+	    	if($('#panelHide').css('display') == 'none'){
+	    		hideButton();
+	    	}else{
+	    		showButton();
+	    	}
+	    	
+	    }
+	  });
+	 
+	</script>
+ 	
+ <ui:include src="loader.xhtml" />
+</h:form>
+</h:body>
+</f:view>
+</html>   

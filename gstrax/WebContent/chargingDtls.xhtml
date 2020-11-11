@@ -1,0 +1,51 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h = "http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      >
+ 
+    <ui:composition>
+		
+		<p:dialog header="Changing Time Details" position="center center" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="chrgDlg" closable="false" Height="500" width="500">
+		<p:toolbar id="chrgUp">
+    		<f:facet name="left">
+    			
+    		</f:facet>
+    		<f:facet name="right">
+    			<p:commandButton style="#{skin.button}" value="Close" onclick="PF('chrgDlg').hide()"/>
+    		</f:facet>
+		</p:toolbar>
+		
+		<p:panelGrid id="idTime" layout="grid" columns="3">
+		
+			<p:outputLabel value="Hour per day"/>
+			<p:inputNumber value="#{timeSetDtlsBean.hoursPerDay}" inputStyle="width: 10em"/>
+			<p:commandButton icon="pi pi-save" actionListener="#{timeSetDtlsBean.updateHoursPerDay}" update="msg">
+				<p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+			</p:commandButton>
+			
+			<p:outputLabel value="Overtime Start at(24 time format)"/>
+			<p:inputNumber value="#{timeSetDtlsBean.overtimeStartAt}" inputStyle="width: 10em"/>
+			<p:commandButton icon="pi pi-save" actionListener="#{timeSetDtlsBean.updateOvertimeStartAt}" update="msg">
+				<p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+			</p:commandButton>
+			
+			<p:outputLabel value="Labor Sprayman Daily Rate"/>
+			<p:inputNumber value="#{timeSetDtlsBean.laborSprayManDailyRate}" inputStyle="width: 10em"/>
+			<p:commandButton icon="pi pi-save" actionListener="#{timeSetDtlsBean.updateLaborSprayManDailyRate}" update="msg">
+				<p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+			</p:commandButton>
+			
+			<p:outputLabel value="Labor Harvester Daily Rate"/>
+			<p:inputNumber value="#{timeSetDtlsBean.laborHarvesterDailyRate}" inputStyle="width: 10em"/>
+			<p:commandButton icon="pi pi-save" actionListener="#{timeSetDtlsBean.updateLaborHavesterDailyRate}" update="msg">
+				<p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
+			</p:commandButton>
+			
+		</p:panelGrid>
+		
+		</p:dialog>	
+    </ui:composition>
+</html>
