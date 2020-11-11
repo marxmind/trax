@@ -35,26 +35,26 @@ public class LocationBean implements Serializable{
 	private static final long serialVersionUID = 165456879906L;
 	
 	private Location locData;
-	private List<Location> locs = Collections.synchronizedList(new ArrayList<Location>());
+	private List<Location> locs = new ArrayList<Location>();
 	private String searchName;
 	private String locName;
 	
 	private int bgId;
 	private List bgs;
-	private Map<Integer, Barangay> bgMap = Collections.synchronizedMap(new HashMap<Integer, Barangay>());
+	private Map<Integer, Barangay> bgMap = new HashMap<Integer, Barangay>();
 	
 	private int munId;
 	private List muns;
-	private Map<Integer, Municipality> munMap = Collections.synchronizedMap(new HashMap<Integer, Municipality>());
+	private Map<Integer, Municipality> munMap = new HashMap<Integer, Municipality>();
 	
 	private int provId;
 	private List provs;
-	private Map<Integer, Province> provMap = Collections.synchronizedMap(new HashMap<Integer, Province>());
+	private Map<Integer, Province> provMap = new HashMap<Integer, Province>();
 	
 	@PostConstruct
 	public void init(){
 		
-		locs = Collections.synchronizedList(new ArrayList<Location>());
+		locs = new ArrayList<Location>();
 		String sql = " AND lc.isactiveloc=1";
 		if(getSearchName()!=null && !getSearchName().isEmpty()){
 			sql += " AND lc.locname like '%"+ getSearchName().replace("--", "") +"%'";

@@ -57,7 +57,7 @@ public class Copyright {
 	}
 	
 	public static List<Copyright> retrieve(String sql, String[] params){
-		List<Copyright> data = Collections.synchronizedList(new ArrayList<>());
+		List<Copyright> data = new ArrayList<>();
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;

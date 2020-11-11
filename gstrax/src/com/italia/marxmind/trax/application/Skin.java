@@ -1,11 +1,12 @@
 package com.italia.marxmind.trax.application;
 
 import java.io.FileInputStream;
+import java.io.Serializable;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import com.italia.marxmind.trax.enm.Gstrax;
 
@@ -16,11 +17,15 @@ import com.italia.marxmind.trax.enm.Gstrax;
  * @version 1.0
  *
  */
-@ManagedBean(name="skin", eager=true)
-@ViewScoped
 
-public class Skinning {
+@Named
+@ViewScoped
+public class Skin implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 165477088087087L;
 	private String label;
 	private String header;
 	private String title;
@@ -51,7 +56,7 @@ public class Skinning {
 											Gstrax.APP_FOLDER.getName() + Gstrax.SEPERATOR.getName() +	
 											  Gstrax.APP_CONFIG_FLDR.getName() + Gstrax.SEPERATOR.getName() + "skin.properties";
 	
-	public Skinning(){
+	public Skin(){
 		
 		Properties prop = new Properties();
 		try{
@@ -89,7 +94,7 @@ public class Skinning {
 	
 	@PostConstruct
 	public void init(){
-		new Skinning();
+		new Skin();
 	}
 	
 	public String getLabel() {

@@ -33,7 +33,7 @@ public class MaterialTransactions {
 	private ActivityTransactions activityTransactions;
 	
 	public static List<MaterialTransactions> retrieve(String sqlAdd, String[] params){
-		List<MaterialTransactions> mats = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+		List<MaterialTransactions> mats = new ArrayList<MaterialTransactions>();
 		
 		String tableMats = "mt";
 		String tableMat = "mat";

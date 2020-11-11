@@ -25,11 +25,11 @@ public class ExpiredBean implements Serializable{
 	private List modules;
 	private int moduleId;
 	private String activationCode;
-	private List<License> exes = Collections.synchronizedList(new ArrayList<>());
+	private List<License> exes = new ArrayList<>();
 	
 	@PostConstruct 
 	public void init(){
-		exes = Collections.synchronizedList(new ArrayList<>());
+		exes = new ArrayList<>();
 		String sql = "SELECT * FROM license";
 		exes = License.retrieve(sql, new String[0]);
 	}

@@ -9,6 +9,7 @@ xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
   >
 <h:head>
 <link rel="shortcut icon" type="image/x-icon" href="#{resource['favicon.ico']}" />
+<link rel="manifest" type="image/x-icon" href="#{resource['trax-manifest.json']}" />
 <f:facet name="first">
 			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
             <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
@@ -91,9 +92,18 @@ xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
           <div class="subheading mb-5">GS FRUIT LABOR AND EXPENSES MANAGEMENT SYSTEM</div>
           
           <div class="my-auto">
-          
+          	
+          	
+											
+			
+          	
           	<p:panelGrid columns="2" id="idUName" styleClass="text-primary">
           	
+          	<p:outputLabel for="uiid" value="UI" style="#{skin.label}"/>
+          	<p:selectOneRadio id="uiid" value="#{loginBean.ui}"  columns="1" styleClass="form-control">
+				<f:selectItem itemLabel="MAX" itemValue="" />
+				<f:selectItem itemLabel="Avalon" itemValue="2" />
+			</p:selectOneRadio>
           	<p:outputLabel for="uname" value="Username:" style="#{skin.label}"/>
         	<p:inputText style="width: 15em;#{skin.textInput}" styleClass="form-control" a:placeholder="MARXMIND"  id="uname" value="#{loginBean.name}"/>
         	

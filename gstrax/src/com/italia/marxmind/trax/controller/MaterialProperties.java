@@ -34,10 +34,10 @@ public class MaterialProperties {
 	private UOM uom;
 	private UserDtls userDtls;
 	
-	List<MaterialOUT> outList = Collections.synchronizedList(new ArrayList<MaterialOUT>());
+	List<MaterialOUT> outList = new ArrayList<MaterialOUT>();
 	
 	public static List<MaterialProperties> retrieve(String sqlAdd, String[] params){
-		List<MaterialProperties> props = Collections.synchronizedList(new ArrayList<MaterialProperties>());
+		List<MaterialProperties> props = new ArrayList<MaterialProperties>();
 		
 		String tableProp = "prop";
 		String tableMat = "mat";

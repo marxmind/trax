@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -37,6 +38,7 @@ import com.italia.marxmind.trax.application.Application;
 import com.italia.marxmind.trax.controller.Activity;
 import com.italia.marxmind.trax.controller.ActivityTransactions;
 import com.italia.marxmind.trax.controller.Employee;
+import com.italia.marxmind.trax.controller.Job;
 import com.italia.marxmind.trax.controller.LocationTransactions;
 import com.italia.marxmind.trax.controller.Login;
 import com.italia.marxmind.trax.controller.MaterialOUT;
@@ -101,6 +103,7 @@ public class ReportBean implements Serializable{
 	private final static double FORCING_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.FORCING_RATE_PER_DRUM));
 	private final static double OTHER_SPRAY_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.OTHER_SPRAY_RATE_PER_DRUM));
 	
+	
 	//use only for init
 	private double NUMBER_OF_FORCING_EMPLOYEE=0d;
 	
@@ -135,8 +138,12 @@ public class ReportBean implements Serializable{
 	
 	private int totalMandays;
 	
+	private Map<Integer, Job> jobs = new LinkedHashMap<Integer, Job>();
+	
 	@PostConstruct
 	public void init(){
+		
+		loadPositions();//do not interchange this line of codes
 		
 		if(!getActivateDetailsReport()){
 			setColDate(false);
@@ -224,6 +231,18 @@ public class ReportBean implements Serializable{
 			}
 			loadMaterialsSummary();
 
+		}
+		
+		
+	
+	}
+	
+	private void loadPositions() {
+		jobs = new LinkedHashMap<Integer, Job>();
+		String sql = "SELECT * FROM jobtitle WHERE isactivejob=1";
+		String[] params = new String[0];
+		for(Job job : Job.retrieve(sql, params)) {
+			jobs.put(job.getJobid(), job);
 		}
 	}
 	
@@ -2329,34 +2348,39 @@ private double calculateSalary(TimeSheets time, ActivityTransactions act){
 				forcing = activity.getName();
 			}
 			
-			
+			double totalRate = 0d;
 			if(FORCING1.equalsIgnoreCase(forcing) || FORCING2.equalsIgnoreCase(forcing)){
 				String sql =" AND tme.isactivetime=1 AND ac.actransid=? AND ac.isactiveactrans=1";
 				String[] params = new String[1];
 				params[0] = act.getId()+"";
 				double drums = Double.valueOf(act.getDrums());
 				double totalEmployee = TimeSheets.retrieve(sql, params).size();
-				double totalRate = drums * FORCING_RATE_PER_DRUM;
+				//double totalRate = drums * FORCING_RATE_PER_DRUM;
+				totalRate = drums * getJobs().get(em.getJob().getJobid()).getSpraySpecialRate();
 				double salaryPerEmployee = totalRate / totalEmployee;
 				
-				hourlyRate = FORCING_RATE_PER_DRUM;
+				//hourlyRate = FORCING_RATE_PER_DRUM;
+				hourlyRate = totalRate / HOUR_IN_DAY;
 				servicesAmnt = salaryPerEmployee;
 			
-			}else if((act.getDrums()!=null) && ("Spray Foliar".equalsIgnoreCase(forcing) 
+			}else if(act.getDrums()!=null && ("Spray Foliar".equalsIgnoreCase(forcing) 
 					|| "Spray Fungicide".equalsIgnoreCase(forcing)
 					|| "Spray Herbicide".equalsIgnoreCase(forcing)
 					|| "Spray Insecticide".equalsIgnoreCase(forcing)
-					|| "Spray Foliar Sucker".equalsIgnoreCase(forcing))) {	
+					|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)
+					|| "Spray Ripening".equalsIgnoreCase(forcing))) {	
 				
 				String sql =" AND tme.isactivetime=1 AND ac.actransid=? AND ac.isactiveactrans=1";
 				String[] params = new String[1];
 				params[0] = act.getId()+"";
 				double drums = Double.valueOf(act.getDrums());
 				double totalEmployee = TimeSheets.retrieve(sql, params).size();
-				double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+				//double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+				totalRate = drums * getJobs().get(em.getJob().getJobid()).getSprayRegularRate();
 				double salaryPerEmployee = totalRate / totalEmployee;
 				
-				hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+				//hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+				hourlyRate = totalRate / HOUR_IN_DAY;
 				servicesAmnt = salaryPerEmployee;
 				
 				
@@ -2751,24 +2775,27 @@ private double calculateSalary(TimeSheets time, ActivityTransactions act){
 					forcing = activity.getName();
 				}
 				
-				
+				double totalRate = 0d;
 				if(FORCING1.equalsIgnoreCase(forcing) || FORCING2.equalsIgnoreCase(forcing)){
 					String sql =" AND tme.isactivetime=1 AND ac.actransid=? AND ac.isactiveactrans=1";
 					String[] params = new String[1];
 					params[0] = trans.getId()+"";
 					double drums = Double.valueOf(trans.getDrums());
 					double totalEmployee = TimeSheets.retrieve(sql, params).size();
-					double totalRate = drums * FORCING_RATE_PER_DRUM;
+					//double totalRate = drums * FORCING_RATE_PER_DRUM;
+					totalRate = drums * getJobs().get(em.getJob().getJobid()).getSpraySpecialRate();
 					double salaryPerEmployee = totalRate / totalEmployee;
 					
-					hourlyRate = FORCING_RATE_PER_DRUM;
+					//hourlyRate = FORCING_RATE_PER_DRUM;
+					hourlyRate = totalRate / HOUR_IN_DAY;
 					servicesAmnt = salaryPerEmployee;
 				
-				}else if((trans.getDrums()!=null) && ("Spray Foliar".equalsIgnoreCase(forcing) 
+				}else if(trans.getDrums()!=null && ("Spray Foliar".equalsIgnoreCase(forcing) 
 						|| "Spray Fungicide".equalsIgnoreCase(forcing)
 						|| "Spray Herbicide".equalsIgnoreCase(forcing)
 						|| "Spray Insecticide".equalsIgnoreCase(forcing)
-						|| "Spray Foliar Sucker".equalsIgnoreCase(forcing))) {	
+						|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)
+						|| "Spray Ripening".equalsIgnoreCase(forcing))) {	
 					
 					
 					String sql =" AND tme.isactivetime=1 AND ac.actransid=? AND ac.isactiveactrans=1";
@@ -2776,10 +2803,12 @@ private double calculateSalary(TimeSheets time, ActivityTransactions act){
 					params[0] = trans.getId()+"";
 					double drums = Double.valueOf(trans.getDrums());
 					double totalEmployee = TimeSheets.retrieve(sql, params).size();
-					double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+					//double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+					totalRate = drums * getJobs().get(em.getJob().getJobid()).getSprayRegularRate();
 					double salaryPerEmployee = totalRate / totalEmployee;
 					
-					hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+					//hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+					hourlyRate = totalRate / HOUR_IN_DAY;
 					servicesAmnt = salaryPerEmployee;
 					
 				}else{
@@ -3170,24 +3199,27 @@ private double calculateSalary(TimeSheets time, ActivityTransactions act){
 						forcing = activity.getName();
 					}
 					
-					
+					double totalRate = 0d;
 					if(FORCING1.equalsIgnoreCase(forcing) || FORCING2.equalsIgnoreCase(forcing)){
 						sql =" AND tme.isactivetime=1 AND ac.actransid=? AND ac.isactiveactrans=1";
 						params = new String[1];
 						params[0] = trans.getId()+"";
 						double drums = Double.valueOf(trans.getDrums());
 						double totalEmployee = TimeSheets.retrieve(sql, params).size();
-						double totalRate = drums * FORCING_RATE_PER_DRUM;
+						//double totalRate = drums * FORCING_RATE_PER_DRUM;
+						totalRate = drums * getJobs().get(em.getJob().getJobid()).getSpraySpecialRate();
 						double salaryPerEmployee = totalRate / totalEmployee;
 						
-						hourlyRate = FORCING_RATE_PER_DRUM;
+						//hourlyRate = FORCING_RATE_PER_DRUM;
+						hourlyRate = totalRate / HOUR_IN_DAY;
 						servicesAmnt = salaryPerEmployee;
 					
-					}else if((trans.getDrums()!=null) && ("Spray Foliar".equalsIgnoreCase(forcing) 
+					}else if(trans.getDrums()!=null && ("Spray Foliar".equalsIgnoreCase(forcing) 
 							|| "Spray Fungicide".equalsIgnoreCase(forcing)
 							|| "Spray Herbicide".equalsIgnoreCase(forcing)
 							|| "Spray Insecticide".equalsIgnoreCase(forcing)
-							|| "Spray Foliar Sucker".equalsIgnoreCase(forcing))) {	
+							|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)
+							|| "Spray Ripening".equalsIgnoreCase(forcing))) {	
 						
 						
 						sql =" AND tme.isactivetime=1 AND ac.actransid=? AND ac.isactiveactrans=1";
@@ -3195,10 +3227,12 @@ private double calculateSalary(TimeSheets time, ActivityTransactions act){
 						params[0] = trans.getId()+"";
 						double drums = Double.valueOf(trans.getDrums());
 						double totalEmployee = TimeSheets.retrieve(sql, params).size();
-						double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+						//double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+						totalRate = drums * getJobs().get(em.getJob().getJobid()).getSprayRegularRate();
 						double salaryPerEmployee = totalRate / totalEmployee;
 						
-						hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+						//hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+						hourlyRate = totalRate / HOUR_IN_DAY;
 						servicesAmnt = salaryPerEmployee;
 						
 					}else{
@@ -3951,6 +3985,14 @@ private double calculateSalary(TimeSheets time, ActivityTransactions act){
 
 	public void setColumnName8(String columnName8) {
 		this.columnName8 = columnName8;
+	}
+
+	public Map<Integer, Job> getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(Map<Integer, Job> jobs) {
+		this.jobs = jobs;
 	}
 	
 }

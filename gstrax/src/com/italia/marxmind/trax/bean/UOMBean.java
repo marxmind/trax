@@ -35,11 +35,11 @@ public class UOMBean implements Serializable{
 	private String symbolName;
 	private UOM uomData;
 	
-	private List<UOM> uoms = Collections.synchronizedList(new ArrayList<UOM>());
+	private List<UOM> uoms = new ArrayList<UOM>();
 	
 	@PostConstruct
 	public void init(){
-		uoms = Collections.synchronizedList(new ArrayList<UOM>());
+		uoms = new ArrayList<UOM>();
 		String sql = "SELECT * FROM uom WHERE isactiveuom=1";
 		if(getSearchUOM()!=null && !getSearchUOM().isEmpty()){
 			sql += " AND uomname like '%"+ getSearchUOM().replace("--", "") +"%'";

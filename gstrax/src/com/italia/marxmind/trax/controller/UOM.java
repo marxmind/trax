@@ -28,7 +28,7 @@ public class UOM {
 	private int isActive;
 	
 	public static List<UOM> retrieve(String sql, String[] params){
-		List<UOM> uoms = Collections.synchronizedList(new ArrayList<UOM>());
+		List<UOM> uoms = new ArrayList<UOM>();
 		
 		Connection conn = null;
 		ResultSet rs = null;

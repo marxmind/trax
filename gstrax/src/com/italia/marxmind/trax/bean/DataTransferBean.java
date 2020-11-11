@@ -1,11 +1,8 @@
 package com.italia.marxmind.trax.bean;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,10 +11,6 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,20 +18,16 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 
-import org.apache.commons.io.FilenameUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import com.italia.marxmind.trax.application.Application;
-import com.italia.marxmind.trax.application.ClientInfo;
 import com.italia.marxmind.trax.controller.Reports;
-import com.italia.marxmind.trax.database.ConnectDB;
 import com.italia.marxmind.trax.enm.Gstrax;
 import com.italia.marxmind.trax.reader.ReadConfig;
 import com.italia.marxmind.trax.security.SecureChar;
 import com.italia.marxmind.trax.utils.DateUtils;
-import com.italia.marxmind.trax.utils.LogU;
 
 /**
  * 
@@ -94,7 +83,7 @@ public class DataTransferBean implements Serializable{
 	}
 	
 	public void loadFiles() {
-		slqData = Collections.synchronizedList(new ArrayList<Reports>());
+		slqData = new ArrayList<Reports>();
 		File file = new File(DATABASE_BACKUP);
 		String[] fileList = file.list();
 		int id=1;
@@ -115,7 +104,7 @@ public class DataTransferBean implements Serializable{
 	}
 	
 	public void loadUploadFiles() {
-		slqData = Collections.synchronizedList(new ArrayList<Reports>());
+		slqData = new ArrayList<Reports>();
 		File file = new File(DOC_PATH);
 		String[] fileList = file.list();
 		int id=1;

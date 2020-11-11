@@ -29,13 +29,16 @@ public class PositionBean implements Serializable{
 	private static final long serialVersionUID = 545458769661L;
 
 	private String searchPosition;
-	private List<Job> positions = Collections.synchronizedList(new ArrayList<Job>());
+	private List<Job> positions = new ArrayList<Job>();
 	private Job jobData;
 	private String jobName;
 	
+	private double sprayRegularRate;
+	private double spraySpecialRate;
+	
 	@PostConstruct
 	public void init(){
-		positions = Collections.synchronizedList(new ArrayList<Job>());
+		positions = new ArrayList<Job>();
 		
 		String sql = "SELECT * FROM jobtitle WHERE isactivejob=1 ";
 		
@@ -66,6 +69,8 @@ public class PositionBean implements Serializable{
 		if(getJobName()!=null && !getJobName().isEmpty()){
 			
 			job.setJobname(getJobName());
+			job.setSprayRegularRate(getSprayRegularRate());
+			job.setSpraySpecialRate(getSpraySpecialRate());
 			job = Job.save(job);
 			setJobData(job);
 			init();
@@ -79,6 +84,8 @@ public class PositionBean implements Serializable{
 		clear();
 		setJobData(job);
 		setJobName(job.getJobname());
+		setSprayRegularRate(job.getSprayRegularRate());
+		setSpraySpecialRate(job.getSpraySpecialRate());
 	}
 	
 	public void deleteRow(Job job){
@@ -90,6 +97,8 @@ public class PositionBean implements Serializable{
 		setSearchPosition(null);
 		setJobData(null);
 		setJobName(null);
+		setSprayRegularRate(0);
+		setSpraySpecialRate(0);
 	}
 	
 	public String getSearchPosition() {
@@ -122,6 +131,22 @@ public class PositionBean implements Serializable{
 
 	public void setJobName(String jobName) {
 		this.jobName = jobName;
+	}
+
+	public double getSprayRegularRate() {
+		return sprayRegularRate;
+	}
+
+	public void setSprayRegularRate(double sprayRegularRate) {
+		this.sprayRegularRate = sprayRegularRate;
+	}
+
+	public double getSpraySpecialRate() {
+		return spraySpecialRate;
+	}
+
+	public void setSpraySpecialRate(double spraySpecialRate) {
+		this.spraySpecialRate = spraySpecialRate;
 	}
 	
 }

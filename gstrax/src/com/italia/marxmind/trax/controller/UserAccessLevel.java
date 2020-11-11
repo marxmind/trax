@@ -56,7 +56,7 @@ public class UserAccessLevel {
 	}
 	
 	public static List<UserAccessLevel> retrieve(String sql, String[] params){
-		List<UserAccessLevel> levels = Collections.synchronizedList(new ArrayList<UserAccessLevel>());
+		List<UserAccessLevel> levels = new ArrayList<UserAccessLevel>();
 			
 		Connection conn = null;
 		ResultSet rs = null;

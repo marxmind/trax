@@ -38,10 +38,10 @@ public class MaterialOUT {
 	private Location location;
 	
 	private int index;
-	List<MaterialRETURN> returnList = Collections.synchronizedList(new ArrayList<MaterialRETURN>());
+	List<MaterialRETURN> returnList = new ArrayList<MaterialRETURN>();
 	
 	public static List<MaterialOUT> retrieve(String sqlAdd, String[] params){
-		List<MaterialOUT> props = Collections.synchronizedList(new ArrayList<MaterialOUT>());
+		List<MaterialOUT> props = new ArrayList<MaterialOUT>();
 		
 		String tableOut = "ot";
 		String tableProp = "prop";
@@ -276,6 +276,38 @@ public class MaterialOUT {
 		
 		
 		return out;
+	}
+	
+	public static List<MaterialOUT> materialExpense(String fromDate, String toDate){
+		
+		String sql = "SELECT outdate,  sum(matcost * matqty) as amount, sum(matqty) as qty FROM materialout WHERE isactiveout=1 AND (outdate>='"+ fromDate +"' AND outdate<='"+ toDate +"') GROUP BY outdate";
+		
+		List<MaterialOUT> outs = new ArrayList<MaterialOUT>();
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = ConnectDB.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			MaterialOUT out = new MaterialOUT();
+			out.setDateTrans(rs.getString("outdate"));
+			out.setPriceCost(rs.getDouble("amount"));
+			out.setQuantity(rs.getDouble("qty"));
+			outs.add(out);
+			
+		}
+		rs.close();
+		ps.close();
+		ConnectDB.close(conn);
+		}catch(Exception e){}
+		
+		return outs;
 	}
 	
 	public static MaterialOUT save(MaterialOUT mat){

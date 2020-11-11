@@ -1,23 +1,21 @@
 package com.italia.marxmind.trax.bean;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+import javax.enterprise.context.SessionScoped;
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseId;
 import javax.imageio.stream.FileImageOutputStream;
+import javax.inject.Named;
+
 import org.primefaces.event.CaptureEvent;
 import org.primefaces.model.CroppedImage;
 import org.primefaces.model.DefaultStreamedContent;
@@ -32,10 +30,15 @@ import org.primefaces.model.StreamedContent;
 
 import com.italia.marxmind.trax.enm.Gstrax;
 import com.italia.marxmind.trax.reader.ReadConfig;
-@ManagedBean(name="photoCamViewBean")
-@SessionScoped
-public class PhotoCamViewBean {
 
+@Named
+@SessionScoped
+public class PhotoCamViewBean implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4667696653556878L;
 	private String filename;
 	private String capturedImagePathName;
 	private final static String IMAGE_PATH = ReadConfig.value(Gstrax.APP_IMG_FILE); 
@@ -64,16 +67,10 @@ public class PhotoCamViewBean {
      
     public void oncapture(CaptureEvent captureEvent) {
         filename = getRandomImageName();
-    	//filename ="cam";
         System.out.println("Set picture name " + filename);
         byte[] data = captureEvent.getData();
  
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        /*String newFileName = externalContext.getRealPath("") + File.separator + "resources" +
-                                    File.separator + "images" + File.separator + "photocam" + File.separator + filename + ".jpg";
-        capturedImagePathName =File.separator + "resources" + File.separator + "images" + File.separator + "photocam" + File.separator + filename + ".jpg";
-        System.out.println("capture path " + capturedImagePathName.replace("\\", "/"));
-        setCapturedImagePathName(capturedImagePathName.replace("\\", "/")); */
         
         String driveImage =  IMAGE_PATH + filename + ".jpg";
         String contextImageLoc = File.separator + "resources" + File.separator + "images" + File.separator + "photocam" + File.separator;

@@ -20,35 +20,25 @@ public class ConnectDB {
 		Connection conn = null;
 		
 		try{
-			String driver = ReadConfig.value(Gstrax.DB_DRIVER);
-				   //driver = SecureChar.decode(driver);
-			Class.forName(driver);
-			String db_url = ReadConfig.value(Gstrax.DB_URL);
-				   //db_url = SecureChar.decode(db_url);
-			String port = ReadConfig.value(Gstrax.DB_PORT);
-			       port = SecureChar.decode(port);
-			String url = db_url + ":" + port + "/" +ReadConfig.value(Gstrax.DB_NAME)+ "?serverTimezone=UTC&" + ReadConfig.value(Gstrax.DB_SSL);
-			String u_name = ReadConfig.value(Gstrax.USER_NAME);
-				   u_name = SecureChar.decode(u_name);
-				   u_name = u_name.replaceAll("mark", "");
-				   u_name = u_name.replaceAll("rivera", "");
-				   u_name = u_name.replaceAll("italia", "");
-			String pword = ReadConfig.value(Gstrax.USER_PASS);
-				   pword =  SecureChar.decode(pword);
-				   pword = pword.replaceAll("mark", "");
-				   pword = pword.replaceAll("rivera", "");
-				   pword = pword.replaceAll("italia", "");
+			Conf conf = Conf.getInstance();
+			Class.forName(conf.getDatabaseDriver());
+			String url = conf.getDatabaseUrl() + ":" + conf.getDatabasePort() + "/" +conf.getDatabaseName()+ "?" + conf.getDatabaseServerTime() + "&" + conf.getDatabaseSSL();
+			String u_name = conf.getDatabaseUserName();
+			String pword = conf.getDatabasePassword();
 			conn = DriverManager.getConnection(url, u_name, pword);
+			//System.out.println("Accessing database.....");
 			return conn;
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
 		}
+		
 	}
 	public static void close(Connection conn){
 		try{
 			if(conn!=null){
 				conn.close();
+				//System.out.println("Closing database...");
 			}
 		}catch(Exception e){
 			e.printStackTrace();

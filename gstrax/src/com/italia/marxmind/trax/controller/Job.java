@@ -23,6 +23,8 @@ public class Job {
 	private int jobid;
 	private String jobname;
 	private int isActive;
+	private double sprayRegularRate;
+	private double spraySpecialRate;
 	private Timestamp timestamp;
 	
 	public Job(){}
@@ -52,7 +54,7 @@ public class Job {
 	}
 	
 	public static List<Job> retrieve(String sql, String[] params){
-		List<Job> jobs = Collections.synchronizedList(new ArrayList<Job>());
+		List<Job> jobs = new ArrayList<Job>();
 		
 		Connection conn = null;
 		ResultSet rs = null;
@@ -76,6 +78,8 @@ public class Job {
 			try{job.setJobid(rs.getInt("jobtitleid"));}catch(NullPointerException e){}
 			try{job.setJobname(rs.getString("jobname"));}catch(NullPointerException e){}
 			try{job.setIsActive(rs.getInt("isactivejob"));}catch(NullPointerException e){}
+			try{job.setSprayRegularRate(rs.getDouble("sprayregularrate"));}catch(NullPointerException e){}
+			try{job.setSpraySpecialRate(rs.getDouble("sprayspecialrate"));}catch(NullPointerException e){}
 			jobs.add(job);
 		}
 		rs.close();
@@ -138,8 +142,10 @@ public class Job {
 		String sql = "INSERT INTO jobtitle ("
 				+ "jobtitleid,"
 				+ "jobname,"
-				+ "isactivejob)" 
-				+ "values(?,?,?)";
+				+ "isactivejob,"
+				+ "sprayregularrate,"
+				+ "sprayspecialrate)" 
+				+ "values(?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -163,9 +169,13 @@ public class Job {
 		}
 		ps.setString(cnt++, job.getJobname());
 		ps.setInt(cnt++, job.getIsActive());
+		ps.setDouble(cnt++, job.getSprayRegularRate());
+		ps.setDouble(cnt++, job.getSpraySpecialRate());
 		
 		LogU.add(job.getJobname());
 		LogU.add(job.getIsActive());
+		LogU.add(job.getSprayRegularRate());
+		LogU.add(job.getSpraySpecialRate());
 		
 		
 		LogU.add("executing for saving...");
@@ -185,8 +195,10 @@ public class Job {
 		String sql = "INSERT INTO jobtitle ("
 				+ "jobtitleid,"
 				+ "jobname,"
-				+ "isactivejob)" 
-				+ "values(?,?,?)";
+				+ "isactivejob,"
+				+ "sprayregularrate,"
+				+ "sprayspecialrate)" 
+				+ "values(?,?,?,?,?)";
 		
 		PreparedStatement ps = null;
 		Connection conn = null;
@@ -210,9 +222,13 @@ public class Job {
 		}
 		ps.setString(cnt++, getJobname());
 		ps.setInt(cnt++, getIsActive());
+		ps.setDouble(cnt++, getSprayRegularRate());
+		ps.setDouble(cnt++, getSpraySpecialRate());
 		
 		LogU.add(getJobname());
 		LogU.add(getIsActive());
+		LogU.add(getSprayRegularRate());
+		LogU.add(getSpraySpecialRate());
 		
 		LogU.add("executing for saving...");
 		ps.execute();
@@ -229,7 +245,9 @@ public class Job {
 	
 	public static Job updateData(Job job){
 		String sql = "UPDATE jobtitle SET "
-				+ "jobname=? " 
+				+ "jobname=?,"
+				+ "sprayregularrate=?,"
+				+ "sprayspecialrate=? " 
 				+ " WHERE jobtitleid=?";
 		
 		PreparedStatement ps = null;
@@ -243,9 +261,13 @@ public class Job {
 		LogU.add("updating data into table jobtitle");
 		
 		ps.setString(cnt++, job.getJobname());
+		ps.setDouble(cnt++, job.getSprayRegularRate());
+		ps.setDouble(cnt++, job.getSpraySpecialRate());
 		ps.setInt(cnt++, job.getJobid());
 		
 		LogU.add(job.getJobname());
+		LogU.add(job.getSprayRegularRate());
+		LogU.add(job.getSpraySpecialRate());
 		LogU.add(job.getJobid());
 		
 		LogU.add("executing for saving...");
@@ -263,7 +285,9 @@ public class Job {
 	
 	public void updateData(){
 		String sql = "UPDATE jobtitle SET "
-				+ "jobname=? " 
+				+ "jobname=?,"
+				+ "sprayregularrate=?,"
+				+ "sprayspecialrate=? " 
 				+ " WHERE jobtitleid=?";
 		
 		PreparedStatement ps = null;
@@ -277,9 +301,13 @@ public class Job {
 		LogU.add("updating data into table jobtitle");
 		
 		ps.setString(cnt++, getJobname());
+		ps.setDouble(cnt++, getSprayRegularRate());
+		ps.setDouble(cnt++, getSpraySpecialRate());
 		ps.setInt(cnt++, getJobid());
 		
 		LogU.add(getJobname());
+		LogU.add(getSprayRegularRate());
+		LogU.add(getSpraySpecialRate());
 		LogU.add(getJobid());
 		
 		LogU.add("executing for saving...");
@@ -447,6 +475,22 @@ public class Job {
 
 	public void setIsActive(int isActive) {
 		this.isActive = isActive;
+	}
+
+	public double getSprayRegularRate() {
+		return sprayRegularRate;
+	}
+
+	public void setSprayRegularRate(double sprayRegularRate) {
+		this.sprayRegularRate = sprayRegularRate;
+	}
+
+	public double getSpraySpecialRate() {
+		return spraySpecialRate;
+	}
+
+	public void setSpraySpecialRate(double spraySpecialRate) {
+		this.spraySpecialRate = spraySpecialRate;
 	}
 	
 }

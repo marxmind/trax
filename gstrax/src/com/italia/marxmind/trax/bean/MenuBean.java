@@ -1,12 +1,14 @@
 package com.italia.marxmind.trax.bean;
 
-import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.ViewScoped;
+
+import java.io.Serializable;
+
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 import com.italia.marxmind.trax.controller.Login;
-import com.italia.marxmind.trax.sessions.IBean;
+import com.italia.marxmind.trax.sessions.SessionBean;
 
 
 /**
@@ -15,11 +17,39 @@ import com.italia.marxmind.trax.sessions.IBean;
  * @since 09/29/2016
  *@version 1.0
  */
-@ManagedBean(name="menuBean")
+@Named
 @ViewScoped
-public class MenuBean {
+public class MenuBean implements Serializable{
 
 	private static final long serialVersionUID = 1098801825228384363L;
+	
+	private String dataTransfer;
+	private boolean checkUserLogin;
+	private String inventory;
+	private String position;
+	private String location;
+	private String activty;
+	private String uom;
+	private String materials;
+	private String fieldtimesheet;
+	private String reports;
+	private String timesheet;
+	private String adminEmployees;
+	private String adminuser;
+	private String graph;
+	
+	private String getUI() {
+		HttpSession session = SessionBean.getSession();
+		return session.getAttribute("ui").toString();
+	}
+	
+	public String graph() {
+		if(Login.checkUserStatus()){
+			return "graph";
+		}else{
+			return "login";
+		}
+	}
 	
 	public String dataTransfer(){
 		if(Login.checkUserStatus()){
@@ -39,7 +69,7 @@ public class MenuBean {
 	
 	public String inventory(){
 		if(checkUserLogin()){
-			return "inventory";
+			return "inventory" +getUI();
 		}else{
 			return "login";
 		}
@@ -47,7 +77,7 @@ public class MenuBean {
 	
 	public String position(){
 		if(checkUserLogin()){
-			return "position";
+			return "position" +getUI();
 		}else{
 			return "login";
 		}	
@@ -55,7 +85,7 @@ public class MenuBean {
 	
 	public String location(){
 		if(checkUserLogin()){
-			return "location";
+			return "location"+getUI();
 		}else{
 			return "login";
 		}	
@@ -63,7 +93,7 @@ public class MenuBean {
 	
 	public String activty(){
 		if(checkUserLogin()){
-			return "activity";
+			return "activity"+getUI();
 		}else{
 			return "login";
 		}	
@@ -71,7 +101,7 @@ public class MenuBean {
 	
 	public String uom(){
 		if(checkUserLogin()){
-			return "uom";
+			return "uom"+getUI();
 		}else{
 			return "login";
 		}	
@@ -79,7 +109,7 @@ public class MenuBean {
 	
 	public String materials(){
 		if(checkUserLogin()){
-			return "materials";
+			return "materials"+getUI();
 		}else{
 			return "login";
 		}	
@@ -87,7 +117,7 @@ public class MenuBean {
 	
 	public String fieldtimesheet(){
 		if(checkUserLogin()){
-			return "fieldtimesheet";
+			return "fieldtimesheet"+getUI();
 		}else{
 			return "login";
 		}	
@@ -95,7 +125,7 @@ public class MenuBean {
 	
 	public String reports(){
 		if(checkUserLogin()){
-			return "reports";
+			return "reports"+getUI();
 		}else{
 			return "login";
 		}	
@@ -103,7 +133,7 @@ public class MenuBean {
 	
 	public String timesheet(){
 		if(checkUserLogin()){
-			return "timesheet";
+			return "timesheet"+getUI();
 		}else{
 			return "login";
 		}	
@@ -111,7 +141,7 @@ public class MenuBean {
 	
 	public String adminEmployees(){
 		if(checkUserLogin()){
-			return "adminEmployees";
+			return "adminEmployees"+getUI();
 		}else{
 			return "login";
 		}	
@@ -119,178 +149,11 @@ public class MenuBean {
 	
 	public String adminuser(){
 		if(checkUserLogin()){
-			return "adminuser";
+			return "adminuser"+getUI();
 		}else{
 			return "login";
 		}	
 	}
 	
-	
-	public void printAll(){
-		
-	}
-	
-	public String pos(){
-		
-		//load product imagaes
-		/**
-		 * remove temporary
-		 * slowness on loading
-		 */
-		//products.loadProduct();
-		
-		//return "pos";
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.GROCERRY_CASHIER)){
-			return "cashier";
-		//}else{
-		//	return "feature";
-		//}
-	}
-	
-	public String store(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.STORE_TRANSFER)){
-			return "store";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	
-	
-	
-	public String adminproduct(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.ADMIN_PRODUCT)){
-			return "adminproduct";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	
-	public String adminsupplier(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.ADMIN_SUPPLIER)){
-			return "adminsupplier";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	
-	public String admincustomer(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.ADMIN_CLIENT)){
-			return "admincustomer";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	
-	public String adminuom(){
-		return "adminuom";
-	}
-	
-	public String invorder(){
-		return "invorder";
-	}
-	
-	public String invreturn(){
-		return "invreturn";
-	}
-	
-	public String invforecast(){
-		return "invforecast";
-	}
-	
-	public String invadjustment(){
-		return "invadjustment";
-	}
-	
-	public String incomes(){
-		return "incomes";
-	}
-	
-	public String expenses(){
-		return "expenses";
-	}
-	
-	public String suppliers(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.SUPPLIERS)){
-			return "suppliers";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	
-	public String clients(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.CLIENTS)){
-			return "clients";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	
-	public String receivable(){
-		return "receivable";
-	}
-	
-	public String payable(){
-		return "payable";
-	}
-
-	public String accounting(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.ACCOUNTING)){
-			return "accounting";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	
-	
-	public String delivery(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.DELIEVRY)){
-			return "delivery";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	
-	public String xtras(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.XTRAS)){
-			return "xtras";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	public String monitoring(){
-		//if(Features.isEnabled(com.italia.ipos.enm.Features.STATISTICS)){
-			return "productdeliverymonitoring";
-		/*}else{
-			return "feature";
-		}*/
-	}
-	public String delReceiptRecording(){
-		return "delreceipts";
-	}
-	
-	public String room(){
-		return "roommain";
-	}
-	
-	
-	public String tableMonitoring(){
-		return "tableMonitoring";
-	}
-	
-	public String productExpiration(){
-		return "productExpiration";
-	}
-	
-	public String rptTrans(){
-		return "trans";
-	}
-	
-	public String rpt(){
-		return "rpt";
-	}
-	
-	public String features(){
-		return "features";
-	}
 	
 }

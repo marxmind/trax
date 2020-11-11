@@ -15,6 +15,7 @@ public enum Gstrax {
 	DB_URL("url"),
 	DB_PORT("port"),
 	DB_SSL("SSL"),
+	DB_SERVER_TIME("servertime"),
 	USER_NAME("username"),
 	USER_PASS("password"),
 	APP_EXP("applicationExp"),

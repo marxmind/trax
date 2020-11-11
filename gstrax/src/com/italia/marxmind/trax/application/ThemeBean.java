@@ -1,8 +1,9 @@
 package com.italia.marxmind.trax.application;
 
 import java.io.Serializable;
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
 
 import com.italia.marxmind.trax.enm.Gstrax;
 import com.italia.marxmind.trax.reader.ReadConfig;
@@ -13,8 +14,8 @@ import com.italia.marxmind.trax.reader.ReadConfig;
  * @version 1.0
  *
  */
+@Named
 @ApplicationScoped
-@ManagedBean(name="themeBean", eager=true)
 public class ThemeBean implements Serializable{
 
 	/**

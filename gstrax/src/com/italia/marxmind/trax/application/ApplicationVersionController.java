@@ -37,7 +37,7 @@ public class ApplicationVersionController {
 	}
 	
 	public static List<ApplicationVersionController> retrieve(String sql, String[] params){
-		List<ApplicationVersionController> data = Collections.synchronizedList(new ArrayList<>());
+		List<ApplicationVersionController> data = new ArrayList<>();
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;
@@ -53,7 +53,7 @@ public class ApplicationVersionController {
 			
 		}
 		
-		System.out.println("SQL build " + ps.toString());
+		//System.out.println("SQL build " + ps.toString());
 		
 		rs = ps.executeQuery();
 		

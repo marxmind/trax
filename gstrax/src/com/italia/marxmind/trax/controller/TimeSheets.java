@@ -34,8 +34,43 @@ public class TimeSheets {
 	private Employee employee;
 	private ActivityTransactions activityTransactions;
 	
+	public static double totalEmployee(String sql, String[] params) {
+		
+		String s = "SELECT count(*) as totalEmployee FROM timesheets WHERE isactivetime=1 ";//and empid=146 and actransid=20531";
+		
+		sql = s + sql;
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = ConnectDB.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+			
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			return rs.getDouble("totalEmployee");
+		}
+		
+		rs.close();
+		ps.close();
+		ConnectDB.close(conn);
+		}catch(Exception ex){}
+		
+		return 0;
+	}
+	
 	public static List<TimeSheets> retrieve(String sqlAdd, String[] params){
-		List<TimeSheets> times = Collections.synchronizedList(new ArrayList<TimeSheets>());
+		List<TimeSheets> times = new ArrayList<TimeSheets>();
 		
 		String tableTime = "tme";
 		String tableEmp = "emp";
@@ -60,6 +95,107 @@ public class TimeSheets {
 			}
 			
 		}
+		
+		System.out.println("SQL TIMES : " + ps.toString());
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			TimeSheets time = new TimeSheets();
+			try{time.setId(rs.getLong("timeid"));}catch(NullPointerException e){}
+			try{time.setDateTrans(rs.getString("timeDateTrans"));}catch(NullPointerException e){}
+			try{time.setTimeIn(rs.getString("timein"));}catch(NullPointerException e){}
+			try{time.setTimeOut(rs.getString("timeout"));}catch(NullPointerException e){}
+			try{time.setCountHour(rs.getDouble("counthr"));}catch(NullPointerException e){}
+			try{time.setIsActive(rs.getInt("isactivetime"));}catch(NullPointerException e){}
+			try{time.setTimestamp(rs.getTimestamp("timestamptime"));}catch(NullPointerException e){}
+			try{time.setIsOvertime(rs.getInt("isot"));}catch(NullPointerException e){}
+			
+			Employee emp = new Employee();
+			try{emp.setId(rs.getLong("empid"));}catch(NullPointerException e){}
+			try{emp.setDateRegistered(rs.getString("datereg"));}catch(NullPointerException e){}
+			try{emp.setDateResigned(rs.getString("dateend"));}catch(NullPointerException e){}
+			try{emp.setFirstName(rs.getString("firstname"));}catch(NullPointerException e){}
+			try{emp.setMiddleName(rs.getString("middlename"));}catch(NullPointerException e){}
+			try{emp.setLastName(rs.getString("lastname"));}catch(NullPointerException e){}
+			try{emp.setAge(rs.getInt("age"));}catch(NullPointerException e){}
+			try{emp.setGender(rs.getInt("gender"));}catch(NullPointerException e){}
+			try{emp.setIsResigned(rs.getInt("isresigned"));}catch(NullPointerException e){}
+			try{emp.setContactNo(rs.getString("contactno"));}catch(NullPointerException e){}
+			try{emp.setPurok(rs.getString("purok"));}catch(NullPointerException e){}
+			try{emp.setIsActiveEmployee(rs.getInt("isactiveemp"));}catch(NullPointerException e){}
+			try{emp.setSalary(rs.getDouble("salary"));}catch(NullPointerException e){}
+			try{emp.setFullName(rs.getString("fullname"));}catch(NullPointerException e){}
+			try{emp.setOvertime(rs.getDouble("overtimerate"));}catch(NullPointerException e){}
+			
+			Job job = new Job();
+			try{job.setJobid(rs.getInt("jobtitleid"));}catch(NullPointerException e){}
+			emp.setJob(job);
+			
+			Barangay bar = new Barangay();
+			try{bar.setId(rs.getInt("bgid"));}catch(NullPointerException e){}
+			emp.setBarangay(bar);
+			
+			Municipality mun = new Municipality();
+			try{mun.setId(rs.getInt("munid"));}catch(NullPointerException e){}
+			emp.setMunicipality(mun);
+			
+			Province prov = new Province();
+			try{prov.setId(rs.getInt("provid"));}catch(NullPointerException e){}
+			emp.setProvince(prov);
+			
+			time.setEmployee(emp);
+			
+			
+			ActivityTransactions trn = new ActivityTransactions();
+			try{trn.setId(rs.getLong("actransid"));}catch(NullPointerException e){}
+			try{trn.setDateTrans(rs.getString("actDateTrans"));}catch(NullPointerException e){}
+			try{trn.setLoads(rs.getString("loads"));}catch(NullPointerException e){}
+			try{trn.setDrums(rs.getString("drums"));}catch(NullPointerException e){}
+			try{trn.setBlocks(rs.getString("blocks"));}catch(NullPointerException e){}
+			try{trn.setCuts(rs.getString("cuts"));}catch(NullPointerException e){}
+			try{trn.setRemarks(rs.getString("remarks"));}catch(NullPointerException e){}
+			try{trn.setIsActive(rs.getInt("isactiveactrans"));}catch(NullPointerException e){}
+			try{trn.setTimestamp(rs.getTimestamp("timestampactrans"));}catch(NullPointerException e){}
+			
+			Activity ac = new Activity();
+			try{ac.setId(rs.getInt("acid"));}catch(NullPointerException e){}
+			trn.setActivity(ac);
+			
+			UserDtls user = new UserDtls();
+			try{user.setUserdtlsid(rs.getLong("userdtlsid"));}catch(NullPointerException e){}
+			trn.setUserDtls(user);
+			
+			time.setActivityTransactions(trn);
+			
+			times.add(time);
+			
+		}
+		rs.close();
+		ps.close();
+		ConnectDB.close(conn);
+		}catch(Exception ex){}
+		
+		return times;
+	}
+	
+	public static List<TimeSheets> retrieveActivity(long id){
+		List<TimeSheets> times = new ArrayList<TimeSheets>();
+		
+		String tableTime = "tme";
+		String tableEmp = "emp";
+		String tableAct = "ac";
+		String sql = "SELECT * FROM timesheets " + tableTime + ", employee " + tableEmp + ", activitytrans " + tableAct + " WHERE " +
+				tableTime +".empid=" + tableEmp + ".empid AND "+
+				tableTime +".actransid=" + tableAct + ".actransid AND " + tableTime + ".actransid="+ id;
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = ConnectDB.getConnection();
+		ps = conn.prepareStatement(sql);
 		
 		System.out.println("SQL TIMES : " + ps.toString());
 		

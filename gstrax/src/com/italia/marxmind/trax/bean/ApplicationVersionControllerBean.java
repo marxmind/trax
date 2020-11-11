@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 
+import com.italia.marxmind.trax.application.AppInfo;
 import com.italia.marxmind.trax.application.ApplicationFixes;
 import com.italia.marxmind.trax.application.ApplicationVersionController;
 import com.italia.marxmind.trax.security.Copyright;
@@ -25,31 +26,17 @@ public class ApplicationVersionControllerBean {
 	
 	private ApplicationVersionController versionController;
 	private ApplicationFixes applicationFixes;
-	private List<ApplicationFixes> fixes = Collections.synchronizedList(new ArrayList<ApplicationFixes>());
+	private List<ApplicationFixes> fixes = new ArrayList<ApplicationFixes>();
 	private Copyright copyright;
-	private List<License> licenses = Collections.synchronizedList(new ArrayList<License>());
+	private List<License> licenses = new ArrayList<License>();
 	
 	@PostConstruct
 	public void init(){
-		 
-		String sql = "SELECT * FROM app_version_control ORDER BY timestamp DESC LIMIT 1";
-		String[] params = new String[0];
-		versionController = ApplicationVersionController.retrieve(sql, params).get(0);
-		
-		sql = "SELECT * FROM copyright ORDER BY id desc limit 1";
-		params = new String[0];
-		copyright = Copyright.retrieve(sql, params).get(0);
-		
-		try{fixes = Collections.synchronizedList(new ArrayList<ApplicationFixes>());}catch(Exception e){}
-		sql = "SELECT * FROM buildfixes WHERE buildid=?";
-		params = new String[1];
-		params[0] = versionController.getBuildid()+"";
-		try{fixes = ApplicationFixes.retrieve(sql, params);}catch(Exception e){}
-		
-		sql = "SELECT * FROM license";
-		licenses = Collections.synchronizedList(new ArrayList<License>());
-		licenses = License.retrieve(sql, new String[0]);
-		
+		Object[] app = AppInfo.getInstance();
+		versionController = (ApplicationVersionController)app[0];
+		copyright = (Copyright)app[1];
+		fixes = (List<ApplicationFixes>)app[2];
+		licenses = (List<License>)app[3];
 	}
 	
 	

@@ -138,7 +138,7 @@ public class Customer {
 	}
 	
 	public static List<Customer> retrieve(Object... obj){
-		List<Customer> cuss = Collections.synchronizedList(new ArrayList<Customer>());
+		List<Customer> cuss = new ArrayList<Customer>();
 		String supTable = "cus";
 		String userTable = "usr";
 		String barTable = "bar";

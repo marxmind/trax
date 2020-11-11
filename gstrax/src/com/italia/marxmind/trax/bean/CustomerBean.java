@@ -42,9 +42,9 @@ public class CustomerBean implements Serializable {
 	private String dateregistered;
 	private String cardnumber;
 	private String genderId;
-	private List genderList = Collections.synchronizedList(new ArrayList<>());
+	private List genderList = new ArrayList<>();
 	
-	private List<Customer> customers = Collections.synchronizedList(new ArrayList<Customer>());
+	private List<Customer> customers = new ArrayList<Customer>();
 	private String searchCustomer;
 	private Customer customer; 
 	
@@ -55,13 +55,13 @@ public class CustomerBean implements Serializable {
 	private List province;
 	private int provinceId;
 	
-	private Map<Integer, Barangay> barMap = Collections.synchronizedMap(new HashMap<Integer, Barangay>());
-	private Map<Integer, Municipality> munMap = Collections.synchronizedMap(new HashMap<Integer, Municipality>());
-	private Map<Integer, Province> provMap = Collections.synchronizedMap(new HashMap<Integer, Province>());
+	private Map<Integer, Barangay> barMap = new HashMap<Integer, Barangay>();
+	private Map<Integer, Municipality> munMap = new HashMap<Integer, Municipality>();
+	private Map<Integer, Province> provMap = new HashMap<Integer, Province>();
 	
 	@PostConstruct
 	public void init(){
-		customers = Collections.synchronizedList(new ArrayList<Customer>());
+		customers = new ArrayList<Customer>();
 		
 		Customer customer = new Customer();
 		customer.setIsactive(1);
@@ -281,7 +281,7 @@ public class CustomerBean implements Serializable {
 
 	public List getBarangay() {
 		
-		barMap = Collections.synchronizedMap(new HashMap<Integer, Barangay>());
+		barMap = new HashMap<Integer, Barangay>();
 		
 		
 		barangay = new ArrayList<>();
@@ -307,7 +307,7 @@ public class CustomerBean implements Serializable {
 
 	public List getMunicipality() {
 		
-		munMap = Collections.synchronizedMap(new HashMap<Integer, Municipality>());
+		munMap = new HashMap<Integer, Municipality>();
 		
 		municipality = new ArrayList<>();
 		for(Municipality bg : Municipality.retrieve("SELECT * FROM municipality WHERE munisactive=1", new String[0])){
@@ -332,7 +332,7 @@ public class CustomerBean implements Serializable {
 
 	public List getProvince() {
 		
-		provMap = Collections.synchronizedMap(new HashMap<Integer, Province>());
+		provMap = new HashMap<Integer, Province>();
 		
 		province = new ArrayList<>();
 		for(Province bg : Province.retrieve("SELECT * FROM province WHERE provisactive=1", new String[0])){

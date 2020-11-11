@@ -54,7 +54,7 @@ public class Location {
 	}
 	
 	public static List<Location> retrieve(String sqlAdd, String[] params){
-		List<Location> locs = Collections.synchronizedList(new ArrayList<Location>());
+		List<Location> locs = new ArrayList<Location>();
 		
 		String tableLoc = "lc";
 		String tableBg = "bg";

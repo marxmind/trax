@@ -38,7 +38,7 @@ public class MaterialRETURN {
 	private MaterialOUT materialOut;
 	
 	public static List<MaterialRETURN> retrieve(String sqlAdd, String[] params){
-		List<MaterialRETURN> props = Collections.synchronizedList(new ArrayList<MaterialRETURN>());
+		List<MaterialRETURN> props = new ArrayList<MaterialRETURN>();
 		
 		String tableRet = "ret";
 		String tableProp = "prop";

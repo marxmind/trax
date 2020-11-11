@@ -96,7 +96,7 @@ public class Business implements Serializable {
 
     public static List<Business> retrieveProduct(String sql, String[] params){
 		
-		List<Business> business = Collections.synchronizedList(new ArrayList<Business>());
+		List<Business> business = new ArrayList<Business>();
 		
 		
 		
@@ -158,7 +158,7 @@ public class Business implements Serializable {
 	}
 	
     public static List<Business> readBusinessXML(){
-    	List<Business> business = Collections.synchronizedList(new ArrayList<Business>());
+    	List<Business> business = new ArrayList<Business>();
     	try {
             File fXmlFile = new File(BUSINESS_FILE);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();

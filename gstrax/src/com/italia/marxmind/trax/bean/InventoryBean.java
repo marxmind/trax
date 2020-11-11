@@ -46,7 +46,7 @@ public class InventoryBean implements Serializable {
 	private static final long serialVersionUID = 980789776541L;
 	
 	//Adding or editing materials pricing and quantity
-	private List<MaterialProperties> props = Collections.synchronizedList(new ArrayList<MaterialProperties>());
+	private List<MaterialProperties> props = new ArrayList<MaterialProperties>();
 	private String searchProps;
 	private Materials materialSelected;
 	private MaterialProperties propsData;
@@ -55,24 +55,24 @@ public class InventoryBean implements Serializable {
 	private Date dateTrans;
 	
 	private String searchMaterial;
-	private List<Materials> materialSelection = Collections.synchronizedList(new ArrayList<Materials>());
+	private List<Materials> materialSelection = new ArrayList<Materials>();
 	
 	private List uoms;
 	private int uomId;
-	private Map<Integer, UOM> uomMap = Collections.synchronizedMap(new HashMap<Integer, UOM>());
+	private Map<Integer, UOM> uomMap = new HashMap<Integer, UOM>();
 	
 	
 	private double inputOutQty;
 	
 	private String searchLocation;
-	private List<Location> loctionsSelection = Collections.synchronizedList(new ArrayList<Location>());
+	private List<Location> loctionsSelection = new ArrayList<Location>();
 	private Location locationSelected;
 	private String searchEmployee;
-	private List<Employee> employeeSelection = Collections.synchronizedList(new ArrayList<Employee>());
+	private List<Employee> employeeSelection = new ArrayList<Employee>();
 	private Employee employeeSelected;
 	private String uomOut;
 	
-	private List<MaterialOUT> outs = Collections.synchronizedList(new ArrayList<MaterialOUT>());
+	private List<MaterialOUT> outs = new ArrayList<MaterialOUT>();
 	private MaterialOUT selectedOut;
 	private Date dateFrom;
 	private Date dateTo;
@@ -107,7 +107,7 @@ public class InventoryBean implements Serializable {
 	}
 	
 	public void loadProperties(){
-		props = Collections.synchronizedList(new ArrayList<MaterialProperties>());
+		props = new ArrayList<MaterialProperties>();
 		
 		String sql = " AND prop.isactiveprop=1";
 		String[] params = new String[0]; 
@@ -120,7 +120,7 @@ public class InventoryBean implements Serializable {
 	}
 	
 	public void loadOut(){
-		props = Collections.synchronizedList(new ArrayList<MaterialProperties>());
+		props = new ArrayList<MaterialProperties>();
 		
 		String sql = " AND prop.currentqty!=0 AND prop.isactiveprop=1";
 		String[] params = new String[0]; 
@@ -144,7 +144,7 @@ public class InventoryBean implements Serializable {
 	}
 	
 	public void loadReturn(){
-		outs = Collections.synchronizedList(new ArrayList<MaterialOUT>());
+		outs = new ArrayList<MaterialOUT>();
 		
 		String sql = " AND ot.isactiveout=1 AND (ot.outdate>=? AND ot.outdate<=?)";
 		
@@ -313,10 +313,6 @@ public class InventoryBean implements Serializable {
 				
 				MaterialOUT out = MaterialOUT.retrieve(ret.getMaterialOut().getId());
 				double outQty = out.getQuantity();
-				/*out.setMaterialProperties(prop);
-				out.setMaterials(prop.getMaterials());
-				out.setUom(prop.getUom());
-				out.setUserDtls(prop.getUserDtls());*/
 				out.setQuantity(outQty+qty);
 				out.save();
 				
@@ -485,7 +481,6 @@ public class InventoryBean implements Serializable {
 	}
 	
 	public void clearProps(){
-		//props = Collections.synchronizedList(new ArrayList<MaterialProperties>());
 		setMaterialSelected(null);
 		setPropsData(null);
 		setPropsPrice(0);
@@ -522,7 +517,7 @@ public class InventoryBean implements Serializable {
 	}
 	
 	public void loadEmployee(){
-		employeeSelection = Collections.synchronizedList(new ArrayList<Employee>());
+		employeeSelection = new ArrayList<Employee>();
 		
 		String sql = " AND emp.isactiveemp=1";
 		String[] params = new String[0];
@@ -547,7 +542,7 @@ public class InventoryBean implements Serializable {
 	
 	public void loadMaterials() {
 		
-		materialSelection = Collections.synchronizedList(new ArrayList<Materials>()); 
+		materialSelection = new ArrayList<Materials>(); 
 		
 		String sql = "SELECT * FROM materials WHERE isactivemat=1 ORDER BY matname";
 		if(getSearchMaterial()!=null && !getSearchMaterial().isEmpty()){
@@ -611,7 +606,7 @@ public class InventoryBean implements Serializable {
 	}
 	
 	public void loadArea(){
-		loctionsSelection = Collections.synchronizedList(new ArrayList<Location>());
+		loctionsSelection = new ArrayList<Location>();
 		
 		String sql = " AND lc.isactiveloc=1 ORDER BY lc.locname";
 		if(getSearchLocation()!=null && !getSearchLocation().isEmpty()){
@@ -678,7 +673,7 @@ public class InventoryBean implements Serializable {
 	}
 
 	public List getUoms() {
-		uomMap = Collections.synchronizedMap(new HashMap<Integer, UOM>());
+		uomMap = new HashMap<Integer, UOM>();
 		uoms = new ArrayList<>();
 		for(UOM uom : UOM.retrieve("SELECT * FROM uom WHERE isactiveuom=1", new String[0])){
 			uoms.add(new SelectItem(uom.getId(), uom.getName()));

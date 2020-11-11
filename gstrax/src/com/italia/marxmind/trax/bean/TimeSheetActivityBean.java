@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,6 +21,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.primefaces.PrimeFaces;
 import org.primefaces.component.export.ExcelOptions;
 import org.primefaces.component.export.PDFOptions;
 
@@ -70,28 +72,28 @@ public class TimeSheetActivityBean implements Serializable{
 	private List timeOuts;
 	private double timeOutId;
 	
-	private Map<Double, String> timeInMap = Collections.synchronizedMap(new HashMap<Double, String>());
-	private Map<Double, String> timeOutMap = Collections.synchronizedMap(new HashMap<Double, String>());
+	private Map<Double, String> timeInMap = new HashMap<Double, String>();
+	private Map<Double, String> timeOutMap = new HashMap<Double, String>();
 	
 	private List activities;
 	private int activityId;
-	private Map<Integer, Activity> activityMap = Collections.synchronizedMap(new HashMap<Integer, Activity>());
+	private Map<Integer, Activity> activityMap = new HashMap<Integer, Activity>();
 	
 	private String searchMaterial;
-	private List<Materials> materialSelection = Collections.synchronizedList(new ArrayList<Materials>());
-	private List<MaterialTransactions> materialSelected = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+	private List<Materials> materialSelection = new ArrayList<Materials>();
+	private List<MaterialTransactions> materialSelected = new ArrayList<MaterialTransactions>();
 	
 	private List locations;
 	private int locationId;
-	private Map<Integer, Location> locationMap = Collections.synchronizedMap(new HashMap<Integer, Location>());
+	private Map<Integer, Location> locationMap = new HashMap<Integer, Location>();
 	
 	private String searchEmployee;
-	private List<Employee> employeeSelection = Collections.synchronizedList(new ArrayList<Employee>());
-	private List<Employee> employeeSelected = Collections.synchronizedList(new ArrayList<Employee>());
+	private List<Employee> employeeSelection = new ArrayList<Employee>();
+	private List<Employee> employeeSelected = new ArrayList<Employee>();
 	
 	private List uoms;
 	private int uomId;
-	private Map<Integer, UOM> uomMap = Collections.synchronizedMap(new HashMap<Integer, UOM>());
+	private Map<Integer, UOM> uomMap = new HashMap<Integer, UOM>();
 	
 	private double quantity;
 	private double holdQty;
@@ -100,7 +102,7 @@ public class TimeSheetActivityBean implements Serializable{
 	private Date timeSheetFrom;
 	private Date timeSheetTo;
 	private ActivityTransactions activeData;
-	private List<ActivityTransactions> activitiesData = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
+	private List<ActivityTransactions> activitiesData = new ArrayList<ActivityTransactions>();
 	
 	private final static double HOUR_IN_DAY = Double.valueOf(ReadConfig.value(Gstrax.NORMAL_RENDERED_HOURS));//8.0;
 	private final static double DRIVER_OT = 40.0;
@@ -130,14 +132,55 @@ public class TimeSheetActivityBean implements Serializable{
 	private ExcelOptions excelOptions;
 	private PDFOptions pdfotions;
 	
+	private Map<Integer, Job> jobs = new LinkedHashMap<Integer, Job>();
+	
 	@PostConstruct
 	public void init(){
 		System.out.println("---------INIT------");
-		loadActivities();
+		loadOtherComponents();
+		loadPositions();//do not interchange this line of codes
+		loadActivities();	
+	}
+	
+	private void loadOtherComponents() {
+		
+		uoms = new ArrayList<>();
+		uomMap = new HashMap<Integer, UOM>();
+		uoms.add(new SelectItem(0, "Select"));
+		for(UOM u : UOM.retrieve("SELECT * FROM uom WHERE isactiveuom=1", new String[0])){
+			uoms.add(new SelectItem(u.getId(), u.getSymbol()));
+			uomMap.put(u.getId(), u);
+		}
+		
+		timeIns = new ArrayList<>();
+		timeInMap = new HashMap<Double, String>();
+		
+		for(Time time : Time.values()){
+			timeIns.add(new SelectItem(time.getId(), time.getValue()));
+			timeInMap.put(time.getId(), time.getValue());
+		}
+		
+		timeOuts = new ArrayList<>();
+		timeOutMap = new HashMap<Double, String>();
+		
+		for(Time time : Time.values()){
+			timeOuts.add(new SelectItem(time.getId(), time.getValue()));
+			timeOutMap.put(time.getId(), time.getValue());
+		}
+		
+	}
+	
+	private void loadPositions() {
+		jobs = new LinkedHashMap<Integer, Job>();
+		String sql = "SELECT * FROM jobtitle WHERE isactivejob=1";
+		String[] params = new String[0];
+		for(Job job : Job.retrieve(sql, params)) {
+			jobs.put(job.getJobid(), job);
+		}
 	}
 	
 	public void loadActivities(){
-		activitiesData = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
+		activitiesData = new ArrayList<ActivityTransactions>();
 		
 		String sql = " AND trn.isactiveactrans=1 AND (trn.actDateTrans>=? AND trn.actDateTrans<=?) AND trn.loads is not null";
 		String[] params = new String[2];
@@ -311,8 +354,8 @@ public class TimeSheetActivityBean implements Serializable{
 		
 		ActivityTransactions act = new ActivityTransactions();
 		LocationTransactions loc = new LocationTransactions();
-		List<MaterialTransactions> mats = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
-		List<TimeSheets> times = Collections.synchronizedList(new ArrayList<TimeSheets>());
+		List<MaterialTransactions> mats = new ArrayList<MaterialTransactions>();
+		List<TimeSheets> times = new ArrayList<TimeSheets>();
 		
 		
 		
@@ -359,14 +402,14 @@ public class TimeSheetActivityBean implements Serializable{
 		
 		loc = LocationTransactions.save(loc);
 		
-		mats = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+		mats = new ArrayList<MaterialTransactions>();
 		for(MaterialTransactions tr : getMaterialSelected()){
 			tr.setActivityTransactions(act);
 			tr = MaterialTransactions.save(tr);
 			mats.add(tr);
 		}
 		
-		times = Collections.synchronizedList(new ArrayList<TimeSheets>());
+		times = new ArrayList<TimeSheets>();
 		System.out.println("Check employee for saving : " + getEmployeeSelected().size());
 		for(Employee employee : getEmployeeSelected()){
 			
@@ -378,21 +421,6 @@ public class TimeSheetActivityBean implements Serializable{
 			time.setTimeOut(getTimeOutMap().get(getTimeOutId()));
 			
 			double renderedHour = getTimeOutId() - getTimeInId();
-			
-			/**
-			 * Commented as per Renan request
-			 * the time in and timeout selected should be reflected
-			 * 10/21/2017
-			 */
-			/*if("15".equalsIgnoreCase(getDrums())){
-				renderedHour = 4.0;
-			}else if("30".equalsIgnoreCase(getDrums())){
-				renderedHour = 8.0;
-			}else if("40".equalsIgnoreCase(getDrums())){
-				renderedHour = 10.0;
-			}else if("45".equalsIgnoreCase(getDrums())){
-				renderedHour = 11.0;
-			}*/
 			
 			time.setCountHour(renderedHour);
 			time.setActivityTransactions(act);
@@ -408,6 +436,10 @@ public class TimeSheetActivityBean implements Serializable{
 		Application.addMessage(1, "Successfully saved.", "");
 		loadActivities();
 		
+		
+		PrimeFaces pf = PrimeFaces.current();
+		pf.executeScript("hideWizard();");
+		
 		}
 		
 	}
@@ -418,7 +450,7 @@ public class TimeSheetActivityBean implements Serializable{
 	}
 	
 	public void reloadEmployeeExpenses(){
-		List<Employee> employees = Collections.synchronizedList(new ArrayList<Employee>());
+		List<Employee> employees = new ArrayList<Employee>();
 		if(employeeSelected!=null && employeeSelected.size()>0){
 			for(Employee emp : employeeSelected){
 				emp = calculateSalary(emp);
@@ -464,8 +496,8 @@ public class TimeSheetActivityBean implements Serializable{
 		setSearchEmployee(null);
 		setSearchMaterial(null);
 		
-		employeeSelected = Collections.synchronizedList(new ArrayList<Employee>());
-		materialSelected = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+		employeeSelected = new ArrayList<Employee>();
+		materialSelected = new ArrayList<MaterialTransactions>();
 	}
 	
 	public List<String> suggestedName(String query){
@@ -476,7 +508,7 @@ public class TimeSheetActivityBean implements Serializable{
 	}
 	
 	public void loadEmployee(){
-		employeeSelection = Collections.synchronizedList(new ArrayList<Employee>());
+		employeeSelection = new ArrayList<Employee>();
 		
 		String sql = " AND emp.isactiveemp=1";
 		String[] params = new String[0];
@@ -514,44 +546,48 @@ public class TimeSheetActivityBean implements Serializable{
 		try{
 			dailyRate = em.getSalary();
 			hourlyRate = dailyRate/HOUR_IN_DAY;
-			//hrsWork = getTimeOutId() - getTimeInId();
-			//servicesAmnt = hourlyRate * hrsWork;
-			//em.setDailyRate(Currency.formatAmount(dailyRate));
-			//em.setHourlyRate(Currency.formatAmount(hourlyRate));
 			
 			Activity activity = Activity.retrieve(act.getActivity().getId());
 			String forcing = activity.getName();
-			
+			double totalRate = 0d;
 			if(FORCING1.equalsIgnoreCase(forcing) || FORCING2.equalsIgnoreCase(forcing)){
 				
+				
 				double drums = Double.valueOf(act.getDrums());
+				totalRate = drums * getJobs().get(em.getJob().getJobid()).getSpraySpecialRate();
+				
 				double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
-				double totalRate = drums * FORCING_RATE_PER_DRUM;
+				//double totalRate = drums * FORCING_RATE_PER_DRUM;
 				double salaryPerEmployee = totalRate / totalEmployee;
 				
-				hourlyRate = FORCING_RATE_PER_DRUM;
+				//hourlyRate = FORCING_RATE_PER_DRUM;
+				hourlyRate = totalRate / HOUR_IN_DAY;
 				servicesAmnt = salaryPerEmployee;
 			
 			}else if("Spray Foliar".equalsIgnoreCase(forcing) 
 					|| "Spray Fungicide".equalsIgnoreCase(forcing)
 					|| "Spray Herbicide".equalsIgnoreCase(forcing)
 					|| "Spray Insecticide".equalsIgnoreCase(forcing)
-					|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)) {	
+					|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)
+					|| "Spray Ripening".equalsIgnoreCase(forcing)) {	
 				
 				double drums = Double.valueOf(act.getDrums());
+				totalRate = drums *  getJobs().get(em.getJob().getJobid()).getSprayRegularRate();
 				double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
-				double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+				//double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
 				double salaryPerEmployee = totalRate / totalEmployee;
 				
-				hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+				//hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+				hourlyRate = totalRate / HOUR_IN_DAY;
 				servicesAmnt = salaryPerEmployee;
 				
 			}else{
 			
 			if(JobTitle.DRIVER.getId()==em.getJob().getJobid()){
 				
-				em.setOvertime(FIELD_SPRAY_DRIVER_RATE);//change as there is a case where field driver can be use as spray driver
-				
+				//change as there is a case where field driver can be use as spray driver
+				em.setOvertime(FIELD_SPRAY_DRIVER_RATE);
+				//em.setOvertime(getJobs().get(em.getJob().getJobid()).getSpraySpecialRate());
 				//overtime
 				if("3".equalsIgnoreCase(act.getLoads())){
 					
@@ -624,14 +660,6 @@ public class TimeSheetActivityBean implements Serializable{
 							servicesAmnt = hourlyRate * hrsWork;
 						}
 						
-						/*hrsWork = time.getCountHour();
-						//normal driver OT in FIELD
-						if(hrsWork>HOUR_IN_DAY){
-							servicesAmnt = HOUR_IN_DAY * hrsWork;
-							overTimeAmount = (hrsWork - HOUR_IN_DAY) * em.getOvertime();
-						}else{
-							servicesAmnt = hourlyRate * hrsWork;
-						}*/
 					}
 				
 				}
@@ -717,14 +745,7 @@ public class TimeSheetActivityBean implements Serializable{
 							servicesAmnt = hourlyRate * hrsWork;
 						}
 						
-						/*hrsWork = time.getCountHour();
-						//normal driver OT in FIELD
-						if(hrsWork>HOUR_IN_DAY){
-							servicesAmnt = HOUR_IN_DAY * hrsWork;
-							overTimeAmount = (hrsWork - HOUR_IN_DAY) * em.getOvertime();
-						}else{
-							servicesAmnt = hourlyRate * hrsWork;
-						}*/
+						
 					}
 				
 				}
@@ -779,17 +800,6 @@ public class TimeSheetActivityBean implements Serializable{
 					
 				}else{
 					
-					/*double timeInAfternoon = Time.typeId(time.getTimeIn());
-					double timeOutAfterNoon = Time.typeId(time.getTimeOut());
-					hrsWork = time.getCountHour();
-					
-					if(timeOutAfterNoon>OVERTIME_START){
-						servicesAmnt = (OVERTIME_START - timeInAfternoon) * hourlyRate;
-						overTimeAmount = (timeOutAfterNoon - OVERTIME_START) * em.getOvertime();
-					}else{
-						servicesAmnt = hourlyRate * hrsWork;
-					}*/
-					
 					
 					if("5".equalsIgnoreCase(act.getDrums())){
 						hourlyRate = dailyRate/PER_DRUM_DIVIDER;
@@ -839,36 +849,36 @@ public class TimeSheetActivityBean implements Serializable{
 		try{
 			dailyRate = em.getSalary();
 			hourlyRate = dailyRate/HOUR_IN_DAY;
-			//hrsWork = getTimeOutId() - getTimeInId();
-			//servicesAmnt = hourlyRate * hrsWork;
-			/*em.setDailyRate(Currency.formatAmount(dailyRate));
-			em.setHourlyRate(Currency.formatAmount(hourlyRate));
-			em.setOverTimeRate(Currency.formatAmount(em.getOvertime()));*/
 			
 			String forcing = getActivityMap().get(getActivityId()).getName();
-			
+			double totalRate = 0d;
 			if(FORCING1.equalsIgnoreCase(forcing) || FORCING2.equalsIgnoreCase(forcing)){
 				
 				double drums = Double.valueOf(getDrums());
 				double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
-				double totalRate = drums * FORCING_RATE_PER_DRUM;
+				//double totalRate = drums * FORCING_RATE_PER_DRUM;
+				totalRate = drums * getJobs().get(em.getJob().getJobid()).getSpraySpecialRate();
 				double salaryPerEmployee = totalRate / totalEmployee;
 				
-				hourlyRate = FORCING_RATE_PER_DRUM;
+				//hourlyRate = FORCING_RATE_PER_DRUM;
+				hourlyRate = totalRate / HOUR_IN_DAY;
 				servicesAmnt = salaryPerEmployee;
 				
 			}else if("Spray Foliar".equalsIgnoreCase(forcing) 
 					|| "Spray Fungicide".equalsIgnoreCase(forcing)
 					|| "Spray Herbicide".equalsIgnoreCase(forcing)
 					|| "Spray Insecticide".equalsIgnoreCase(forcing)
-					|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)) {	
+					|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)
+					|| "Spray Ripening".equalsIgnoreCase(forcing)) {	
 				
 				double drums = Double.valueOf(getDrums());
 				double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
-				double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+				//double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+				totalRate = drums * getJobs().get(em.getJob().getJobid()).getSprayRegularRate();
 				double salaryPerEmployee = totalRate / totalEmployee;
 				
-				hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+				//hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+				hourlyRate = totalRate / HOUR_IN_DAY;
 				servicesAmnt = salaryPerEmployee;	
 				
 				
@@ -1018,9 +1028,7 @@ public class TimeSheetActivityBean implements Serializable{
 				if(getLoads()!=null && getDrums()!=null){	
 					dailyRate = LABOR_SPRAYMAN_DAILY_RATE;
 					hourlyRate = dailyRate/HOUR_IN_DAY;	
-					/*em.setDailyRate(Currency.formatAmount(dailyRate));
-					em.setHourlyRate(Currency.formatAmount(hourlyRate));
-					em.setOverTimeRate(Currency.formatAmount(em.getOvertime()));*/
+					
 				}
 				
 				//overtime
@@ -1115,11 +1123,6 @@ public class TimeSheetActivityBean implements Serializable{
 			try{
 				dailyRate = em.getSalary();
 				hourlyRate = dailyRate/HOUR_IN_DAY;
-				//hrsWork = getTimeOutId() - getTimeInId();
-				//servicesAmnt = hourlyRate * hrsWork;
-				/*em.setDailyRate(Currency.formatAmount(dailyRate));
-				em.setHourlyRate(Currency.formatAmount(hourlyRate));
-				em.setOverTimeRate(Currency.formatAmount(em.getOvertime()));*/
 				
 				String forcing = "";
 				try{forcing = getActivityMap().get(getActivityId()).getName();}catch(Exception e){
@@ -1127,15 +1130,17 @@ public class TimeSheetActivityBean implements Serializable{
 					forcing = activity.getName();
 					System.out.println("Error fall forcing : " + forcing);
 				}
-				
+				double totalRate = 0d;
 				if(FORCING1.equalsIgnoreCase(forcing) || FORCING2.equalsIgnoreCase(forcing)){
 					
 					double drums = Double.valueOf(getDrums());
 					double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
-					double totalRate = drums * FORCING_RATE_PER_DRUM;
+					//double totalRate = drums * FORCING_RATE_PER_DRUM;
+					totalRate = drums * getJobs().get(em.getJob().getJobid()).getSpraySpecialRate();
 					double salaryPerEmployee = totalRate / totalEmployee;
 					
-					hourlyRate = FORCING_RATE_PER_DRUM;
+					//hourlyRate = FORCING_RATE_PER_DRUM;
+					hourlyRate = totalRate / HOUR_IN_DAY;
 					servicesAmnt = salaryPerEmployee;
 					
 					System.out.println("Pasok sa forcing : " + forcing);
@@ -1144,14 +1149,17 @@ public class TimeSheetActivityBean implements Serializable{
 						|| "Spray Fungicide".equalsIgnoreCase(forcing)
 						|| "Spray Herbicide".equalsIgnoreCase(forcing)
 						|| "Spray Insecticide".equalsIgnoreCase(forcing)
-						|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)) {	
+						|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)
+						|| "Spray Ripening".equalsIgnoreCase(forcing)) {	
 					
 					double drums = Double.valueOf(getDrums());
 					double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
-					double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+					//double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+					totalRate = drums * getJobs().get(em.getJob().getJobid()).getSprayRegularRate();
 					double salaryPerEmployee = totalRate / totalEmployee;
 					
-					hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+					//hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+					hourlyRate = totalRate / HOUR_IN_DAY;
 					servicesAmnt = salaryPerEmployee;		
 					
 				}else{
@@ -1299,9 +1307,7 @@ public class TimeSheetActivityBean implements Serializable{
 					if(getLoads()!=null && getDrums()!=null){
 						dailyRate = LABOR_SPRAYMAN_DAILY_RATE;
 						hourlyRate = dailyRate/HOUR_IN_DAY;	
-						/*em.setDailyRate(Currency.formatAmount(dailyRate));
-						em.setHourlyRate(Currency.formatAmount(hourlyRate));
-						em.setOverTimeRate(Currency.formatAmount(em.getOvertime()));*/
+						
 					}
 					//overtime
 					if("3".equalsIgnoreCase(getLoads())){
@@ -1467,7 +1473,7 @@ public class TimeSheetActivityBean implements Serializable{
 		this.cuts = cuts;
 	}
 	public List getActivities() {
-		activityMap = Collections.synchronizedMap(new HashMap<Integer, Activity>());
+		activityMap = new HashMap<Integer, Activity>();
 		activities = new ArrayList<>();
 		
 		String sql = "SELECT * FROM activity WHERE isactiveac=1 ORDER BY acname";
@@ -1475,7 +1481,6 @@ public class TimeSheetActivityBean implements Serializable{
 			activities.add(new SelectItem(ac.getId(), ac.getName()));
 			activityMap.put(ac.getId(), ac);
 		}
-		
 		return activities;
 	}
 	public void setActivities(List activities) {
@@ -1545,7 +1550,7 @@ public class TimeSheetActivityBean implements Serializable{
 			setQuantity(0);
 			setHoldQty(0);
 			setUomId(0);
-			uomMap = Collections.synchronizedMap(new HashMap<Integer, UOM>());
+			uomMap = new HashMap<Integer, UOM>();
 			getUoms();
 			Application.addMessage(1, "Material " + mat.getName() + " has been added.", "");
 		}else{
@@ -1576,8 +1581,7 @@ public class TimeSheetActivityBean implements Serializable{
 		this.materialSelected = materialSelected;
 	}
 	public List getLocations() {
-		
-		locationMap = Collections.synchronizedMap(new HashMap<Integer, Location>());
+		locationMap = new HashMap<Integer, Location>();
 		locations = new ArrayList<>();
 		
 		String sql = " AND lc.isactiveloc=1 ORDER BY lc.locname";
@@ -1585,7 +1589,6 @@ public class TimeSheetActivityBean implements Serializable{
 			locations.add(new SelectItem(loc.getId(), loc.getName()));
 			locationMap.put(loc.getId(), loc);
 		}
-		
 		return locations;
 	}
 	public void setLocations(List locations) {
@@ -1631,17 +1634,6 @@ public class TimeSheetActivityBean implements Serializable{
 	}
 
 	public List getTimeIns() {
-		
-		timeIns = new ArrayList<>();
-		timeInMap = Collections.synchronizedMap(new HashMap<Double, String>());
-		
-		for(Time time : Time.values()){
-			timeIns.add(new SelectItem(time.getId(), time.getValue()));
-			timeInMap.put(time.getId(), time.getValue());
-		}
-		
-		
-		
 		return timeIns;
 	}
 
@@ -1661,15 +1653,6 @@ public class TimeSheetActivityBean implements Serializable{
 	}
 
 	public List getTimeOuts() {
-		
-		timeOuts = new ArrayList<>();
-		timeOutMap = Collections.synchronizedMap(new HashMap<Double, String>());
-		
-		for(Time time : Time.values()){
-			timeOuts.add(new SelectItem(time.getId(), time.getValue()));
-			timeOutMap.put(time.getId(), time.getValue());
-		}
-		
 		return timeOuts;
 	}
 
@@ -1705,16 +1688,6 @@ public class TimeSheetActivityBean implements Serializable{
 	}
 
 	public List getUoms() {
-		
-		uoms = new ArrayList<>();
-		uomMap = Collections.synchronizedMap(new HashMap<Integer, UOM>());
-		uoms.add(new SelectItem(0, "Select"));
-		for(UOM u : UOM.retrieve("SELECT * FROM uom WHERE isactiveuom=1", new String[0])){
-			uoms.add(new SelectItem(u.getId(), u.getSymbol()));
-			uomMap.put(u.getId(), u);
-		}
-		
-		
 		return uoms;
 	}
 
@@ -1849,17 +1822,8 @@ public class TimeSheetActivityBean implements Serializable{
 		HSSFSheet sheet = wb.getSheetAt(0);
 		HSSFRow header = sheet.getRow(0);
 		
-
-		/*int lastRow = sheet.getLastRowNum();
-		HSSFSheet sheetfooter = wb.getSheetAt(lastRow);
-		HSSFRow footer = sheetfooter.getRow(lastRow);
-		//footer.setRowNum(footer.getPhysicalNumberOfCells());
-		HSSFCell cellfooter = footer.getCell(footer.getPhysicalNumberOfCells());
-		cellfooter.setCellValue("Php ");*/
-		
 		HSSFCellStyle cellStyle = wb.createCellStyle();
-		//cellStyle.setFillForegroundColor(HSSFColor.SKY_BLUE.index);
-		//cellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		
 		cellStyle.setFillForegroundColor(HSSFColor.HSSFColorPredefined.WHITE.getIndex());
 		cellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 		cellStyle.setFillBackgroundColor(HSSFColor.HSSFColorPredefined.BLACK.getIndex());
@@ -1875,10 +1839,7 @@ public class TimeSheetActivityBean implements Serializable{
 		
 		excelOptions = new ExcelOptions();
 		excelOptions.setFacetBgColor("#F88017");
-		//excelOptions.setFacetFontSize("10");
-		//excelOptions.setFacetFontColor("#0000ff");
 		excelOptions.setFacetFontStyle("BOLD");
-		//excelOptions.setCellFontColor("#00ff00");
 		excelOptions.setCellFontSize("10");
 		
 		return excelOptions;
@@ -1895,7 +1856,15 @@ public class TimeSheetActivityBean implements Serializable{
 	public void setPdfotions(PDFOptions pdfotions) {
 		this.pdfotions = pdfotions;
 	}
-	
+
+	public Map<Integer, Job> getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(Map<Integer, Job> jobs) {
+		this.jobs = jobs;
+	}
+
 }
 
 

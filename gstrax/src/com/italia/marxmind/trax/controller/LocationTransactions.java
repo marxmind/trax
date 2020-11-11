@@ -31,7 +31,7 @@ public class LocationTransactions {
 	private ActivityTransactions activityTransactions;
 	
 	public static List<LocationTransactions> retrieve(String sqlAdd, String[] params){
-		List<LocationTransactions> locs = Collections.synchronizedList(new ArrayList<LocationTransactions>());
+		List<LocationTransactions> locs = new ArrayList<LocationTransactions>();
 		
 		String tableLocTrans = "lct";
 		String tableLoc = "lc";

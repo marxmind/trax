@@ -23,7 +23,6 @@ import com.italia.marxmind.trax.controller.Login;
 import com.italia.marxmind.trax.controller.Municipality;
 import com.italia.marxmind.trax.controller.Province;
 import com.italia.marxmind.trax.enm.CardType;
-import com.italia.marxmind.trax.enm.Time;
 import com.italia.marxmind.trax.utils.DateUtils;
 
 /**
@@ -61,7 +60,7 @@ public class EmployeeBean implements Serializable {
 	private int genderId;
 	
 	private Employee employeeSelected;
-	private List<Employee> employees = Collections.synchronizedList(new ArrayList<Employee>());
+	private List<Employee> employees = new ArrayList<Employee>();
 	
 	private List positions;
 	private int positionId;
@@ -78,12 +77,12 @@ public class EmployeeBean implements Serializable {
 	private String searchName;
 	
 	
-	private Map<Integer, Job> positionsData = Collections.synchronizedMap(new HashMap<Integer, Job>());
-	private Map<Integer, Barangay> bgyData = Collections.synchronizedMap(new HashMap<Integer, Barangay>());
-	private Map<Integer, Municipality> munData = Collections.synchronizedMap(new HashMap<Integer, Municipality>());
-	private Map<Integer, Province> provData = Collections.synchronizedMap(new HashMap<Integer, Province>());
+	private Map<Integer, Job> positionsData = new HashMap<Integer, Job>();
+	private Map<Integer, Barangay> bgyData = new HashMap<Integer, Barangay>();
+	private Map<Integer, Municipality> munData = new HashMap<Integer, Municipality>();
+	private Map<Integer, Province> provData = new HashMap<Integer, Province>();
 	
-	private List<EmployeeCards> cardSheets = Collections.synchronizedList(new ArrayList<EmployeeCards>());
+	private List<EmployeeCards> cardSheets = new ArrayList<EmployeeCards>();
 	
 	private List cardTypes;
 	private int cardId;
@@ -92,7 +91,7 @@ public class EmployeeBean implements Serializable {
 	public void init(){
 		
 		System.out.println("running employeebean page.....");
-		employees = Collections.synchronizedList(new ArrayList<Employee>());
+		employees = new ArrayList<Employee>();
 		
 		String sql = "";
 		String[] params = new String[0];
@@ -361,7 +360,7 @@ public class EmployeeBean implements Serializable {
 	}
 	public List getPositions() {
 		positions = new ArrayList<>();
-		positionsData = Collections.synchronizedMap(new HashMap<Integer, Job>());
+		positionsData = new HashMap<Integer, Job>();
 		for(Job ps : Job.retrieve("SELECT * FROM jobtitle WHERE isactivejob=1", new String[0])){
 			positions.add(new SelectItem(ps.getJobid(), ps.getJobname()));
 			positionsData.put(ps.getJobid(), ps);
@@ -391,7 +390,7 @@ public class EmployeeBean implements Serializable {
 	public List getBarangays() {
 		
 		barangays = new ArrayList<>();
-		bgyData = Collections.synchronizedMap(new HashMap<Integer, Barangay>());
+		bgyData = new HashMap<Integer, Barangay>();
 		for(Barangay bg : Barangay.retrieve("SELECT * FROM barangay WHERE bgisactive=1", new String[0])){
 			barangays.add(new SelectItem(bg.getId(), bg.getName()));
 			bgyData.put(bg.getId(), bg);
@@ -414,7 +413,7 @@ public class EmployeeBean implements Serializable {
 
 	public List getMunicipalitys() {
 		municipalitys = new ArrayList<>();
-		munData = Collections.synchronizedMap(new HashMap<Integer, Municipality>());
+		munData = new HashMap<Integer, Municipality>();
 		for(Municipality mun : Municipality.retrieve("SELECT * FROM municipality WHERE munisactive=1 ", new String[0])){
 			municipalitys.add(new SelectItem(mun.getId(), mun.getName()));
 			munData.put(mun.getId(), mun);
@@ -436,7 +435,7 @@ public class EmployeeBean implements Serializable {
 
 	public List getProvinces() {
 		provinces = new ArrayList<>();
-		provData = Collections.synchronizedMap(new HashMap<Integer, Province>());
+		provData = new HashMap<Integer, Province>();
 		for(Province pr : Province.retrieve("SELECT * FROM province WHERE provisactive=1 ", new String[0])){
 			provinces.add(new SelectItem(pr.getId(), pr.getName()));
 			provData.put(pr.getId(), pr);
@@ -529,7 +528,7 @@ public class EmployeeBean implements Serializable {
 	}
 
 	public List getCardTypes() {
-		cardTypes = Collections.synchronizedList(new ArrayList<EmployeeCards>());
+		cardTypes = new ArrayList<EmployeeCards>();
 		cardTypes.add(new SelectItem(0, "Select Card"));
 		for(CardType type : CardType.values()){
 			cardTypes.add(new SelectItem(type.getId(), type.getValue()));

@@ -51,18 +51,14 @@ public class FieldTimeSheetBean implements Serializable{
 	private String searchDescription;
 	private Date timeSheetFrom;
 	private Date timeSheetTo;
-	private List<ActivityTransactions> timeSheets = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
+	private List<ActivityTransactions> timeSheets = new ArrayList<ActivityTransactions>();
 	private ActivityTransactions timeSheetsData;
 	
 	private String searchEmployee;
-	private List<Employee> employeeSelection = Collections.synchronizedList(new ArrayList<Employee>());
+	private List<Employee> employeeSelection = new ArrayList<Employee>();
 	
 	private String searchActivity;
-	private List<Activity> activitySelection = Collections.synchronizedList(new ArrayList<Activity>());
-	
-	/*private List activities;
-	private int activityId;
-	private Map<Integer, Activity> activityMap = Collections.synchronizedMap(new HashMap<Integer, Activity>());*/
+	private List<Activity> activitySelection = new ArrayList<Activity>();
 	
 	private int index;
 	
@@ -72,27 +68,23 @@ public class FieldTimeSheetBean implements Serializable{
 	private List timeOuts;
 	private double timeOutId;
 	
-	private Map<Double, String> timeInMap = Collections.synchronizedMap(new HashMap<Double, String>());
-	private Map<Double, String> timeOutMap = Collections.synchronizedMap(new HashMap<Double, String>());
+	private Map<Double, String> timeInMap = new HashMap<Double, String>();
+	private Map<Double, String> timeOutMap = new HashMap<Double, String>();
 	
 	private String searchMaterial;
-	private List<Materials> materialSelection = Collections.synchronizedList(new ArrayList<Materials>());
-	private List<MaterialTransactions> materialSelected = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+	private List<Materials> materialSelection = new ArrayList<Materials>();
+	private List<MaterialTransactions> materialSelected = new ArrayList<MaterialTransactions>();
 	
 	private double quantity;
 	private double holdQty;
 	private int tmpUomId;
 	
 	private String searchLocation;
-	private List<Location> loctionsSelection = Collections.synchronizedList(new ArrayList<Location>());
-	
-	/*private List locations;
-	private int locationId;
-	private Map<Integer, Location> locationMap = Collections.synchronizedMap(new HashMap<Integer, Location>());*/
+	private List<Location> loctionsSelection = new ArrayList<Location>();
 	
 	private List uoms;
 	private int uomId;
-	private Map<Integer, UOM> uomMap = Collections.synchronizedMap(new HashMap<Integer, UOM>());
+	private Map<Integer, UOM> uomMap = new HashMap<Integer, UOM>();
 	
 	private final static double HOUR_IN_DAY = 8.0;
 	private final static double DRIVER_OT = 40.0;
@@ -114,7 +106,7 @@ public class FieldTimeSheetBean implements Serializable{
 			if(getReplicateSelectedData()!=null && !getReplicateSelectedData().contains(act)){
 				getReplicateSelectedData().add(act);
 			}else{
-				setReplicateSelectedData(Collections.synchronizedList(new ArrayList<>()));
+				setReplicateSelectedData(new ArrayList<>());
 				getReplicateSelectedData().add(act);
 			}
 		}else{
@@ -267,7 +259,7 @@ public class FieldTimeSheetBean implements Serializable{
 			loc = LocationTransactions.save(loc);
 		}
 		
-		List<MaterialTransactions> mats = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+		List<MaterialTransactions> mats = new ArrayList<MaterialTransactions>();
 		String[] params = new String[1];
 		String sql = " AND mt.isactivematrans=1 AND act.actransid=?";
 		params[0] = act.getId()+"";
@@ -276,7 +268,7 @@ public class FieldTimeSheetBean implements Serializable{
 			tr.delete("DELETE FROM materialtrans WHERE matransid=?", params);
 		}
 		
-		mats = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+		mats = new ArrayList<MaterialTransactions>();
 		if(act.getMaterialTransactions()!=null){
 			for(MaterialTransactions tr : act.getMaterialTransactions()){
 				tr.setActivityTransactions(act);
@@ -301,9 +293,9 @@ public class FieldTimeSheetBean implements Serializable{
 	
 	public void loadEnployeeSheets(){
 		
-		List<ActivityTransactions> tempSheets = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
+		List<ActivityTransactions> tempSheets = new ArrayList<ActivityTransactions>();
 		tempSheets = timeSheets;
-		timeSheets = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
+		timeSheets = new ArrayList<ActivityTransactions>();
 		
 		String sql = " AND tme.isactivetime=1 AND (tme.timeDateTrans>=? AND tme.timeDateTrans<=?)";
 		String[] params = new String[2];
@@ -377,166 +369,6 @@ public class FieldTimeSheetBean implements Serializable{
 			
 		}
 		
-		//Collections.reverse(timeSheets);
-		
-	}
-	
-	@Deprecated
-	public void loadTimeSheets(){
-		
-		timeSheets = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
-		String sql = " AND trn.isactiveactrans=1 AND (trn.actDateTrans>=? AND trn.actDateTrans<=?) ";
-		String[] params = new String[2];
-		params[0] = DateUtils.convertDate(getTimeSheetFrom(), "yyyy-MM-dd");
-		params[1] = DateUtils.convertDate(getTimeSheetTo(), "yyyy-MM-dd");
-		int index = 0;
-		double totalActivity = 0d;
-		for(ActivityTransactions act : ActivityTransactions.retrieve(sql, params)){
-			act.setIndex(index++);
-			
-			sql = " AND lct.isactiveloctrans=1 AND act.actransid=?";
-			params = new String[1];
-			params[0] = act.getId()+"";
-			LocationTransactions loc = LocationTransactions.retrieve(sql, params).get(0);
-			act.setLocationTransactions(loc);
-			act.setLocation(loc.getLocation());
-			
-			sql = " AND mt.isactivematrans=1 AND act.actransid=?";
-			params[0] = act.getId()+"";
-			act.setMaterialTransactions(MaterialTransactions.retrieve(sql, params));
-			String materials = "Select Materials"; 
-			int cnt=1;
-			int size = act.getMaterialTransactions().size();
-			for(MaterialTransactions nm : act.getMaterialTransactions()){
-				if(cnt==1 && size>1){
-					materials = nm.getQty() + " " + nm.getUom().getSymbol() + " of " + nm.getMaterials().getName() + ",";
-				}else if(cnt==1 && size==1){
-					materials = nm.getQty() + " " + nm.getUom().getSymbol() + " of " + nm.getMaterials().getName();
-				}else if(cnt==size){
-					materials += nm.getQty() + " " + nm.getUom().getSymbol() + " of " + nm.getMaterials().getName();
-				}else{
-					materials += nm.getQty() + " " + nm.getUom().getSymbol() + " of " + nm.getMaterials().getName() + ",";
-				}
-				cnt++;
-			}
-			act.setMaterialUsed(materials);
-			 
-			sql = " AND tme.isactivetime=1 AND ac.actransid=?";
-			params[0] = act.getId()+"";
-			List<TimeSheets> times = TimeSheets.retrieve(sql, params);
-			
-			double totalExpenses=0d;
-			if(times.size()>0){
-				act.setTimeIn(times.get(0).getTimeIn());
-				act.setTimeOut(times.get(0).getTimeOut());
-				act.setTotalHours(times.get(0).getCountHour());
-				act.setTotalMandays(times.size());
-				act.setEmployee(times.get(0).getEmployee());
-				for(TimeSheets time : times){
-					//double perHour = time.getEmployee().getSalary() / HOUR_IN_DAY;
-					//totalExpenses += perHour * act.getTotalHours();
-					
-					totalExpenses += calculateSalary(time,act);
-					System.out.println("Employee services : " + totalExpenses);
-					
-				}
-				totalActivity +=totalExpenses;
-			}
-			
-			timeSheets.add(act);
-		}
-		
-	}
-	@Deprecated
-	private double calculateSalary(TimeSheets time, ActivityTransactions act){
-		
-		Employee em = time.getEmployee();
-		
-		double servicesAmnt = 0d;
-		double hourlyRate = 0d;
-		double dailyRate = 0d;
-		double hrsWork = 0d;
-		double overTimeAmount = 0d;
-		
-		try{
-			dailyRate = em.getSalary();
-			hourlyRate = dailyRate/HOUR_IN_DAY;
-			
-			if(JobTitle.DRIVER.getId()==em.getJob().getJobid()){
-				
-				if("15".equalsIgnoreCase(act.getDrums())){
-					hrsWork = 4.0;
-					servicesAmnt = hourlyRate * hrsWork;
-				}else if("30".equalsIgnoreCase(act.getDrums())){
-					hrsWork = 8.0;
-					servicesAmnt = hourlyRate * hrsWork;
-				}else if("40".equalsIgnoreCase(act.getDrums())){
-					hrsWork = 8.0;
-					servicesAmnt = hourlyRate * hrsWork;
-					overTimeAmount = DRIVER_OT * 2;
-				}else if("45".equalsIgnoreCase(act.getDrums())){
-					hrsWork = 8.0;
-					servicesAmnt = hourlyRate * hrsWork;
-					overTimeAmount = DRIVER_OT * 3;
-				}else{
-					hrsWork = time.getCountHour();
-					//normal driver OT in FIELD
-					if(hrsWork>HOUR_IN_DAY){
-						servicesAmnt = HOUR_IN_DAY * hrsWork;
-						overTimeAmount = (hrsWork - HOUR_IN_DAY) * NORMAL_OT;
-					}else{
-						servicesAmnt = hourlyRate * hrsWork;
-					}
-				}
-				//servicesAmnt = dailyRate;
-				servicesAmnt += overTimeAmount;
-				
-			}else if(JobTitle.LEAD_MAN.getId()==em.getJob().getJobid() || JobTitle.SPRAY_MAN.getId()==em.getJob().getJobid()){
-				
-				if("15".equalsIgnoreCase(act.getDrums())){
-					hrsWork = 4.0;
-					servicesAmnt = hourlyRate * hrsWork;
-				}else if("30".equalsIgnoreCase(act.getDrums())){
-					hrsWork = 8.0;
-					servicesAmnt = hourlyRate * hrsWork;
-				}else if("40".equalsIgnoreCase(act.getDrums())){
-					hrsWork = 8.0;
-					servicesAmnt = hourlyRate * hrsWork;
-					overTimeAmount = LEAD_SPRAY_MAN_OT * 2;
-				}else if("45".equalsIgnoreCase(act.getDrums())){
-					hrsWork = 8.0;
-					servicesAmnt = hourlyRate * hrsWork;
-					overTimeAmount = LEAD_SPRAY_MAN_OT * 3;
-				}else{
-					hrsWork = time.getCountHour();
-					//normal LEAD ans SPRAY OT in FIELD
-					if(hrsWork>HOUR_IN_DAY){
-						servicesAmnt = HOUR_IN_DAY * hrsWork;
-						overTimeAmount = (hrsWork - HOUR_IN_DAY) * NORMAL_OT;
-					}else{
-						servicesAmnt = hourlyRate * hrsWork;
-					}
-				}
-				//servicesAmnt = dailyRate;
-				servicesAmnt += overTimeAmount;
-			}else{
-				
-				hrsWork = time.getCountHour();
-				//labor OT calculation
-				if(hrsWork>HOUR_IN_DAY){
-					servicesAmnt = HOUR_IN_DAY * hrsWork;
-					overTimeAmount = (hrsWork - HOUR_IN_DAY) * NORMAL_OT;
-				}else{
-					servicesAmnt = hourlyRate * hrsWork;
-				}
-				servicesAmnt += overTimeAmount;
-				
-			}
-			
-			
-		}catch(Exception e){}
-		
-		return servicesAmnt;
 	}
 	
 	public void clearData(){
@@ -552,7 +384,7 @@ public class FieldTimeSheetBean implements Serializable{
 			int index = timeSheets.size();
 			timeSheets.add(createModelActivity(index));
 		}else{
-			timeSheets = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
+			timeSheets = new ArrayList<ActivityTransactions>();
 			timeSheets.add(createModelActivity(0));
 		}
 		
@@ -574,24 +406,19 @@ public class FieldTimeSheetBean implements Serializable{
 				mat.delete();
 			}
 			
-			/*List<TimeSheets> times = ac.getTimeSheets();
-			for(TimeSheets time : times){
-				time.delete();
-			}*/
-			
 			TimeSheets tme = ac.getEmployeeTimeSheets();
 			tme.delete();
 			
 			}catch(Exception e){}	
 			
-			List<ActivityTransactions> dataSheets = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
+			List<ActivityTransactions> dataSheets = new ArrayList<ActivityTransactions>();
 			int index =0;
 			for(ActivityTransactions acs : timeSheets){
 				acs.setIndex(index);
 				dataSheets.add(acs);
 				index++;
 			}
-			timeSheets = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
+			timeSheets = new ArrayList<ActivityTransactions>();
 			timeSheets = dataSheets;
 		}
 		
@@ -722,14 +549,6 @@ public class FieldTimeSheetBean implements Serializable{
 	     int index = event.getRowIndex();
 	     timeSheets.get(index).setIndex(index);
 	     
-	     /*if(getLocationId()>0){
-	    	 timeSheets.get(index).setLocation(getLocationMap().get(getLocationId()));
-	     }*/
-	     
-	     /*if(getActivityId()>0){
-	    	 timeSheets.get(index).setActivity(getActivityMap().get(getActivityId()));
-	     }*/
-	     
 	     if(getTimeInId()>0){
 	    	 timeSheets.get(index).setTimeIn(Time.typeName(getTimeInId()));
 	     }
@@ -796,7 +615,7 @@ public class FieldTimeSheetBean implements Serializable{
 		if(mat.size()>0){
 			setMaterialSelected(mat);
 		}else{
-			materialSelected = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+			materialSelected = new ArrayList<MaterialTransactions>();
 		}
 	}
 	
@@ -843,11 +662,11 @@ public class FieldTimeSheetBean implements Serializable{
 			timeSheets.get(getIndex()).setMaterialUsed(materials);
 			timeSheets.get(getIndex()).setMaterialTransactions(materialSelected);
 			
-			materialSelected = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+			materialSelected = new ArrayList<MaterialTransactions>();
 			setQuantity(0);
 			setHoldQty(0);
 			setUomId(0);
-			uomMap = Collections.synchronizedMap(new HashMap<Integer, UOM>());
+			uomMap = new HashMap<Integer, UOM>();
 			getUoms();
 			Application.addMessage(1, "Successfully added " + mat.getName(), "");
 		}else{
@@ -858,7 +677,7 @@ public class FieldTimeSheetBean implements Serializable{
 	public void showSelectedMaterial(ActivityTransactions act){
 		setIndex(act.getIndex());
 		List<MaterialTransactions> mats = act.getMaterialTransactions();
-		materialSelected = Collections.synchronizedList(new ArrayList<MaterialTransactions>());
+		materialSelected = new ArrayList<MaterialTransactions>();
 		materialSelected = mats;
 	}
 	
@@ -894,7 +713,7 @@ public class FieldTimeSheetBean implements Serializable{
 	
 	public void loadMaterials() {
 		
-		materialSelection = Collections.synchronizedList(new ArrayList<Materials>()); 
+		materialSelection = new ArrayList<Materials>(); 
 		
 		String sql = "SELECT * FROM materials WHERE isactivemat=1 ORDER BY matname";
 		if(getSearchMaterial()!=null && !getSearchMaterial().isEmpty()){
@@ -913,7 +732,7 @@ public class FieldTimeSheetBean implements Serializable{
 	public List getUoms() {
 		
 		uoms = new ArrayList<>();
-		uomMap = Collections.synchronizedMap(new HashMap<Integer, UOM>());
+		uomMap = new HashMap<Integer, UOM>();
 		uoms.add(new SelectItem(0, "Select"));
 		for(UOM u : UOM.retrieve("SELECT * FROM uom WHERE isactiveuom=1", new String[0])){
 			uoms.add(new SelectItem(u.getId(), u.getSymbol()));
@@ -947,7 +766,7 @@ public class FieldTimeSheetBean implements Serializable{
 	public List getTimeIns() {
 		
 		timeIns = new ArrayList<>();
-		timeInMap = Collections.synchronizedMap(new HashMap<Double, String>());
+		timeInMap = new HashMap<Double, String>();
 		
 		for(Time time : Time.values()){
 			if(time.getId()>=6){
@@ -979,7 +798,7 @@ public class FieldTimeSheetBean implements Serializable{
 	public List getTimeOuts() {
 		
 		timeOuts = new ArrayList<>();
-		timeOutMap = Collections.synchronizedMap(new HashMap<Double, String>());
+		timeOutMap = new HashMap<Double, String>();
 		
 		for(Time time : Time.values()){
 			if(time.getId()>=6){
@@ -1040,63 +859,6 @@ public class FieldTimeSheetBean implements Serializable{
 		this.searchActivity = searchActivity;
 	}
 	
-	/*public List getActivities() {
-		activityMap = Collections.synchronizedMap(new HashMap<Integer, Activity>());
-		activities = new ArrayList<>();
-		
-		String sql = "SELECT * FROM activity WHERE isactiveac=1 ORDER BY acname";
-		for(Activity ac : Activity.retrieve(sql, new String[0])){
-			activities.add(new SelectItem(ac.getId(), ac.getName()));
-			activityMap.put(ac.getId(), ac);
-		}
-		
-		return activities;
-	}
-	public void setActivities(List activities) {
-		this.activities = activities;
-	}
-	public int getActivityId() {
-		return activityId;
-	}
-	public void setActivityId(int activityId) {
-		this.activityId = activityId;
-	}
-	public Map<Integer, Activity> getActivityMap() {
-		return activityMap;
-	}
-	public void setActivityMap(Map<Integer, Activity> activityMap) {
-		this.activityMap = activityMap;
-	}*/
-	
-	/*public List getLocations() {
-		
-		locationMap = Collections.synchronizedMap(new HashMap<Integer, Location>());
-		locations = new ArrayList<>();
-		
-		String sql = " AND lc.isactiveloc=1 ORDER BY lc.locname";
-		for(Location loc : Location.retrieve(sql, new String[0])){
-			locations.add(new SelectItem(loc.getId(), loc.getName()));
-			locationMap.put(loc.getId(), loc);
-		}
-		
-		return locations;
-	}
-	public void setLocations(List locations) {
-		this.locations = locations;
-	}
-	public int getLocationId() {
-		return locationId;
-	}
-	public void setLocationId(int locationId) {
-		this.locationId = locationId;
-	}
-	public Map<Integer, Location> getLocationMap() {
-		return locationMap;
-	}
-	public void setLocationMap(Map<Integer, Location> locationMap) {
-		this.locationMap = locationMap;
-	}*/
-	
 	public void selectedArea(Location loc){
 		timeSheets.get(getIndex()).setLocation(loc);
 	}
@@ -1109,7 +871,7 @@ public class FieldTimeSheetBean implements Serializable{
 	}
 	
 	public void loadArea(){
-		loctionsSelection = Collections.synchronizedList(new ArrayList<Location>());
+		loctionsSelection = new ArrayList<Location>();
 		
 		String sql = " AND lc.isactiveloc=1 ORDER BY lc.locname";
 		if(getSearchLocation()!=null && !getSearchLocation().isEmpty()){
@@ -1155,7 +917,7 @@ public class FieldTimeSheetBean implements Serializable{
 	}
 	
 	public void loadEmployee(){
-		employeeSelection = Collections.synchronizedList(new ArrayList<Employee>());
+		employeeSelection = new ArrayList<Employee>();
 		
 		String sql = " AND emp.isactiveemp=1";
 		String[] params = new String[0];

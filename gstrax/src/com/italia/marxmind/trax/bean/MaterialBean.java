@@ -31,7 +31,7 @@ public class MaterialBean implements Serializable{
 	private static final long serialVersionUID = 6669563464361L;
 
 	
-	private List<Materials> materials = Collections.synchronizedList(new ArrayList<Materials>());
+	private List<Materials> materials = new ArrayList<Materials>();
 	
 	private String searchMaterial;
 	private String materialName;
@@ -40,7 +40,7 @@ public class MaterialBean implements Serializable{
 	@PostConstruct
 	public void init(){
 		
-		materials = Collections.synchronizedList(new ArrayList<Materials>());
+		materials = new ArrayList<Materials>();
 		String sql = "SELECT * FROM materials WHERE isactivemat=1";
 		if(getSearchMaterial()!=null && !getSearchMaterial().isEmpty()){
 			sql += " AND matname like '%"+ getSearchMaterial().replace("--", "") +"%'";

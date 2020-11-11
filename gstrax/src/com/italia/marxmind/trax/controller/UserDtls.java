@@ -117,7 +117,7 @@ public class UserDtls {
 	 * @return list of users
 	 */
 	public static List<UserDtls> retrieve(Object ...obj){
-		List<UserDtls> users = Collections.synchronizedList(new ArrayList<UserDtls>());
+		List<UserDtls> users = new ArrayList<UserDtls>();
 		
 		String userTable = "usr";
 		String loginTable = "login";
@@ -208,7 +208,7 @@ public class UserDtls {
 	}
 	
 	public static List<UserDtls> retrieve(String sql, String[] params){
-		List<UserDtls> users = Collections.synchronizedList(new ArrayList<UserDtls>());
+		List<UserDtls> users = new ArrayList<UserDtls>();
 		
 		Connection conn = null;
 		ResultSet rs = null;

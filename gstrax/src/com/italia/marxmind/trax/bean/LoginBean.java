@@ -23,11 +23,12 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.http.HttpSession;
 
+import com.italia.marxmind.trax.application.AppInfo;
 import com.italia.marxmind.trax.application.ClientInfo;
 import com.italia.marxmind.trax.controller.Business;
 import com.italia.marxmind.trax.controller.Login;
+import com.italia.marxmind.trax.database.Conf;
 import com.italia.marxmind.trax.enm.Gstrax;
-import com.italia.marxmind.trax.enm.UserAccess;
 import com.italia.marxmind.trax.reader.ReadConfig;
 import com.italia.marxmind.trax.security.License;
 import com.italia.marxmind.trax.security.Module;
@@ -57,7 +58,9 @@ public class LoginBean implements Serializable{
 	private String keyPress;
 	private int businessId;
 	private List business;
-	private Map<Integer, Business> businessData = Collections.synchronizedMap(new HashMap<Integer, Business>());
+	private String ui="2";
+	
+	private Map<Integer, Business> businessData = new HashMap<Integer, Business>();
 	
 	public String getCurrentDate(){//MMMM d, yyyy
 		DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
@@ -89,21 +92,17 @@ public class LoginBean implements Serializable{
 	
 	@PostConstruct
 	public void init(){
-		//invalidate session
-		//IBean.removeBean();
-		
 		//load business wallpaper
-		String wallpaper = ReadConfig.value(Gstrax.BUSINESS_WALLPAPER_FILE);
-		//System.out.println("wallpaper >>> " + wallpaper);
-		copyProductImg(wallpaper);
+		//String wallpaper = ReadConfig.value(Gstrax.BUSINESS_WALLPAPER_FILE);
+		//copyProductImg(wallpaper);
 	}
 	
+	@Deprecated
 	public void copyProductImg(String wallpaper){
 		String pathToSave = FacesContext.getCurrentInstance()
                 .getExternalContext().getRealPath(Gstrax.SEPERATOR.getName()) + Gstrax.SEPERATOR.getName() +
                 Gstrax.APP_RESOURCES_LOC.getName() + Gstrax.SEPERATOR.getName() + 
                 Gstrax.BUSSINES_WALLPAPER_IMG.getName() + Gstrax.SEPERATOR.getName();
-		//System.out.println("pathToSave " + pathToSave + wallpaper);
 		File logdirectory = new File(pathToSave);
 		if(logdirectory.isDirectory()){
 			//System.out.println("is directory");
@@ -112,14 +111,10 @@ public class LoginBean implements Serializable{
 		
 		String productFile = ReadConfig.value(Gstrax.APP_IMG_FILE) + wallpaper;
 		File file = new File(productFile);
-		//if(!file.exists()){
-			//System.out.println("copying file.... " + file.getName());
 			try{
 			Files.copy(file.toPath(), (new File(pathToSave + file.getName())).toPath(),
 			        StandardCopyOption.REPLACE_EXISTING);
 			}catch(IOException e){}
-			
-		//}
 	}
 	
 	//validate login
@@ -128,6 +123,8 @@ public class LoginBean implements Serializable{
 		//if(getBusinessId()==0){
 		//set database on on business type
 		changeDatabaseConnection();
+		Conf.createNewInstance();
+		AppInfo.createNewInstance();
 		//}
 		
 		
@@ -148,18 +145,15 @@ public class LoginBean implements Serializable{
 	        HttpSession session = SessionBean.getSession();
 	        session.setAttribute("username", name);
 			session.setAttribute("userid", in.getLogid());
+			session.setAttribute("ui", getUi());
 			
 			boolean isExpired = License.checkLicenseExpiration(Module.GSTRAX);
 			
-	        /*if(in.getAccessLevel().getLevel()==1 || in.getAccessLevel().getLevel()==2){
-	        	result = "main";
-	        }else{
-	        	result = "pos";
-	        }*/
-			//if(UserAccess.DEVELOPER.getId() == in.getAccessLevel().getLevel() || 
-			//		UserAccess.OWNER.getId() == in.getAccessLevel().getLevel() || 
-			//		UserAccess.MANAGER.getId() == in.getAccessLevel().getLevel()){
-				result = "main";
+				if("2".equalsIgnoreCase(getUi())) {
+					result = "main2";
+				}else {
+					result = "main";
+				}
 			
 			
 			LogU.add("The user has been successfully login to the application with the username : " + name + " and password " + password);
@@ -180,7 +174,7 @@ public class LoginBean implements Serializable{
 							"Please enter correct username and password"
 							)
 					);
-//			/setErrorMessage("Incorrect username and password.");
+
 			LogU.add("The user was not successfully login to the application with the username : " + name + " and password " + password);
 			setName("");
 			setPassword("");
@@ -266,12 +260,6 @@ public class LoginBean implements Serializable{
 
 
 	public String getKeyPress() {
-		/*if((getName()!=null && !getName().isEmpty()) && (getPassword()!=null && !getPassword().isEmpty())){
-			keyPress = "logId";
-		}else{
-			FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Please provide information to proceed.", "");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-		}*/
 		keyPress = "logId";
 		return keyPress;
 	}
@@ -297,7 +285,7 @@ public class LoginBean implements Serializable{
 
 
 	public List getBusiness() {
-		businessData = Collections.synchronizedMap(new HashMap<Integer, Business>());
+		businessData = new HashMap<Integer, Business>();
 		business = new ArrayList<>();
 		
 		for(Business bz : Business.readBusinessXML()){
@@ -324,6 +312,18 @@ public class LoginBean implements Serializable{
 
 	public void setBusinessData(Map<Integer, Business> businessData) {
 		this.businessData = businessData;
+	}
+
+
+
+	public String getUi() {
+		return ui;
+	}
+
+
+
+	public void setUi(String ui) {
+		this.ui = ui;
 	}
 	
 }

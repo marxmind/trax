@@ -32,12 +32,12 @@ public class ActivityBean implements Serializable{
 	private String actName;
 	private String searchName;
 	private Activity activityData;
-	private List<Activity> activitys = Collections.synchronizedList(new ArrayList<Activity>());
+	private List<Activity> activitys = new ArrayList<Activity>();
 	
 	@PostConstruct
 	public void init(){
 		
-		activitys = Collections.synchronizedList(new ArrayList<Activity>());
+		activitys = new ArrayList<Activity>();
 		String sql = "SELECT * FROM activity WHERE isactiveac=1";
 		if(getSearchName()!=null && !getSearchName().isEmpty()){
 			sql += " AND acname like '%"+ getSearchName().replace("--", "") +"%'";

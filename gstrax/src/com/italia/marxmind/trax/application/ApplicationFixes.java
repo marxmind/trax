@@ -36,7 +36,7 @@ public class ApplicationFixes {
 	}
 	
 	public static List<ApplicationFixes> retrieve(String sql, String[] params){
-		List<ApplicationFixes> data = Collections.synchronizedList(new ArrayList<>());
+		List<ApplicationFixes> data = new ArrayList<>();
 		Connection conn = null;
 		ResultSet rs = null;
 		PreparedStatement ps = null;

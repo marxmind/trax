@@ -26,7 +26,8 @@ public enum JobTitle {
 	 LEAD_MAN(15,"LEAD MAN"),
 	 SPRAY_MAN(16,"SPRAY MAN"),
 	 FRUIT_GUARD(17,"FRUIT GUARD"),
-	 LABORER(18,"LABORER");
+	 LABORER(18,"LABORER"),
+	 SPRAY_TRUCK_DRIVER(19, "SPRAY TRUCK DRIVER");
 	
 	private double id;
 	private String value;

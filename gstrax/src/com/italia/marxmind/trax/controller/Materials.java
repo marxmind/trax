@@ -47,7 +47,7 @@ public class Materials {
 	}
 	
 	public static List<Materials> retrieve(String sql, String[] params){
-		List<Materials> mats = Collections.synchronizedList(new ArrayList<Materials>());
+		List<Materials> mats = new ArrayList<Materials>();
 		
 		Connection conn = null;
 		ResultSet rs = null;

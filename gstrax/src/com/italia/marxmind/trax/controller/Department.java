@@ -54,7 +54,7 @@ public class Department {
 	}
 	
 	public static List<Department> retrieve(String sql, String[] params){
-		List<Department> deps = Collections.synchronizedList(new ArrayList<Department>());
+		List<Department> deps = new ArrayList<Department>();
 		
 		Connection conn = null;
 		ResultSet rs = null;

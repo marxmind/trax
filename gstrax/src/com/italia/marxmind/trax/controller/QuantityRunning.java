@@ -34,7 +34,7 @@ public class QuantityRunning {
 	private UserDtls userDtls;
 	
 	public static List<QuantityRunning> retrieve(String sqlAdd, String[] params){
-		List<QuantityRunning> qtys = Collections.synchronizedList(new ArrayList<QuantityRunning>());
+		List<QuantityRunning> qtys = new ArrayList<QuantityRunning>();
 		
 		String tableRun = "qty";
 		String tableProp = "prop";

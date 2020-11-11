@@ -88,6 +88,12 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 				<p:outputLabel value="Name:" style="#{skin.label}"/>
 				<p:inputText value="#{posBean.jobName}" style="#{skin.textInput}"/>
 				
+				<p:outputLabel value="Spray Regular Rate per drum:" style="#{skin.label}"/>
+				<p:inputText value="#{posBean.sprayRegularRate}" style="#{skin.textInput}"/>
+				
+				<p:outputLabel value="Spray Special Rate per drum:" style="#{skin.label}"/>
+				<p:inputText value="#{posBean.spraySpecialRate}" style="#{skin.textInput}"/>
+				
 			</p:panelGrid>
 			
 			</p:layoutUnit>
@@ -124,6 +130,14 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             			 
             			 <p:column headerText="Position" width="100">
             						<p:outputLabel value="#{rpt.jobname}"/>
+            			 </p:column>
+            			 
+            			 <p:column headerText="Spray Regular Rate" width="50">
+            						<p:outputLabel value="#{rpt.sprayRegularRate}"/>
+            			 </p:column>
+            			 
+            			 <p:column headerText="Spray Special Rate" width="50">
+            						<p:outputLabel value="#{rpt.spraySpecialRate}"/>
             			 </p:column>
                          
         </p:dataTable>   

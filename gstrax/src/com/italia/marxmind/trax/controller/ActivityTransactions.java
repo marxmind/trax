@@ -58,7 +58,7 @@ public class ActivityTransactions {
 	private double totalActivityExpenses;
 	
 	public static List<ActivityTransactions> retrieve(String sqlAdd, String[] params){
-		List<ActivityTransactions> acs = Collections.synchronizedList(new ArrayList<ActivityTransactions>());
+		List<ActivityTransactions> acs = new ArrayList<ActivityTransactions>();
 		
 		String tableTrans = "trn";
 		String tableAc = "ac";

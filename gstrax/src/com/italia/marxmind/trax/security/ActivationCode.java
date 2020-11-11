@@ -28,7 +28,7 @@ public class ActivationCode {
 	private Timestamp timestamp;
 	
 	public static List<ActivationCode> retrieve(String sql, String params[]){
-		List<ActivationCode> lis = Collections.synchronizedList(new ArrayList<ActivationCode>());
+		List<ActivationCode> lis = new ArrayList<ActivationCode>();
 		
 		Connection conn = null;
 		ResultSet rs = null;

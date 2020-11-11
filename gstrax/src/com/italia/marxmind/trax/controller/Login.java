@@ -38,6 +38,7 @@ public class Login {
 	private String clientip;
 	private String clientbrowser;
 	private int isActive;
+	private int versionNotice;
 	
 	public Login(){}
 	
@@ -117,7 +118,7 @@ public class Login {
 	}
 	
 	public static List<Login> retrieve(Object... obj){
-		List<Login> ins = Collections.synchronizedList(new ArrayList<Login>());
+		List<Login> ins = new ArrayList<Login>();
 		String loginTable = "log";
 		String accessLvlTable = "lvl";
 		String userTable = "usr";
@@ -159,6 +160,7 @@ public class Login {
 			try{in.setClientip(rs.getString("clientip"));}catch(NullPointerException e){}
 			try{in.setClientbrowser(rs.getString("clientbrowser"));}catch(NullPointerException e){}
 			try{in.setIsActive(rs.getInt("isactive"));}catch(NullPointerException e){}
+			try{in.setVersionNotice(rs.getInt("versionnotice"));}catch(NullPointerException e){}
 			
 			
 			UserAccessLevel level = new UserAccessLevel();
@@ -194,7 +196,7 @@ public class Login {
 	}
 	
 	public static List<Login> retrieve(String sql, String[] params){
-		List<Login> ins = Collections.synchronizedList(new ArrayList<Login>());
+		List<Login> ins = new ArrayList<Login>();
 		
 		Connection conn = null;
 		ResultSet rs = null;
@@ -222,6 +224,7 @@ public class Login {
 			try{in.setLastlogin(rs.getString("lastlogin"));}catch(NullPointerException e){}
 			try{in.setAccessLevel(UserAccessLevel.userAccessLevel(rs.getString("useraccesslevelid")));}catch(NullPointerException e){}
 			try{in.setIsOnline(rs.getInt("isOnline"));}catch(NullPointerException e){}
+			try{in.setVersionNotice(rs.getInt("versionnotice"));}catch(NullPointerException e){}
 			try{UserDtls user = new UserDtls();
 			user.setUserdtlsid(rs.getLong("userdtlsid"));
 			in.setUserDtls(user);}catch(NullPointerException e){}
@@ -242,12 +245,6 @@ public class Login {
 	
 	public static Login login(String logid){
 		Login in = new Login();
-		/*String sql = "SELECT * FROM login WHERE logid=?";
-		String[] params = new String[1];
-		params[0] = logid;
-		try{
-			in = Login.retrieve(sql, params).get(0);
-		}catch(Exception e){}*/
 		in.setLogid(Long.valueOf(logid));
 		in = Login.retrieve(in).get(0);
 		
@@ -300,6 +297,51 @@ public class Login {
 			}
 			
 		}
+	}
+	
+	public static void updateVersionNotice(Login in) {
+		String sql = "UPDATE login SET "
+				+ "versionnotice=? "
+				+ " WHERE logid=?";
+		
+		PreparedStatement ps = null;
+		Connection conn = null;
+		
+		try{
+		conn = ConnectDB.getConnection();
+		ps = conn.prepareStatement(sql);
+		ps.setInt(1, in.getVersionNotice());
+		ps.setLong(2, in.getLogid());
+		
+		ps.execute();
+		ps.close();
+		ConnectDB.close(conn);
+		}catch(SQLException s){
+			
+		}
+	}
+	
+	public static boolean hasUpdate(Login in) {
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = ConnectDB.getConnection();
+		ps = conn.prepareStatement("SELECT * FROM login where logid="+in.getLogid()+" AND versionnotice=1");
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			return true;
+		}
+		
+		rs.close();
+		ps.close();
+		ConnectDB.close(conn);
+		}catch(Exception e){}
+		
+		return false;
 	}
 	
 	public void save(){
@@ -847,6 +889,14 @@ public class Login {
 
 	public void setIsActive(int isActive) {
 		this.isActive = isActive;
+	}
+
+	public int getVersionNotice() {
+		return versionNotice;
+	}
+
+	public void setVersionNotice(int versionNotice) {
+		this.versionNotice = versionNotice;
 	}
 	
 }

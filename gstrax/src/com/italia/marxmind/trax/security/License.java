@@ -58,7 +58,7 @@ public class License {
 			Gstrax.APP_LICENSE_FILE_NAME.getName();
 	
 	public static List<License> retrieve(String sql, String params[]){
-		List<License> lis = Collections.synchronizedList(new ArrayList<License>());
+		List<License> lis = new ArrayList<License>();
 		
 		Connection conn = null;
 		ResultSet rs = null;

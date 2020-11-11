@@ -31,7 +31,7 @@ public class AdminUserBean implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1094801425228386363L;
-	private List<UserDtls> users = Collections.synchronizedList(new ArrayList<UserDtls>());
+	private List<UserDtls> users = new ArrayList<UserDtls>();
 	private UserDtls userdtls;
 	
 	private String regdate;
@@ -45,17 +45,17 @@ public class AdminUserBean implements Serializable{
 	private String username = "Input Username";
 	private String password = "Input Password";
 	private String accesslevedid;
-	private List accesslevellist = Collections.synchronizedList(new ArrayList<>());
+	private List accesslevellist = new ArrayList<>();
 	
 	private Job job;
 	private Department department;
-	private List ageList = Collections.synchronizedList(new ArrayList<>());
-	private List jobList = Collections.synchronizedList(new ArrayList<>());
-	private List departmentList = Collections.synchronizedList(new ArrayList<>());
+	private List ageList = new ArrayList<>();
+	private List jobList = new ArrayList<>();
+	private List departmentList = new ArrayList<>();
 	private String jobId;
 	private String departmentId;
 	private String genderId;
-	private List genderList = Collections.synchronizedList(new ArrayList<>());
+	private List genderList = new ArrayList<>();
 	
 	private List<UserDtls> selectedUser;
 	
@@ -69,7 +69,7 @@ public class AdminUserBean implements Serializable{
 					user.delete(true);
 					user.getLogin().delete(true);
 				}
-				selectedUser = Collections.synchronizedList(new ArrayList<>());
+				selectedUser = new ArrayList<>();
 				init();
 			}
 		}
@@ -80,9 +80,7 @@ public class AdminUserBean implements Serializable{
 		if(Login.checkUserStatus()){
 			
 			System.out.println("initialize AdminUserBean");
-			users = Collections.synchronizedList(new ArrayList<UserDtls>());
-			//users = UserDtls.retrieve("SELECT * FROM userdtls WHERE isactive=1", new String[0]);
-			
+			users = new ArrayList<UserDtls>();
 			UserDtls user = new UserDtls();
 			user.setIsActive(1);
 			users = UserDtls.retrieve(user);
@@ -117,8 +115,6 @@ public class AdminUserBean implements Serializable{
 			in.setPassword(getPassword());
 			in.setAccessLevel(UserAccessLevel.userAccessLevel(getAccesslevedid()));
 			in.save();
-			
-			System.out.println("addedby " + user.getUserDtls().getFirstname());
 			
 		}else{
 			user.setRegdate(getRegdate());
@@ -397,7 +393,7 @@ public class AdminUserBean implements Serializable{
 	}
 
 	public List getAccesslevellist() {
-		accesslevellist = Collections.synchronizedList(new ArrayList<>());
+		accesslevellist = new ArrayList<>();
 		String sql = "SELECT * FROM useraccesslevel";
 		for(UserAccessLevel lvl : UserAccessLevel.retrieve(sql, new String[0])){
 			accesslevellist.add(new SelectItem(lvl.getUseraccesslevelid()+"",lvl.getName()));
