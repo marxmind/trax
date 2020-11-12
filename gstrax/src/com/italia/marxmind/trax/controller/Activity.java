@@ -86,6 +86,32 @@ public class Activity {
 		return acs;
 	}
 	
+
+	public static String retrieveName(int activityId){
+		String sql = "SELECT acname FROM activity WHERE isactiveac=1 AND acid=" + activityId;
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = ConnectDB.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			return rs.getString("acname");
+			
+		}
+		rs.close();
+		ps.close();
+		ConnectDB.close(conn);
+		}catch(Exception e){}
+		
+		return "";
+	}
+	
 	public static Activity retrieve(int activityId){
 		String sql = "SELECT * FROM activity WHERE isactiveac=1 AND acid=" + activityId;
 		Activity ac = new Activity();

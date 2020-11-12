@@ -57,6 +57,67 @@ public class ActivityTransactions {
 	
 	private double totalActivityExpenses;
 	
+	public static List<ActivityTransactions> retrieveOptimize(String sqlAdd, String[] params){
+		List<ActivityTransactions> acs = new ArrayList<ActivityTransactions>();
+		
+		String tableTrans = "trn";
+		String tableAc = "ac";
+		
+		
+		String sql = "SELECT " +
+				tableTrans + ".actransid," +
+				tableTrans + ".actDateTrans," +
+				tableTrans + ".loads," +
+				tableTrans + ".drums," +
+				tableAc + ".acid," +
+				tableAc + ".acname" +
+				
+				" FROM activitytrans " + tableTrans + ", activity " + tableAc + " WHERE " +
+				tableTrans +".acid=" + tableAc + ".acid ";
+		
+		sql = sql + sqlAdd;
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = ConnectDB.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+			
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			ActivityTransactions trn = new ActivityTransactions();
+			try{trn.setId(rs.getLong("actransid"));}catch(NullPointerException e){}
+			try{trn.setDateTrans(rs.getString("actDateTrans"));}catch(NullPointerException e){}
+			try{trn.setLoads(rs.getString("loads"));}catch(NullPointerException e){}
+			try{trn.setDrums(rs.getString("drums"));}catch(NullPointerException e){}
+			
+			Activity ac = new Activity();
+			try{ac.setId(rs.getInt("acid"));}catch(NullPointerException e){}
+			try{ac.setName(rs.getString("acname"));}catch(NullPointerException e){}
+			trn.setActivity(ac);
+			
+			acs.add(trn);
+			
+		}
+		rs.close();
+		ps.close();
+		ConnectDB.close(conn);
+		}catch(Exception ex){}
+		
+		return acs;
+	}
+	
 	public static List<ActivityTransactions> retrieve(String sqlAdd, String[] params){
 		List<ActivityTransactions> acs = new ArrayList<ActivityTransactions>();
 		

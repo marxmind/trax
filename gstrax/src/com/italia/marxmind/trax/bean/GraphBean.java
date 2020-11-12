@@ -44,7 +44,9 @@ import com.italia.marxmind.trax.enm.Time;
 import com.italia.marxmind.trax.reader.ReadConfig;
 import com.italia.marxmind.trax.reader.ReadXML;
 import com.italia.marxmind.trax.reader.ReportTag;
+import com.italia.marxmind.trax.utils.Currency;
 import com.italia.marxmind.trax.utils.DateUtils;
+import com.italia.marxmind.trax.utils.Numbers;
 
 /**
  * 
@@ -98,6 +100,8 @@ public class GraphBean implements Serializable{
 	 private Date timeSheetTo;
 	 private int modeId;
 	 private List modes;
+	 
+	 private String dataDtls;
 	 
 	 public void createBarModel(String modeType, String dateStart, String dateEnd, int topList, List<String> vals) {
 	        barModel = new BarChartModel();
@@ -561,6 +565,30 @@ public class GraphBean implements Serializable{
 		
 	}
 	
+	private void buildDtls(List<String> str) {
+		StringBuilder build = new StringBuilder();
+		build.append("<p>Below are the list of <b>Expenses</b> from <i>Highest</i> to <i>Lowest</i></p><br/>");
+		int cnt = 1;
+		build.append("<ul>");
+		for(int i=str.size(); i>0; i--) {
+			String name = str.get(i-1).split("=")[0];
+			String expense = str.get(i-1).split("=")[1];
+			
+			if(cnt<=10) {
+				build.append("<li style='color: red'>"+ cnt + ". " + name + " --> " + Currency.formatAmount(expense) + "</li>");
+			}else {
+				build.append("<li>");
+				build.append(cnt + ". " + name + " --> " + Currency.formatAmount(expense));
+				build.append("</li>");
+			}
+			cnt++;
+		}
+		build.append("</ul>");
+		setDataDtls(build.toString());
+		PrimeFaces pf = PrimeFaces.current();
+		pf.executeScript("PF('dlgList').show(100);");
+	}
+	
 	private void loadPositions() {
 		jobs = new LinkedHashMap<Integer, Job>();
 		String sql = "SELECT * FROM jobtitle WHERE isactivejob=1";
@@ -598,7 +626,7 @@ public class GraphBean implements Serializable{
 		
 		Map<Double, String> amountMap = new HashMap<Double, String>();
 		for(String key : activityMapExp.keySet()) {
-			double amount = activityMapExp.get(key);
+			double amount = Numbers.formatDouble(activityMapExp.get(key));
 			if(amountMap!=null && amountMap.size()>0) {
 				if(amountMap.containsKey(amount)) {
 					amountMap.put(amount+0.01, key);
@@ -614,6 +642,7 @@ public class GraphBean implements Serializable{
 		for(double d : amountMapSorted.keySet()) {
 			ac.add(amountMapSorted.get(d) + "=" + d);
 		}
+		buildDtls(ac);
 		createBarModel("Activity",dateStart, dateEnd, numberTopListToShow, ac);
 		
 	}
@@ -663,6 +692,7 @@ public void readAreaExppense(String dateStart, String dateEnd, int numberTopList
 		for(double d : amountMapSorted.keySet()) {
 			ac.add(amountMapSorted.get(d) + "=" + d);
 		}
+		buildDtls(ac);
 		createBarModel("Area",dateStart, dateEnd, numberTopListToShow, ac);
 		
 	}
@@ -675,6 +705,7 @@ public void readAreaExppense(String dateStart, String dateEnd, int numberTopList
 		params[1] = DateUtils.getCurrentYear() + "-12-31";
 		double amount = 0d;
 		Map<String, Double> mapAmount = new HashMap<String, Double>();
+		//for(TimeSheets time : TimeSheets.retrieve(sql, params)) {
 		for(TimeSheets time : TimeSheets.retrieve(sql, params)) {
 			ActivityTransactions trans = ActivityTransactions.retrieve(time.getId());
 			amount = calculateSalary(time, trans);
@@ -713,7 +744,8 @@ public void readAreaExppense(String dateStart, String dateEnd, int numberTopList
 	private void monthlyExpenseLastVsCurrentYear() {
 		
 		int year = DateUtils.getCurrentYear();
-		String sql = " AND trn.isactiveactrans=1 AND (trn.actDateTrans>=? AND trn.actDateTrans<=?)";
+		//String sql = " AND trn.isactiveactrans=1 AND (trn.actDateTrans>=? AND trn.actDateTrans<=?)";
+		String sql = " AND tme.isactivetime=1 AND (tme.timeDateTrans>=? AND tme.timeDateTrans<=?)";
 		String[] params = new String[2];
 		//params[0] = (year-1) + "-01-01";
 		params[0] = (year-1) + "-01-01";
@@ -723,9 +755,46 @@ public void readAreaExppense(String dateStart, String dateEnd, int numberTopList
 		
 		Map<String, Double> currentYear = new HashMap<String, Double>();
 		Map<String, Double> lastYear = new HashMap<String, Double>();
-		for(ActivityTransactions trans : ActivityTransactions.retrieve(sql, params)) {
 			double amount = 0d;
-			for(TimeSheets time : TimeSheets.retrieveActivity(trans.getId())) {
+			for(TimeSheets time : TimeSheets.retrieveActivityOptimize(sql, params)) {
+				amount = calculateSalaryOptimize(time, time.getActivityTransactions(), time.getTotalEmployee());
+				
+				String yearNow = time.getDateTrans().split("-")[0];//year
+				String month = time.getDateTrans().split("-")[1];//month
+				System.out.println("prev year checking: " + prevYear);
+				if(prevYear.equalsIgnoreCase(yearNow)) {
+					System.out.println("previous year=" + prevYear);
+					if(lastYear!=null && lastYear.size()>0) {
+						if(lastYear.containsKey(month)) {
+							double newAmnt = lastYear.get(month) + amount;
+							lastYear.put(month, newAmnt);
+						}else {
+							lastYear.put(month, amount);
+						}
+					}else {
+						lastYear.put(month, amount);
+					}
+				}else if(currYear.equalsIgnoreCase(yearNow)) {
+					System.out.println("current year=" + yearNow);
+					if(currentYear!=null && currentYear.size()>0) {
+						if(currentYear.containsKey(month)) {
+							double newAmnt = currentYear.get(month) + amount;
+							currentYear.put(month, newAmnt);
+						}else {
+							currentYear.put(month, amount);
+						}
+					}else {
+						currentYear.put(month, amount);
+					}
+				}
+				
+				
+			}
+			
+		
+		/*for(ActivityTransactions trans : ActivityTransactions.retrieveOptimize(sql, params)) {
+			double amount = 0d;
+			for(TimeSheets time : TimeSheets.retrieveActivityOptimize(trans.getId())) {
 				amount = calculateSalary(time, trans);
 				
 				String yearNow = time.getDateTrans().split("-")[0];//year
@@ -760,7 +829,7 @@ public void readAreaExppense(String dateStart, String dateEnd, int numberTopList
 				
 			}
 			
-		}
+		}*/
 		
 		List<MaterialOUT> outs = MaterialOUT.materialExpense(params[0], params[1]);
 		for(MaterialOUT out : outs) {
@@ -800,6 +869,367 @@ public void readAreaExppense(String dateStart, String dateEnd, int numberTopList
 		createBarModelMonthlyExpenseLastVsCurrentYear(lastYearVal, currentYearVal);
 	}
 
+private double calculateSalaryOptimize(TimeSheets time, ActivityTransactions act, double totalEmployee) {
+
+	
+	Employee em = time.getEmployee();
+	
+	double servicesAmnt = 0d;
+	double hourlyRate = 0d;
+	double dailyRate = 0d;
+	double hrsWork = 0d;
+	double overTimeAmount = 0d;
+	
+	try{
+		dailyRate = em.getSalary();
+		hourlyRate = dailyRate/HOUR_IN_DAY;
+		
+		String forcing = "";
+		try{forcing = act.getActivity().getName();}catch(Exception e){
+		}
+		
+		double totalRate = 0d;
+		if(FORCING1.equalsIgnoreCase(forcing) || FORCING2.equalsIgnoreCase(forcing)){
+			//String sql =" AND tme.isactivetime=1 AND ac.actransid=? AND ac.isactiveactrans=1";
+			String sql =" AND actransid=?";
+			String[] params = new String[1];
+			params[0] = act.getId()+"";
+			double drums = Double.valueOf(act.getDrums());
+			//double totalEmployee = TimeSheets.totalEmployee(sql, params);
+			//double totalEmployee = TimeSheets.retrieve(sql, params).size();
+			
+			totalRate = drums * getJobs().get(em.getJob().getJobid()).getSpraySpecialRate();
+			double salaryPerEmployee = totalRate / totalEmployee;
+			
+			
+			hourlyRate = totalRate / HOUR_IN_DAY;
+			servicesAmnt = salaryPerEmployee;
+		
+		}else if(act.getDrums()!=null && ("Spray Foliar".equalsIgnoreCase(forcing) 
+				|| "Spray Fungicide".equalsIgnoreCase(forcing)
+				|| "Spray Herbicide".equalsIgnoreCase(forcing)
+				|| "Spray Insecticide".equalsIgnoreCase(forcing)
+				|| "Spray Foliar Sucker".equalsIgnoreCase(forcing)
+				|| "Spray Ripening".equalsIgnoreCase(forcing))) {	
+			
+			//String sql =" AND tme.isactivetime=1 AND ac.actransid=? AND ac.isactiveactrans=1";
+			String sql =" AND actransid=?";
+			String[] params = new String[1];
+			params[0] = act.getId()+"";
+			double drums = Double.valueOf(act.getDrums());
+			//double totalEmployee = TimeSheets.totalEmployee(sql, params);
+			//double totalEmployee = TimeSheets.retrieve(sql, params).size();
+			//double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+			totalRate = drums * getJobs().get(em.getJob().getJobid()).getSprayRegularRate();
+			double salaryPerEmployee = totalRate / totalEmployee;
+			
+			//hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
+			hourlyRate = totalRate / HOUR_IN_DAY;
+			servicesAmnt = salaryPerEmployee;
+			
+			
+		}else{
+		
+		if(JobTitle.DRIVER.getId()==em.getJob().getJobid()){
+			
+			if(act.getDrums()!=null){
+				em.setOvertime(FIELD_SPRAY_DRIVER_RATE);//change as there is a case where field driver can be use as spray driver
+			}
+			
+			//overtime
+			if("3".equalsIgnoreCase(act.getLoads())){
+				
+				if("5".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 1;
+				}else if("10".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 2;
+				}else if("15".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 3;
+				}else if("20".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 4;
+				}else if("25".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 5;
+				}else if("30".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 6;
+				}else if("35".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 7;
+				}else if("40".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 8;
+				}else if("45".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 9;
+				}else if("50".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 10;
+				}else if("55".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 11;
+				}else if("60".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 12;
+				}else if("65".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 13;
+				}else if("70".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 14;
+				}else if("75".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 15;
+				}else if("80".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 16;
+				}
+				
+			}else{//normal time
+			
+				if("5".equalsIgnoreCase(act.getDrums())){
+					hourlyRate = DRIVER_NORMAL_PER_DRUM_RATE;
+					servicesAmnt = hourlyRate;
+				}else if("10".equalsIgnoreCase(act.getDrums())){
+					hourlyRate = DRIVER_NORMAL_PER_DRUM_RATE;
+					servicesAmnt = hourlyRate * 2;
+				}else if("15".equalsIgnoreCase(act.getDrums())){
+					hrsWork = 4.0;
+					servicesAmnt = hourlyRate * hrsWork;
+				}else if("30".equalsIgnoreCase(act.getDrums())){
+					hrsWork = 8.0;
+					servicesAmnt = hourlyRate * hrsWork;
+				}else if("40".equalsIgnoreCase(act.getDrums())){
+					hrsWork = 8.0;
+					servicesAmnt = hourlyRate * hrsWork;
+					overTimeAmount = em.getOvertime() * 2;
+				}else if("45".equalsIgnoreCase(act.getDrums())){
+					hrsWork = 8.0;
+					servicesAmnt = hourlyRate * hrsWork;
+					overTimeAmount = em.getOvertime() * 3;
+				}else{
+					
+					double timeInAfternoon = Time.typeId(time.getTimeIn());
+					double timeOutAfterNoon = Time.typeId(time.getTimeOut());
+					hrsWork = time.getCountHour();
+					
+					//tag as overtime
+					if(time.getIsOvertime()==1){
+					
+						servicesAmnt = hrsWork * em.getOvertime();
+					
+					}else{
+					
+						if(timeOutAfterNoon>OVERTIME_START){
+							servicesAmnt = (OVERTIME_START - timeInAfternoon) * hourlyRate;
+							overTimeAmount = (timeOutAfterNoon - OVERTIME_START) * em.getOvertime();
+						}else{
+							servicesAmnt = hourlyRate * hrsWork;
+						}
+					
+					}
+					
+				}
+			
+			}
+			
+			//servicesAmnt = dailyRate;
+			servicesAmnt += overTimeAmount;
+			
+		}else if(JobTitle.LEAD_MAN.getId()==em.getJob().getJobid() || JobTitle.SPRAY_MAN.getId()==em.getJob().getJobid()){
+			
+			//overtime
+			if("3".equalsIgnoreCase(act.getLoads())){
+				
+				if("5".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 1;
+				}else if("10".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 2;
+				}else if("15".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 3;
+				}else if("20".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 4;
+				}else if("25".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 5;
+				}else if("30".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 6;
+				}else if("35".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 7;
+				}else if("40".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 8;
+				}else if("45".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 9;
+				}else if("50".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 10;
+				}else if("55".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 11;
+				}else if("60".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 12;
+				}else if("65".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 13;
+				}else if("70".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 14;
+				}else if("75".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 15;
+				}else if("80".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 16;
+				}
+				
+			}else{//normal time
+			
+				if("5".equalsIgnoreCase(act.getDrums())){
+					hourlyRate = dailyRate/PER_DRUM_DIVIDER;
+					servicesAmnt = hourlyRate;
+				}else if("10".equalsIgnoreCase(act.getDrums())){
+					hourlyRate = dailyRate/PER_DRUM_DIVIDER;
+					servicesAmnt = hourlyRate * 2;
+				}else if("15".equalsIgnoreCase(act.getDrums())){
+					hrsWork = 4.0;
+					servicesAmnt = hourlyRate * hrsWork;
+				}else if("30".equalsIgnoreCase(act.getDrums())){
+					hrsWork = 8.0;
+					servicesAmnt = hourlyRate * hrsWork;
+				}else if("40".equalsIgnoreCase(act.getDrums())){
+					hrsWork = 8.0;
+					servicesAmnt = hourlyRate * hrsWork;
+					overTimeAmount = em.getOvertime() * 2;
+				}else if("45".equalsIgnoreCase(act.getDrums())){
+					hrsWork = 8.0;
+					servicesAmnt = hourlyRate * hrsWork;
+					overTimeAmount = em.getOvertime() * 3;
+				}else{
+				
+				double timeInAfternoon = Time.typeId(time.getTimeIn());
+				double timeOutAfterNoon = Time.typeId(time.getTimeOut());
+				hrsWork = time.getCountHour();
+				
+				//tag as overtime
+				if(time.getIsOvertime()==1){
+				
+					servicesAmnt = hrsWork * em.getOvertime();
+				
+				}else{
+				
+					if(timeOutAfterNoon>OVERTIME_START){
+						servicesAmnt = (OVERTIME_START - timeInAfternoon) * hourlyRate;
+						overTimeAmount = (timeOutAfterNoon - OVERTIME_START) * em.getOvertime();
+					}else{
+						servicesAmnt = hourlyRate * hrsWork;
+					}
+				
+				}
+				
+			}
+			
+			}
+			
+			//servicesAmnt = dailyRate;
+			servicesAmnt += overTimeAmount;
+		}else{
+			
+			//identify labor to sprayman
+			if(act.getLoads()!=null && act.getDrums()!=null){
+				dailyRate = LABOR_SPRAYMAN_DAILY_RATE;
+				hourlyRate = dailyRate/HOUR_IN_DAY;	
+			}
+			
+			if(HARVESTER.equalsIgnoreCase(act.getActivity().getName())){
+				dailyRate = LABOR_HARVESTER_DAILY_RATE;
+				hourlyRate = dailyRate/HOUR_IN_DAY;
+			}
+			
+			//overtime
+			if("3".equalsIgnoreCase(act.getLoads())){
+				
+				if("5".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 1;
+				}else if("10".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 2;
+				}else if("15".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 3;
+				}else if("20".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 4;
+				}else if("25".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 5;
+				}else if("30".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 6;
+				}else if("35".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 7;
+				}else if("40".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 8;
+				}else if("45".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 9;
+				}else if("50".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 10;
+				}else if("55".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 11;
+				}else if("60".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 12;
+				}else if("65".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 13;
+				}else if("70".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 14;
+				}else if("75".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 15;
+				}else if("80".equalsIgnoreCase(act.getDrums())){
+					overTimeAmount = em.getOvertime() * 16;
+				}
+				
+			}else{//normal time
+				
+				//spray activity
+				if("1".equalsIgnoreCase(act.getLoads()) || "2".equalsIgnoreCase(act.getLoads())){
+					
+					if("5".equalsIgnoreCase(act.getDrums())){
+						hourlyRate = dailyRate/PER_DRUM_DIVIDER;
+						servicesAmnt = hourlyRate;
+					}else if("10".equalsIgnoreCase(act.getDrums())){
+						hourlyRate = dailyRate/PER_DRUM_DIVIDER;
+						servicesAmnt = hourlyRate * 2;
+					}else  if("15".equalsIgnoreCase(act.getDrums())){
+						hrsWork = 4.0;
+						servicesAmnt = hourlyRate * hrsWork;
+					}else if("30".equalsIgnoreCase(act.getDrums())){
+						hrsWork = 8.0;
+						servicesAmnt = hourlyRate * hrsWork;
+					}else if("40".equalsIgnoreCase(act.getDrums())){
+						hrsWork = 8.0;
+						servicesAmnt = hourlyRate * hrsWork;
+						overTimeAmount = em.getOvertime() * 2;
+					}else if("45".equalsIgnoreCase(act.getDrums())){
+						hrsWork = 8.0;
+						servicesAmnt = hourlyRate * hrsWork;
+						overTimeAmount = em.getOvertime() * 3;
+					}
+					
+				}else{
+				//field activity
+				
+				double timeInAfternoon = Time.typeId(time.getTimeIn());
+				double timeOutAfterNoon = Time.typeId(time.getTimeOut());
+				hrsWork = time.getCountHour();
+				
+				//tag as overtime
+				if(time.getIsOvertime()==1){
+				
+					servicesAmnt = hrsWork * em.getOvertime();
+				
+				}else{
+				
+					if(timeOutAfterNoon>OVERTIME_START){
+						servicesAmnt = (OVERTIME_START - timeInAfternoon) * hourlyRate;
+						overTimeAmount = (timeOutAfterNoon - OVERTIME_START) * em.getOvertime();
+					}else{
+						servicesAmnt = hourlyRate * hrsWork;
+					}
+				
+				}
+				
+				}
+			}
+			
+		
+			
+			servicesAmnt += overTimeAmount;
+		}
+		
+		}
+		
+		
+	}catch(Exception e){}
+	
+	return servicesAmnt;
+
+}
+	
 private double calculateSalary(TimeSheets time, ActivityTransactions act){
 		
 		Employee em = time.getEmployee();
@@ -816,8 +1246,9 @@ private double calculateSalary(TimeSheets time, ActivityTransactions act){
 			
 			String forcing = "";
 			try{forcing = act.getActivity().getName();}catch(Exception e){
-				Activity activity = Activity.retrieve(act.getActivity().getId());
-				forcing = activity.getName();
+				forcing = Activity.retrieveName(act.getActivity().getId());
+				//Activity activity = Activity.retrieve(act.getActivity().getId());
+				//forcing = activity.getName();
 			}
 			
 			double totalRate = 0d;
@@ -1231,6 +1662,18 @@ public List getModes() {
 
 public void setModes(List modes) {
 	this.modes = modes;
+}
+
+
+
+public String getDataDtls() {
+	return dataDtls;
+}
+
+
+
+public void setDataDtls(String dataDtls) {
+	this.dataDtls = dataDtls;
 }
 	
 }

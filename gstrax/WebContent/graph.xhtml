@@ -95,7 +95,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 			            </p:selectOneMenu>
         	  			<p:calendar value="#{graphBean.timeSheetFrom}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 10em"/>
 				        <p:calendar value="#{graphBean.timeSheetTo}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 10em"/>
-				        <p:commandButton update="activityBarId" icon="fa fa-search" actionListener="#{graphBean.loadSearch}"/>
+				        <p:commandButton update="activityBarId idContentList" icon="fa fa-search" actionListener="#{graphBean.loadSearch}"/>
           	  </div>
      </div>
 
@@ -212,6 +212,13 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	  });
 	 
 	</script>
+ 	
+ 	<p:dialog widgetVar="dlgList" closable="true" header="Record Listing" height="500" width="500" showHeader="true" position="right top">
+ 		<p:scrollPanel style="height:450px" mode="native">
+				<!-- note texteditor secure=true if true needed owasp-java-html-sanitizer and guava jar -->
+				<p:textEditor secure="true" id="idContentList" toolbarVisible="false" widgetVar="msgComposeText" value="#{graphBean.dataDtls}" readonly="true"/>
+				</p:scrollPanel>
+ 	</p:dialog>
  	
  <ui:include src="loader.xhtml" />
 </h:form>

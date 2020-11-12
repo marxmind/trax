@@ -33,7 +33,7 @@ public class TimeSheets {
 	
 	private Employee employee;
 	private ActivityTransactions activityTransactions;
-	
+	private double totalEmployee;
 	public static double totalEmployee(String sql, String[] params) {
 		
 		String s = "SELECT count(*) as totalEmployee FROM timesheets WHERE isactivetime=1 ";//and empid=146 and actransid=20531";
@@ -166,6 +166,95 @@ public class TimeSheets {
 			UserDtls user = new UserDtls();
 			try{user.setUserdtlsid(rs.getLong("userdtlsid"));}catch(NullPointerException e){}
 			trn.setUserDtls(user);
+			
+			time.setActivityTransactions(trn);
+			
+			times.add(time);
+			
+		}
+		rs.close();
+		ps.close();
+		ConnectDB.close(conn);
+		}catch(Exception ex){}
+		
+		return times;
+	}
+	
+	//public static List<TimeSheets> retrieveActivityOptimize(long id){
+	public static List<TimeSheets> retrieveActivityOptimize(String sql, String[] params){
+		List<TimeSheets> times = new ArrayList<TimeSheets>();
+		
+		String tableTime = "tme";
+		String tableEmp = "emp";
+		String tableAct = "ac";
+		String sq = "SELECT "+
+				tableTime + ".timeDateTrans,"+
+				tableTime + ".timein," +
+				tableTime + ".timeout," +
+				tableTime + ".counthr," +
+				tableTime + ".isot," +
+				tableEmp + ".salary," +
+				tableEmp + ".jobtitleid," +
+				tableEmp + ".overtimerate," +
+				tableAct + ".actransid," +
+				tableAct + ".loads," +
+				tableAct + ".drums," +
+				"(SELECT a.acname FROM activity a WHERE a.isactiveac=1 AND a.acid= "+tableAct+".acid ) as acname," +
+				"(SELECT count(*) as totalEmployee FROM timesheets t WHERE t.isactivetime=1 AND t.actransid="+tableTime+".actransid) as totalEmployee"+
+				" FROM timesheets " + tableTime + ", employee " + tableEmp +", activitytrans " + tableAct + " WHERE " +
+				tableTime +".empid=" + tableEmp + ".empid AND " + 
+				tableTime +".actransid=" + tableAct + ".actransid ";
+				
+		
+		sql = sq + sql;
+		
+		Connection conn = null;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		try{
+		conn = ConnectDB.getConnection();
+		ps = conn.prepareStatement(sql);
+		
+		if(params!=null && params.length>0){
+			
+			for(int i=0; i<params.length; i++){
+				ps.setString(i+1, params[i]);
+			}
+			
+		}
+		
+		System.out.println("SQL TIMES : " + ps.toString());
+		
+		rs = ps.executeQuery();
+		
+		while(rs.next()){
+			
+			TimeSheets time = new TimeSheets();
+			try{time.setDateTrans(rs.getString("timeDateTrans"));}catch(NullPointerException e){}
+			try{time.setTimeIn(rs.getString("timein"));}catch(NullPointerException e){}
+			try{time.setTimeOut(rs.getString("timeout"));}catch(NullPointerException e){}
+			try{time.setCountHour(rs.getDouble("counthr"));}catch(NullPointerException e){}
+			try{time.setIsOvertime(rs.getInt("isot"));}catch(NullPointerException e){}
+			time.setTotalEmployee(rs.getDouble("totalEmployee"));
+			
+			Employee emp = new Employee();
+			try{emp.setSalary(rs.getDouble("salary"));}catch(NullPointerException e){}
+			try{emp.setOvertime(rs.getDouble("overtimerate"));}catch(NullPointerException e){}
+			
+			Job job = new Job();
+			try{job.setJobid(rs.getInt("jobtitleid"));}catch(NullPointerException e){}
+			emp.setJob(job);
+			time.setEmployee(emp);
+			
+			
+			ActivityTransactions trn = new ActivityTransactions();
+			try{trn.setId(rs.getLong("actransid"));}catch(NullPointerException e){}
+			try{trn.setLoads(rs.getString("loads"));}catch(NullPointerException e){}
+			try{trn.setDrums(rs.getString("drums"));}catch(NullPointerException e){}
+			
+			Activity ac = new Activity();
+			try{ac.setName(rs.getString("acname"));}catch(NullPointerException e){}
+			trn.setActivity(ac);
 			
 			time.setActivityTransactions(trn);
 			
@@ -857,6 +946,14 @@ public class TimeSheets {
 
 	public void setIsOvertime(int isOvertime) {
 		this.isOvertime = isOvertime;
+	}
+
+	public double getTotalEmployee() {
+		return totalEmployee;
+	}
+
+	public void setTotalEmployee(double totalEmployee) {
+		this.totalEmployee = totalEmployee;
 	}
 	
 }
