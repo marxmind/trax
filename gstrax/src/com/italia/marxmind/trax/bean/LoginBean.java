@@ -9,18 +9,17 @@ import java.nio.file.StandardCopyOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 
 import com.italia.marxmind.trax.application.AppInfo;
@@ -45,7 +44,7 @@ import com.italia.marxmind.trax.utils.Whitelist;
  *
  */
 
-@ManagedBean(name="loginBean", eager=true)
+@Named
 @SessionScoped
 public class LoginBean implements Serializable{
 
@@ -59,6 +58,7 @@ public class LoginBean implements Serializable{
 	private int businessId;
 	private List business;
 	private String ui="2";
+	private String themes="vela";
 	
 	private Map<Integer, Business> businessData = new HashMap<Integer, Business>();
 	
@@ -146,6 +146,7 @@ public class LoginBean implements Serializable{
 	        session.setAttribute("username", name);
 			session.setAttribute("userid", in.getLogid());
 			session.setAttribute("ui", getUi());
+			session.setAttribute("themes", getThemes());
 			
 			boolean isExpired = License.checkLicenseExpiration(Module.GSTRAX);
 			
@@ -324,6 +325,18 @@ public class LoginBean implements Serializable{
 
 	public void setUi(String ui) {
 		this.ui = ui;
+	}
+
+
+
+	public String getThemes() {
+		return themes;
+	}
+
+
+
+	public void setThemes(String themes) {
+		this.themes = themes;
 	}
 	
 }

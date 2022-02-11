@@ -10,9 +10,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -43,6 +43,7 @@ import com.italia.marxmind.trax.enm.Time;
 import com.italia.marxmind.trax.reader.ReadConfig;
 import com.italia.marxmind.trax.utils.Currency;
 import com.italia.marxmind.trax.utils.DateUtils;
+import com.italia.marxmind.trax.utils.GlobalVar;
 
 /**
  * 
@@ -50,7 +51,7 @@ import com.italia.marxmind.trax.utils.DateUtils;
  * @since 08/22/2017
  *@version 1.0
  */
-@ManagedBean(name="atimeBean", eager=true)
+@Named
 @ViewScoped
 public class TimeSheetActivityBean implements Serializable{
 
@@ -105,11 +106,11 @@ public class TimeSheetActivityBean implements Serializable{
 	private List<ActivityTransactions> activitiesData = new ArrayList<ActivityTransactions>();
 	
 	private final static double HOUR_IN_DAY = Double.valueOf(ReadConfig.value(Gstrax.NORMAL_RENDERED_HOURS));//8.0;
-	private final static double DRIVER_OT = 40.0;
-	private final static double LEAD_SPRAY_MAN_OT = 35.0;
-	private final static double NORMAL_OT = 35.0;
+	//private final static double DRIVER_OT = 40.0;
+	//private final static double LEAD_SPRAY_MAN_OT = 35.0;
+	//private final static double NORMAL_OT = 35.0;
 	private final static double LABOR_SPRAYMAN_DAILY_RATE = Double.valueOf(ReadConfig.value(Gstrax.LABOR_SPRAYMAN_DAILY_RATE));
-	private final static double LABOR_HARVESTER_DAILY_RATE = Double.valueOf(ReadConfig.value(Gstrax.LABOR_HARVESTER_DAILY_RATE));
+	//private final static double LABOR_HARVESTER_DAILY_RATE = Double.valueOf(ReadConfig.value(Gstrax.LABOR_HARVESTER_DAILY_RATE));
 	private final static double OVERTIME_START = Double.valueOf(ReadConfig.value(Gstrax.OTSTART)); //14.5;//start at 2:30PM
 	
 	private final static double DRIVER_NORMAL_PER_DRUM_RATE = Double.valueOf(ReadConfig.value(Gstrax.DRIVER_NORMAL_PER_DRUM_RATE));
@@ -118,8 +119,8 @@ public class TimeSheetActivityBean implements Serializable{
 	
 	private final static String FORCING1 = ReadConfig.value(Gstrax.FORCING1);
 	private final static String FORCING2 = ReadConfig.value(Gstrax.FORCING2);
-	private final static double FORCING_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.FORCING_RATE_PER_DRUM));
-	private final static double OTHER_SPRAY_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.OTHER_SPRAY_RATE_PER_DRUM));
+	//private final static double FORCING_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.FORCING_RATE_PER_DRUM));
+	//private final static double OTHER_SPRAY_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.OTHER_SPRAY_RATE_PER_DRUM));
 	
 	//use only for init
 	private double NUMBER_OF_FORCING_EMPLOYEE=0d;
@@ -470,8 +471,8 @@ public class TimeSheetActivityBean implements Serializable{
 		setCuts(null);
 		setRemarks(null);
 		
-		setTimeInId(6.5);
-		setTimeOutId(14.5);
+		setTimeInId(GlobalVar.DEFAULT_START_TIME);
+		setTimeOutId(GlobalVar.DEFAULT_END_TIME);
 		
 		setActivityId(0);
 		setLocationId(0);
@@ -1643,7 +1644,7 @@ public class TimeSheetActivityBean implements Serializable{
 
 	public double getTimeInId() {
 		if(timeInId==0){
-			timeInId = 6.5;
+			timeInId = GlobalVar.DEFAULT_START_TIME;
 		}
 		return timeInId;
 	}
@@ -1662,7 +1663,7 @@ public class TimeSheetActivityBean implements Serializable{
 
 	public double getTimeOutId() {
 		if(timeOutId==0){
-			timeOutId = 14.5;
+			timeOutId = GlobalVar.DEFAULT_END_TIME;
 		}
 		return timeOutId;
 	}

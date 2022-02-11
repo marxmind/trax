@@ -23,7 +23,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             <h:outputStylesheet name="sb-admin/font-awesome/css/all.min.css" />
             <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
             <h:outputStylesheet name="sb-admin/css/bg-sidebar.css"/>
-            
+            <h:outputStylesheet name="css/bodyconf.css"/>
             <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
      </f:facet>
      <f:facet name="last">       
@@ -66,14 +66,14 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 <h:body id="page-top">
 <h:form prependId="false" id="formIdMain">
 <p:growl id="msg" showDetail="true"/>
-<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
  </p:confirmDialog>	
 <nav class="navbar navbar-expand navbar-intel bg-intel static-top">
 		
 	  
-      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+      <ui:include src="appname.xhtml" />
 
       <!-- Navbar Search -->
       <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
@@ -98,7 +98,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
       <i class="fas fa-angle-up"></i>
     </a>
     
-    <p:dialog header="Update Notice" position="center center" showEffect="clip" hideEffect="clip" widgetVar="updateNoticeDlg" closable="true" Height="500" width="700">
+    <p:dialog header="Update Notice" position="left center" showEffect="fade" hideEffect="fade" widgetVar="updateNoticeDlg" closable="false"  Height="500" width="500">
     	<div class="resume-item d-flex flex-column flex-md-row mb-5">
             <div class="resume-content mr-auto">
               <div>Latest Build</div>

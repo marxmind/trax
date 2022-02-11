@@ -9,10 +9,15 @@
     <ui:composition>
     
     <footer class="sticky-footer citizenBox">
+    		
           <div class="container my-auto">
+          	<div id="onProgId" style="display:none; z-index: 9999999999;">
+    				<p:progressBar id="progressBarIndecator" style="background-color: #00467F; height:20px" mode="indeterminate"/>
+    	    </div>
             <div class="copyright text-center my-auto">
               <span>#{versionBean.copyright.copyrightname}</span>
             </div>
+            
           </div>
         </footer>
     

@@ -4,10 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import com.italia.marxmind.trax.application.Application;
 import com.italia.marxmind.trax.controller.Job;
@@ -19,7 +18,7 @@ import com.italia.marxmind.trax.controller.Job;
  * @version 1.0
  *
  */
-@ManagedBean(name="posBean", eager=true)
+@Named
 @ViewScoped
 public class PositionBean implements Serializable{
 

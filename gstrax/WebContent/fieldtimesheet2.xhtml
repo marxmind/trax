@@ -24,7 +24,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
             <h:outputStylesheet name="sb-admin/css/bg-sidebar.min.css"/>
             <h:outputStylesheet name="css/font-awesome.min.css" />
-            
+             <h:outputStylesheet name="css/bodyconf.css"/>
      </f:facet>
      <f:facet name="last">       
             <h:outputScript name="jquery/jquery.min.js" target="head"/>
@@ -63,7 +63,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 <h:form prependId="false" id="formId">
 
 <p:growl id="msg" life="8000" showDetail="true" />
- <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
  </p:confirmDialog>	
@@ -71,16 +71,16 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
  
  <nav class="navbar navbar-expand navbar-intel bg-intel static-top">
 
-      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+      <ui:include src="appname.xhtml" />
       
       <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         	  
         	  
-        	  <div class="input-group">	
-        	  	 		<p:inputText value="#{fldBean.searchDescription}" placeholder="Search..." style="width: 20em;" />
-				        <p:calendar value="#{fldBean.timeSheetFrom}" pattern="yyyy-MM-dd" effect="slideDown"/>
-				        <p:calendar value="#{fldBean.timeSheetTo}" pattern="yyyy-MM-dd" effect="slideDown"/>
-				        <p:commandButton update="activityData" icon="fa fa-search" action="#{fldBean.loadEnployeeSheets}"/>
+        	  <div class="ui-inputgroup">
+        	  	 		<p:inputText value="#{fieldTimeSheetBean.searchDescription}" placeholder="Search..." style="width: 20em;" />
+				        <p:calendar value="#{fieldTimeSheetBean.timeSheetFrom}" pattern="yyyy-MM-dd" effect="slideDown"/>
+				        <p:calendar value="#{fieldTimeSheetBean.timeSheetTo}" pattern="yyyy-MM-dd" effect="slideDown"/>
+				        <p:commandButton update="activityData" icon="fa fa-search" action="#{fieldTimeSheetBean.loadEnployeeSheets}"/>
           	  </div>
      </div>
 
@@ -107,8 +107,8 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		   </div>
 		   
 		   		<div id="paneltable" style="display: block">
-		   			 <p:dataTable id="activityData" var="rpt" value="#{fldBean.timeSheets}" editable="true" 
-		       editMode="cell" widgetVar="cellTrans" scrollable="true"  style="#{skin.table}"
+		   			 <p:dataTable id="activityData" var="rpt" value="#{fieldTimeSheetBean.timeSheets}" editable="true" 
+		       editMode="cell" widgetVar="cellTrans" scrollable="true" 
 		       rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
                          rowsPerPageTemplate="5,10,15,20,50,100" 
                          paginatorAlwaysVisible="true" paginatorPosition="top"
@@ -116,21 +116,21 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
                          
                          
                          <f:facet name="{Exporters}">
-                         	<p:commandButton value="Add New" icon="fa fa-file" actionListener="#{fldBean.addNew}" update="activityData" style="float: right"/>
+                         	<p:commandButton value="Add New" icon="fa fa-file" actionListener="#{fieldTimeSheetBean.addNew}" update="activityData" style="float: right"/>
 		    				<p:commandButton value="Replicate" update="repId" icon="fa fa-file" onclick="PF('replicateDlg').show()" style="float: right"/>
                          </f:facet>
                          
-		        <p:ajax event="cellEdit"  listener="#{fldBean.onCellEdit}" update="activityData" />	
+		        <p:ajax event="cellEdit"  listener="#{fieldTimeSheetBean.onCellEdit}" update="activityData" />	
 		        
 		        <p:column headerText="[*]" width="20" exportable="false">
-		        		<p:commandButton update=":formId:activityData msg" icon="fa fa-trash"  actionListener="#{fldBean.deleteRow(rpt)}">
+		        		<p:commandButton update=":formId:activityData msg" icon="fa fa-trash"  actionListener="#{fieldTimeSheetBean.deleteRow(rpt)}">
 		        			<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
 		        		</p:commandButton>
 		        </p:column>
 		        
 		        <p:column headerText="Replicate" width="30" exportable="false">
 		        	<p:selectBooleanCheckbox value="#{rpt.replicate}">
-		                  		<p:ajax update="activityData" listener="#{fldBean.selectedReplicate(rpt)}" />
+		                  		<p:ajax update="activityData" listener="#{fieldTimeSheetBean.selectedReplicate(rpt)}" />
 		            </p:selectBooleanCheckbox>
 		        </p:column>
 		        
@@ -138,21 +138,21 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		              <p:cellEditor>
 		              	  <f:facet name="output"><h:outputText value="#{rpt.dateTrans}" /></f:facet>
 		                  <f:facet name="input">
-		                  <h:inputText  a:placeholder="Date" a:type="date" value="#{rpt.dateTrans}"  style="width:120%;color:black"/>
+		                  <h:inputText  a:placeholder="Date" a:type="date" value="#{rpt.dateTrans}"  style="width:120%"/>
 		                  </f:facet>
 		              </p:cellEditor>
 		         </p:column>
 		        <p:column headerText="Name" width="70">
 		        	<h:outputText value="#{rpt.employee.fullName}"/>&nbsp;&nbsp;
-		        	<p:commandButton update="employeeData idEmp" icon="fa fa-search" actionListener="#{fldBean.assignedIndex(rpt.index)}" onclick="PF('employeeDialog').show();"/>
+		        	<p:commandButton update="employeeData idEmp" icon="fa fa-search" actionListener="#{fieldTimeSheetBean.assignedIndex(rpt.index)}" onclick="PF('employeeDialog').show();"/>
 		        </p:column>
 		        
 		        <p:column headerText="Time In" width="50">
 		        	<p:cellEditor>
 		        		<f:facet name="output"><h:outputText value="#{rpt.timeIn}" /></f:facet>
 		                <f:facet name="input">
-				        <p:selectOneMenu value="#{fldBean.timeInId}" style="width:120%;color:black" filter="true" filterMatchMode="contains">
-				            	<f:selectItems value="#{fldBean.timeIns}"/>
+				        <p:selectOneMenu value="#{rpt.timeInId}" style="width:120%" filter="true" filterMatchMode="contains">
+				            	<f:selectItems value="#{rpt.timeIns}"/>
 				        </p:selectOneMenu>
 				        </f:facet>
 		        	</p:cellEditor>
@@ -162,8 +162,8 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		        	<p:cellEditor>
 		        		<f:facet name="output"><h:outputText value="#{rpt.timeOut}" /></f:facet>
 		                <f:facet name="input">
-				        <p:selectOneMenu value="#{fldBean.timeOutId}" style="width:120%;color:black" filter="true" filterMatchMode="contains">
-				            	<f:selectItems value="#{fldBean.timeOuts}"/>
+				        <p:selectOneMenu value="#{rpt.timeOutId}" style="width:120%;" filter="true" filterMatchMode="contains">
+				            	<f:selectItems value="#{rpt.timeOuts}"/>
 				        </p:selectOneMenu>
 				        </f:facet>
 		        	</p:cellEditor>
@@ -171,26 +171,26 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		         
 		         <p:column headerText="OT" width="20">
 		        	<p:selectBooleanCheckbox value="#{rpt.tagOT}">
-		                  		<p:ajax update="activityData" listener="#{fldBean.updateSheets(rpt)}" />
+		                  		<p:ajax update="activityData" listener="#{fieldTimeSheetBean.updateSheets(rpt)}" />
 		            </p:selectBooleanCheckbox>
 		        </p:column>
 		         
 		         <p:column headerText="Activity" width="70">
 		        	<h:outputText value="#{rpt.activity.name}"/>&nbsp;&nbsp;
-		        	<p:commandButton update="actData idAct" icon="fa fa-search" actionListener="#{fldBean.assignedIndex(rpt.index)}" onclick="PF('activityDialog').show();"/>
+		        	<p:commandButton update="actData idAct" icon="fa fa-search" actionListener="#{fieldTimeSheetBean.assignedIndex(rpt.index)}" onclick="PF('activityDialog').show();"/>
 		        </p:column>
 		         
 		         
 		          <p:column headerText="Area" width="70">
 		        	<h:outputText value="#{rpt.location.name}"/>&nbsp;&nbsp;
-		        	<p:commandButton update="areaData idArea" icon="fa fa-search" actionListener="#{fldBean.assignedIndex(rpt.index)}" onclick="PF('areaDialog').show();"/>
+		        	<p:commandButton update="areaData idArea" icon="fa fa-search" actionListener="#{fieldTimeSheetBean.assignedIndex(rpt.index)}" onclick="PF('areaDialog').show();"/>
 		          </p:column>
 		         
 		         <p:column headerText="Blocks" width="50">
 		              <p:cellEditor>
 		              	  <f:facet name="output"><h:outputText value="#{rpt.blocks}" /></f:facet>
 		                  <f:facet name="input">
-		                  		<h:inputText value="#{rpt.blocks}" style="width:120%;color:black"/>
+		                  		<h:inputText value="#{rpt.blocks}" style="width:120%;"/>
 		                  </f:facet>
 		              </p:cellEditor>
 		         </p:column>
@@ -199,7 +199,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		              <p:cellEditor>
 		              	  <f:facet name="output"><h:outputText value="#{rpt.cuts}" /></f:facet>
 		                  <f:facet name="input">
-		                  		<h:inputText value="#{rpt.cuts}" style="width:120%;color:black"/>
+		                  		<h:inputText value="#{rpt.cuts}" style="width:120%;"/>
 		                  </f:facet>
 		              </p:cellEditor>
 		         </p:column>
@@ -207,10 +207,10 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		         
 		         
 		        <p:column headerText="Action" width="100">
-		        	<p:commandButton value="Replicate" icon="fa fa-file" actionListener="#{fldBean.copyPaste(rpt)}" update="activityData msg">
+		        	<p:commandButton value="Replicate" icon="fa fa-file" actionListener="#{fieldTimeSheetBean.copyPaste(rpt)}" update="activityData msg">
 		        		<p:confirm header="Confirmation" message="Are you sure you want to replicate this date" icon="ui-icon-alert" />
 		        	</p:commandButton>
-		        	<p:commandButton value="Save" icon="fa fa-floppy-o" actionListener="#{fldBean.saveLaborAct(rpt)}" update="activityData msg">
+		        	<p:commandButton value="Save" icon="fa fa-floppy-o" actionListener="#{fieldTimeSheetBean.saveLaborAct(rpt)}" update="activityData msg">
 		        		<p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
 		        	</p:commandButton>
 		        </p:column>
@@ -312,21 +312,21 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	</script>
  	
  	
- 	<p:dialog header="Replicate" position="center center" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="replicateDlg" Height="500" width="400" closable="false">
+ 	<p:dialog header="Replicate" position="center top" showEffect="clip" hideEffect="clip" widgetVar="replicateDlg" Height="500" width="400" closable="false">
 		<p:panelGrid columns="3" id="repId">
-			<p:calendar value="#{fldBean.newDateReplicate}" pattern="yyyy-MM-dd"/>
-			<p:commandButton value="Replicate" icon="fa fa-floppy-o" actionListener="#{fldBean.replicateSelectedData}" update="activityData msg"/>
+			<p:calendar value="#{fieldTimeSheetBean.newDateReplicate}" pattern="yyyy-MM-dd"/>
+			<p:commandButton value="Replicate" icon="fa fa-floppy-o" actionListener="#{fieldTimeSheetBean.replicateSelectedData}" update="activityData msg"/>
 			<p:commandButton value="Close"  onclick="PF('replicateDlg').hide()"/>
 		</p:panelGrid>
 	</p:dialog>
 	
 		
-		<p:dialog header="Area Look Up" position="center top" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="areaDialog" Height="500" width="500" closable="false">
+		<p:dialog header="Area Look Up" position="center top" showEffect="clip" hideEffect="clip" widgetVar="areaDialog" Height="500" width="500" closable="false">
 			
 			<p:toolbar id="areabar">
     		<f:facet name="left">
-    			<p:inputText id="idArea" placeholder="Search..." value="#{fldBean.searchLocation}" >
-    				<f:ajax event="keyup" listener="#{fldBean.loadArea}" render="areaData"/>
+    			<p:inputText id="idArea" placeholder="Search..." value="#{fieldTimeSheetBean.searchLocation}" >
+    				<f:ajax event="keyup" listener="#{fieldTimeSheetBean.loadArea}" render="areaData"/>
     			</p:inputText>
     		</f:facet>
     		<f:facet name="right">
@@ -335,13 +335,13 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		</p:toolbar> 
 		
 		
-		<p:dataGrid id="areaData" var="act" value="#{fldBean.loctionsSelection}" columns="4" layout="grid"
+		<p:dataGrid id="areaData" var="act" value="#{fieldTimeSheetBean.loctionsSelection}" columns="4" layout="grid"
                 	rows="12" paginator="true" style="margin-top:20px" 
                 	paginatorAlwaysVisible="false" paginatorPosition="top"
                 	>
                 	
                 	<p:panel header="#{act.id}">
-	            		<p:commandLink actionListener="#{fldBean.selectedArea(act)}" update="activityData" value="#{act.name}" onclick="PF('areaDialog').hide();"/>
+	            		<p:commandLink actionListener="#{fieldTimeSheetBean.selectedArea(act)}" update="activityData" value="#{act.name}" onclick="PF('areaDialog').hide();"/>
             		</p:panel>
             		
         </p:dataGrid>
@@ -349,12 +349,12 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		</p:dialog>
 		
 		
-		<p:dialog header="Activity Look Up" position="center top" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="activityDialog" Height="500" width="500" closable="false">
+		<p:dialog header="Activity Look Up" position="center top" showEffect="clip" hideEffect="clip" widgetVar="activityDialog" Height="500" width="500" closable="false">
 			
 			<p:toolbar id="actbar">
     		<f:facet name="left">
-    			<p:inputText id="idAct" placeholder="Search..." value="#{fldBean.searchActivity}" >
-    				<f:ajax event="keyup" listener="#{fldBean.loadActivities}" render="actData"/>
+    			<p:inputText id="idAct" placeholder="Search..." value="#{fieldTimeSheetBean.searchActivity}" >
+    				<f:ajax event="keyup" listener="#{fieldTimeSheetBean.loadActivities}" render="actData"/>
     			</p:inputText>	
     		</f:facet>
     		<f:facet name="right">
@@ -363,13 +363,13 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		</p:toolbar> 
 		
 		
-		<p:dataGrid id="actData" var="act" value="#{fldBean.activitySelection}" columns="4" layout="grid"
+		<p:dataGrid id="actData" var="act" value="#{fieldTimeSheetBean.activitySelection}" columns="4" layout="grid"
                 	rows="12" paginator="true" style="margin-top:20px" 
                 	paginatorAlwaysVisible="false" paginatorPosition="top"
                 	>
                 	
                 	<p:panel header="#{act.id}">
-	            		<p:commandLink actionListener="#{fldBean.selectedActivity(act)}" update="activityData" value="#{act.name}" onclick="PF('activityDialog').hide();"/>
+	            		<p:commandLink actionListener="#{fieldTimeSheetBean.selectedActivity(act)}" update="activityData" value="#{act.name}" onclick="PF('activityDialog').hide();"/>
             		</p:panel>
             		
         </p:dataGrid>
@@ -377,11 +377,11 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		</p:dialog>
 		
 		
-		<p:dialog header="Employee Look Up" position="center top" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="employeeDialog" Height="500" width="500" closable="false">
+		<p:dialog header="Employee Look Up" position="center top" showEffect="clip" hideEffect="clip" widgetVar="employeeDialog" Height="500" width="500" closable="false">
 		<p:toolbar id="empbar">
     		<f:facet name="left">
-    			<p:inputText id="idEmp" placeholder="Search..." value="#{fldBean.searchEmployee}" style="width: 20em">
-    				<f:ajax event="keyup" listener="#{fldBean.loadEmployee}" render="employeeData"/>
+    			<p:inputText id="idEmp" placeholder="Search..." value="#{fieldTimeSheetBean.searchEmployee}" style="width: 20em">
+    				<f:ajax event="keyup" listener="#{fieldTimeSheetBean.loadEmployee}" render="employeeData"/>
     			</p:inputText>
     		</f:facet>
     		<f:facet name="right">
@@ -389,25 +389,25 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
     		</f:facet>
 		</p:toolbar> 
 		
-		<p:dataGrid id="employeeData" var="emps" value="#{fldBean.employeeSelection}" columns="4" layout="grid"
+		<p:dataGrid id="employeeData" var="emps" value="#{fieldTimeSheetBean.employeeSelection}" columns="4" layout="grid"
                 	rows="12" paginator="true" style="margin-top:20px"
                 	paginatorAlwaysVisible="false" paginatorPosition="top" 
                 	>
                 	
             		<p:panel header="#{emps.job.jobname}">
-	            		<p:commandLink actionListener="#{fldBean.selectedLabor(emps)}" update="activityData msg" value="#{emps.firstName} #{emps.lastName}" onclick="PF('employeeDialog').hide();"/>
+	            		<p:commandLink actionListener="#{fieldTimeSheetBean.selectedLabor(emps)}" update="activityData msg" value="#{emps.firstName} #{emps.lastName}" onclick="PF('employeeDialog').hide();"/>
 	            		<p:outputLabel value="#{emps.timeRecordedInfo}" style="color: red"/>
             		</p:panel>
             		
         </p:dataGrid>
         </p:dialog>
 		
-		<p:dialog header="Material Look Up" position="center top" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="materialDialog" Height="500" width="500" closable="false">
+		<p:dialog header="Material Look Up" position="center top"  showEffect="clip" hideEffect="clip" widgetVar="materialDialog" Height="500" width="500" closable="false">
 			
 			<p:toolbar id="matbar">
     		<f:facet name="left">
-    			<p:inputText id="idMat" placeholder="Search..." value="#{fldBean.searchMaterial}" style="width: 20em">
-    				<f:ajax event="keyup" listener="#{fldBean.loadMaterials}" render="materialData"/>
+    			<p:inputText id="idMat" placeholder="Search..." value="#{fieldTimeSheetBean.searchMaterial}" style="width: 20em">
+    				<f:ajax event="keyup" listener="#{fieldTimeSheetBean.loadMaterials}" render="materialData"/>
     			</p:inputText>
     		</f:facet>
     		<f:facet name="right">
@@ -415,7 +415,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
     		</f:facet>
 		</p:toolbar> 
 		
-		<p:dataGrid id="materialData" var="mar" value="#{fldBean.materialSelection}" columns="4" layout="grid"
+		<p:dataGrid id="materialData" var="mar" value="#{fieldTimeSheetBean.materialSelection}" columns="4" layout="grid"
                 	rows="12" paginator="true" style="margin-top:20px" 
                 	paginatorAlwaysVisible="false" paginatorPosition="top"
                 	>
@@ -425,19 +425,19 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
                 		<h:panelGrid columns="1" style="width:100%">
                 		
                 		<h:outputLabel  value="UOM: "/>
-            			<p:selectOneMenu id="uomDataId" value="#{fldBean.uomId}" style="width: 8em" filter="true" filterMatchMode="contains">
-            				<f:selectItems value="#{fldBean.uoms}"/>
-            				<f:ajax event="change"  listener="#{fldBean.inputedQty}" render="qtyId"/>
+            			<p:selectOneMenu id="uomDataId" value="#{fieldTimeSheetBean.uomId}" style="width: 8em" filter="true" filterMatchMode="contains">
+            				<f:selectItems value="#{fieldTimeSheetBean.uoms}"/>
+            				<f:ajax event="change"  listener="#{fieldTimeSheetBean.inputedQty}" render="qtyId"/>
             			</p:selectOneMenu>
                 		
                 		</h:panelGrid>
                 		
                 		<f:facet name="footer">
                 			<p:outputLabel  value="Qty"/>
-                			<p:inputText id="qtyId" value="#{fldBean.quantity}" style="width: 5em" a:type="number">
-                				<f:ajax event="change"  listener="#{fldBean.inputedQty}" render="qtyId"/>
+                			<p:inputText id="qtyId" value="#{fieldTimeSheetBean.quantity}" style="width: 5em" a:type="number">
+                				<f:ajax event="change"  listener="#{fieldTimeSheetBean.inputedQty}" render="qtyId"/>
                 			</p:inputText>
-                			<p:commandButton update="activityData qtyId msg" id="savecartId" value="Add" icon="ui-icon-cart" actionListener="#{fldBean.selectedMaterial(mar)}"/>
+                			<p:commandButton update="activityData qtyId msg" id="savecartId" value="Add" icon="ui-icon-cart" actionListener="#{fieldTimeSheetBean.selectedMaterial(mar)}"/>
                 		</f:facet>
                 		
                 	</p:panel>
@@ -446,7 +446,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		
 		</p:dialog>	
 		
-		<p:dialog header="Selected Material Look Up" position="center top" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="materialSelectedDialog" Height="500" width="500" closable="false">
+		<p:dialog header="Selected Material Look Up" position="center top" showEffect="clip" hideEffect="clip" widgetVar="materialSelectedDialog" Height="500" width="500" closable="false">
 		
 		<p:toolbar id="selRembar">
     		<f:facet name="left">
@@ -457,7 +457,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
     		</f:facet>
 		</p:toolbar> 
 				
-		<p:dataGrid id="selectedMatData" var="mar" value="#{fldBean.materialSelected}" columns="4" layout="grid"
+		<p:dataGrid id="selectedMatData" var="mar" value="#{fieldTimeSheetBean.materialSelected}" columns="4" layout="grid"
                 	rows="12" paginator="true" style="margin-top:20px" 
                 	paginatorAlwaysVisible="false" paginatorPosition="top"
                 	>
@@ -465,7 +465,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
                 	<p:panel header="#{mar.qty} #{mar.uom.symbol} of #{mar.materials.name}" style="text-align:center">
                 		
                 		<f:facet name="footer">
-                			<p:commandButton update="activityData selectedMatData" id="removedSaveId" value="Remove" icon="ui-icon-circle-close" actionListener="#{fldBean.removeSelectedMaterial(mar)}">
+                			<p:commandButton update="activityData selectedMatData" id="removedSaveId" value="Remove" icon="ui-icon-circle-close" actionListener="#{fieldTimeSheetBean.removeSelectedMaterial(mar)}">
                 				<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
                 			</p:commandButton>
                 		</f:facet>

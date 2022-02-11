@@ -4,11 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import com.italia.marxmind.trax.controller.Department;
 import com.italia.marxmind.trax.controller.Job;
@@ -23,7 +22,7 @@ import com.italia.marxmind.trax.utils.LogU;
  * @since 09/29/2016
  *@version 1.0
  */
-@ManagedBean(name="auserBean", eager=true)
+@Named
 @ViewScoped
 public class AdminUserBean implements Serializable{
 	

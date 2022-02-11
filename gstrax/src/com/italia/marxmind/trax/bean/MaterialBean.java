@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import com.italia.marxmind.trax.application.Application;
 import com.italia.marxmind.trax.controller.Materials;
 
@@ -21,7 +19,7 @@ import com.italia.marxmind.trax.controller.Materials;
  * @version 1.0
  *
  */
-@ManagedBean(name="matBean", eager=true)
+@Named
 @ViewScoped
 public class MaterialBean implements Serializable{
 

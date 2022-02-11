@@ -24,7 +24,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
             <h:outputStylesheet name="sb-admin/css/bg-sidebar.min.css"/>
             <h:outputStylesheet name="css/font-awesome.min.css" />
-            
+             <h:outputStylesheet name="css/bodyconf.css"/>
      </f:facet>
      <f:facet name="last">       
             <h:outputScript name="jquery/jquery.min.js" target="head"/>
@@ -63,7 +63,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 <h:form prependId="false" id="formId">
 
 <p:growl id="msg" life="8000" showDetail="true" />
- <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
  </p:confirmDialog>	
@@ -71,14 +71,14 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
  
  <nav class="navbar navbar-expand navbar-intel bg-intel static-top">
 
-      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+      <ui:include src="appname.xhtml" />
       
       <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         	  
         	  
         	  <div class="input-group">
-		        	<p:inputText value="#{empBean.searchName}" placeholder="Search Employee Name" style="width: 20em">
-    					<p:ajax event="keyup" listener="#{empBean.init}" update="cusId usercusId" delay="800"/>
+		        	<p:inputText value="#{employeeBean.searchName}" placeholder="Search Employee Name" style="width: 20em">
+    					<p:ajax event="keyup" listener="#{employeeBean.init}" update="cusId usercusId" delay="800"/>
     			    </p:inputText>
           	  </div>
      </div>
@@ -103,17 +103,17 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	</p:tooltip>
     
     <!-- Scroll Menu button-->
-    <p:commandLink id="addButtonId" styleClass="create-new rounded" update="usercusId" actionListener="#{empBean.clearFields}"  oncomplete="addNew();" >
+    <p:commandLink id="addButtonId" styleClass="create-new rounded" update="usercusId" actionListener="#{employeeBean.clearFields}"  oncomplete="addNew();" >
       <i class="fa fa-file-o"></i>
     </p:commandLink>
-    <p:commandLink id="clearButtonId" styleClass="create-clear rounded" update="usercusId" actionListener="#{empBean.clearFields}" >
+    <p:commandLink id="clearButtonId" styleClass="create-clear rounded" update="usercusId" actionListener="#{employeeBean.clearFields}" >
       <i class="fa fa-eraser"></i>
     </p:commandLink>
-    <p:commandLink id="saveButtonId" styleClass="create-save rounded" update="usercusId cusId msg" actionListener="#{empBean.saveData}" oncomplete="hideWizard();">
+    <p:commandLink id="saveButtonId" styleClass="create-save rounded" update="usercusId cusId msg" actionListener="#{employeeBean.saveData}" oncomplete="hideWizard();">
 	     <p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
 	     <i class="fa fa-floppy-o"></i>
 	</p:commandLink>
-    <p:commandLink id="hideButtonId" styleClass="create-hide rounded" onclick="hideWizard();" update="usercusId" actionListener="#{empBean.clearFields}">
+    <p:commandLink id="hideButtonId" styleClass="create-hide rounded" onclick="hideWizard();" update="usercusId" actionListener="#{employeeBean.clearFields}">
     	<i class="fa fa-eye-slash"></i>
     </p:commandLink>
       
@@ -127,65 +127,70 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		   		<p:panelGrid id="usercusId" columns="6" layout="grid">
 				
 				<p:outputLabel value="Registered Date:"/>
-				<p:inputText value="#{empBean.dateRegistered}"  a:type="date" style="width: 10em"/>
+				<p:inputText value="#{employeeBean.dateRegistered}"  a:type="date" style="width: 20em"/>
 				
 				<h:outputLabel value="Resigned Date:"/>
-				<p:inputText value="#{empBean.dateResigned}" a:type="date" style="width: 10em"/>
+				<p:inputText value="#{employeeBean.dateResigned}" a:type="date" style="width: 20em"/>
 				
 				<p:outputLabel value="Resigned:"/>
-				<p:selectBooleanCheckbox value="#{empBean.resigned}" style="width: 10em"/>
+				<p:selectBooleanCheckbox value="#{employeeBean.resigned}" style="width: 10em"/>
 						
 				<p:outputLabel value="First Name:"/>
-            	<p:inputText value="#{empBean.firstName}" style="width: 10em"/>
+            	<p:inputText value="#{employeeBean.firstName}" style="width: 20em"/>
         		
         		<p:outputLabel value="Middle Name:"/>
-            	<p:inputText value="#{empBean.middleName}" style="width: 10em"/>
+            	<p:inputText value="#{employeeBean.middleName}" style="width: 20em"/>
         		
         		
         		<p:outputLabel  value="Last Name:"/>
-            	<p:inputText value="#{empBean.lastName}" style="width: 10em"/>
+            	<p:inputText value="#{employeeBean.lastName}" style="width: 20em"/>
         		
         		
         		<p:outputLabel value="Age:"/>
-        		<p:inputText value="#{empBean.age}" a:type="number" style="width: 10em"/>
+        		<p:inputText value="#{employeeBean.age}" a:type="number" style="width: 20em"/>
         		
         		<p:outputLabel value="Salary:"/>
-        		<p:inputText value="#{empBean.salary}" a:type="number" style="width: 10em"/>
+        		<p:inputText value="#{employeeBean.salary}" a:type="number" style="width: 20em"/>
         		
         		<p:outputLabel value="Over Time Rate:"/>
-        		<p:inputText value="#{empBean.overtime}" a:type="number" style="width: 10em"/>
+        		<p:inputText value="#{employeeBean.overtime}" a:type="number" style="width: 20em"/>
         		
         		<p:outputLabel  value="Gender: "/>
-            		<p:selectOneMenu value="#{empBean.genderId}" style="width: 10em">
-                		<f:selectItems value="#{empBean.genders}"/>
+            		<p:selectOneMenu value="#{employeeBean.genderId}" style="width: 20em">
+                		<f:selectItems value="#{employeeBean.genders}"/>
             		</p:selectOneMenu>
         		
         		<p:outputLabel  value="Position: "/>
-            		<p:selectOneMenu value="#{empBean.positionId}" style="width: 10em" filter="true" filterMatchMode="contains">
-                		<f:selectItems value="#{empBean.positions}"/>
+            		<p:selectOneMenu value="#{employeeBean.positionId}" style="width: 20em" filter="true" filterMatchMode="contains">
+                		<f:selectItems value="#{employeeBean.positions}"/>
             		</p:selectOneMenu>
         		
         		<p:outputLabel value="Purok:"/>
-            	<p:inputText value="#{empBean.purok}" style="width: 10em"/>
+            	<p:inputText value="#{employeeBean.purok}" style="width: 20em"/>
         		
         		<p:outputLabel  value="Barangay: "/>
-            		<p:selectOneMenu value="#{empBean.barangayId}" style="width: 10em" filter="true" filterMatchMode="contains">
-                		<f:selectItems value="#{empBean.barangays}"/>
+            		<p:selectOneMenu value="#{employeeBean.barangayId}" style="width: 20em" filter="true" filterMatchMode="contains">
+                		<f:selectItems value="#{employeeBean.barangays}"/>
             		</p:selectOneMenu>
         		
         		<p:outputLabel  value="Municipality: "/>
-            		<p:selectOneMenu value="#{empBean.municipalityId}" style="width: 10em" filter="true" filterMatchMode="contains">
-                		<f:selectItems value="#{empBean.municipalitys}"/>
+            		<p:selectOneMenu value="#{employeeBean.municipalityId}" style="width: 20em" filter="true" filterMatchMode="contains">
+                		<f:selectItems value="#{employeeBean.municipalitys}"/>
             		</p:selectOneMenu>
         		
         		<p:outputLabel  value="Province: "/>
-            		<p:selectOneMenu value="#{empBean.provinceId}" style="width: 10em" filter="true" filterMatchMode="contains">
-                		<f:selectItems value="#{empBean.provinces}"/>
+            		<p:selectOneMenu value="#{employeeBean.provinceId}" style="width: 20em" filter="true" filterMatchMode="contains">
+                		<f:selectItems value="#{employeeBean.provinces}"/>
             		</p:selectOneMenu>
         		
         		<p:outputLabel value="Contact No:"/>
-            	<p:inputText value="#{empBean.contactNo}" style="width: 10em"/>
+            	<p:inputText value="#{employeeBean.contactNo}" style="width: 20em"/>
         		
+        		<p:outputLabel/>
+        	    <p:outputLabel/>
+        	    		
+        	    <p:outputLabel/>
+        	    <p:outputLabel/>
 				   	
      		</p:panelGrid> 
 			
@@ -195,20 +200,20 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		    		</f:facet>
 		    		<f:facet name="right">
 		    		
-		    			<p:commandButton update="cardData"  value="New" actionListener="#{empBean.addCard}" icon="ui-icon-document"/>
+		    			<p:commandButton update="cardData"  value="New" actionListener="#{employeeBean.addCard}" icon="ui-icon-document"/>
 		    			
 		    		</f:facet>
 			</p:toolbar>
 			
-			<p:dataTable id="cardData" var="crd" value="#{empBean.cardSheets}" editable="true" 
-		       editMode="cell" widgetVar="cellTrans" scrollable="true"  style="#{skin.table}" 
+			<p:dataTable id="cardData" var="crd" value="#{employeeBean.cardSheets}" editable="true" 
+		       editMode="cell" widgetVar="cellTrans" scrollable="true" 
 		       paginatorAlwaysVisible="false" paginatorPosition="top"
 		       >
 		       
-		       <p:ajax event="cellEdit"  listener="#{empBean.onCellEdit}" update="cardData" />
+		       <p:ajax event="cellEdit"  listener="#{employeeBean.onCellEdit}" update="cardData" />
                
                 <p:column headerText="[*]" width="20" exportable="false">
-	        		<p:commandButton update="cardData msg" icon="fa fa-trash"  actionListener="#{empBean.deleteCard(crd)}">
+	        		<p:commandButton update="cardData msg" icon="fa fa-trash"  actionListener="#{employeeBean.deleteCard(crd)}">
 	        			<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
 	        		</p:commandButton>
         		</p:column>
@@ -217,8 +222,8 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		        	<p:cellEditor>
 		        		<f:facet name="output"><p:outputLabel value="#{crd.cardTypeName}" /></f:facet>
 		                <f:facet name="input">
-				        <p:selectOneMenu value="#{empBean.cardId}" style="width:120%;color:black">
-				            	<f:selectItems value="#{empBean.cardTypes}"/>
+				        <p:selectOneMenu value="#{employeeBean.cardId}" style="width:120%">
+				            	<f:selectItems value="#{employeeBean.cardTypes}"/>
 				        </p:selectOneMenu>
 				        </f:facet>
 		        	</p:cellEditor>
@@ -228,13 +233,13 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	              	<p:cellEditor>
 	              	  <f:facet name="output"><p:outputLabel value="#{crd.accountNumber}" /></f:facet>
 	                  <f:facet name="input">
-	                  		<h:inputText value="#{crd.accountNumber}" style="width:120%;color:black"/>
+	                  		<h:inputText value="#{crd.accountNumber}" style="width:120%;"/>
 	                  </f:facet>
 	                </p:cellEditor>
          		</p:column>
                 
                 <p:column headerText="Action" width="100">
-		        	<p:commandButton value="Save" icon="fa fa-floppy-o" actionListener="#{empBean.saveCard(crd)}" update="cardData msg">
+		        	<p:commandButton value="Save" icon="fa fa-floppy-o" actionListener="#{employeeBean.saveCard(crd)}" update="cardData msg">
 		        		<p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
 		        	</p:commandButton>
         		</p:column>
@@ -245,20 +250,20 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		   </div>
 		   
 		   		<div id="paneltable" style="display: block">
-		   			<p:dataTable id="cusId" value="#{empBean.employees}" var="rpt" stickyHeader="false"
+		   			<p:dataTable id="cusId" value="#{employeeBean.employees}" var="rpt" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
-                         scrollable="true" style="#{skin.table}" paginatorAlwaysVisible="false" paginatorPosition="top"
+                         scrollable="true" paginatorAlwaysVisible="false" paginatorPosition="top"
                          >
                          	
           					<p:column headerText="[*]" width="40">
-            					<p:commandButton update=":formId:usercusId :formId:cusId msg" icon="fa fa-trash"  actionListener="#{empBean.deleteRow(rpt)}">
+            					<p:commandButton update=":formId:usercusId :formId:cusId msg" icon="fa fa-trash"  actionListener="#{employeeBean.deleteRow(rpt)}">
             						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
             					</p:commandButton>
             				</p:column>
             				
             				<p:column headerText="View" width="40">
-            			 		<p:commandButton icon="fa fa-hand-pointer-o" update="usercusId cardData" actionListener="#{empBean.clickItem(rpt)}" oncomplete="addNew();"/>
+            			 		<p:commandButton icon="fa fa-hand-pointer-o" update="usercusId cardData" actionListener="#{employeeBean.clickItem(rpt)}" oncomplete="addNew();"/>
             			 	</p:column>
             				
             				<p:column headerText="Registered" width="70">

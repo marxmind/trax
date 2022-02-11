@@ -6,13 +6,11 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import com.italia.marxmind.trax.application.Application;
 import com.italia.marxmind.trax.controller.Activity;
-import com.italia.marxmind.trax.controller.Materials;
-
 /**
  * 
  * @author mark italia
@@ -20,7 +18,7 @@ import com.italia.marxmind.trax.controller.Materials;
  * @version 1.0
  *
  */
-@ManagedBean(name="actBean", eager=true)
+@Named
 @ViewScoped
 public class ActivityBean implements Serializable{
 

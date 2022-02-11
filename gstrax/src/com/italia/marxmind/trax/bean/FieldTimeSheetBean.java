@@ -2,16 +2,15 @@ package com.italia.marxmind.trax.bean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import org.primefaces.event.CellEditEvent;
 
@@ -30,6 +29,10 @@ import com.italia.marxmind.trax.controller.UserDtls;
 import com.italia.marxmind.trax.enm.JobTitle;
 import com.italia.marxmind.trax.enm.Time;
 import com.italia.marxmind.trax.utils.DateUtils;
+import com.italia.marxmind.trax.utils.GlobalVar;
+
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 
@@ -38,7 +41,7 @@ import com.italia.marxmind.trax.utils.DateUtils;
  * @version 1.0
  *
  */
-@ManagedBean(name="fldBean", eager=true)
+@Named
 @ViewScoped
 public class FieldTimeSheetBean implements Serializable{
 
@@ -86,18 +89,33 @@ public class FieldTimeSheetBean implements Serializable{
 	private int uomId;
 	private Map<Integer, UOM> uomMap = new HashMap<Integer, UOM>();
 	
-	private final static double HOUR_IN_DAY = 8.0;
-	private final static double DRIVER_OT = 40.0;
-	private final static double LEAD_SPRAY_MAN_OT = 35.0;
-	private final static double NORMAL_OT = 35.0;
+	//private final static double HOUR_IN_DAY = 8.0;
+	//private final static double DRIVER_OT = 40.0;
+	//private final static double LEAD_SPRAY_MAN_OT = 35.0;
+	//private final static double NORMAL_OT = 35.0;
 	
 	private List<ActivityTransactions> replicateSelectedData;
 	private Date newDateReplicate;
 	
+	@Setter @Getter private List timeInList;
+	@Setter @Getter private List timeOutList;
+	
 	@PostConstruct
 	public void init(){
 		//loadTimeSheets();
+		loadTime();
 		loadEnployeeSheets();
+		
+	}
+	
+	public void loadTime() {
+		timeInList = new ArrayList<>();
+		timeOutList = new ArrayList<>();
+		for(Time time : Time.values()) {
+			timeInList.add(new SelectItem(time.getId(), time.getValue()));
+			timeOutList.add(new SelectItem(time.getId(), time.getValue()));
+			System.out.println("In:"+time.getValue() + "\tOut:"+time.getValue());
+		}
 	}
 	
 	public void selectedReplicate(ActivityTransactions act){
@@ -353,6 +371,13 @@ public class FieldTimeSheetBean implements Serializable{
 			act.setTimeIn(time.getTimeIn());
 			act.setTimeOut(time.getTimeOut());
 			act.setTagOT(time.getIsOvertime()==1? true : false);
+			
+			act.setTimeInId(Time.typeId(time.getTimeIn()));
+			act.setTimeIns(getTimeInList());
+			act.setTimeOutId(Time.typeId(time.getTimeOut()));
+			act.setTimeOuts(getTimeOutList());
+			
+			
 			timeSheets.add(act);
 			
 			}
@@ -374,12 +399,15 @@ public class FieldTimeSheetBean implements Serializable{
 	public void clearData(){
 		
 		setTimeSheetsData(null);
-		setTimeInId(6.5);
-		setTimeOutId(14.5);
+		setTimeInId(GlobalVar.DEFAULT_START_TIME);
+		setTimeOutId(GlobalVar.DEFAULT_END_TIME);
 	}
 	
 	public void addNew(){
 		System.out.println("adding row......");
+		
+		
+		
 		if(timeSheets!=null){
 			int index = timeSheets.size();
 			timeSheets.add(createModelActivity(index));
@@ -459,8 +487,8 @@ public class FieldTimeSheetBean implements Serializable{
 		act.setRemarks("remarks");
 		act.setIsActive(1);
 		act.setUserDtls(new UserDtls());
-		act.setTimeIn("06:30 AM");
-		act.setTimeOut("02:30 PM");
+		act.setTimeIn("06:00 AM");
+		act.setTimeOut("02:00 PM");
 		
 		Location loc = new Location();
 		loc.setId(0);
@@ -474,6 +502,12 @@ public class FieldTimeSheetBean implements Serializable{
 		act.setMaterialUsed("Select Material");
 		
 		act.setIsActive(1);
+		
+		act.setTimeInId(GlobalVar.DEFAULT_START_TIME);
+		act.setTimeIns(getTimeInList());
+		act.setTimeOutId(GlobalVar.DEFAULT_END_TIME);
+		act.setTimeOuts(getTimeOutList());
+		
 		return act;
 	}
 	
@@ -550,11 +584,13 @@ public class FieldTimeSheetBean implements Serializable{
 	     timeSheets.get(index).setIndex(index);
 	     
 	     if(getTimeInId()>0){
-	    	 timeSheets.get(index).setTimeIn(Time.typeName(getTimeInId()));
+	    	 double in = timeSheets.get(index).getTimeInId();
+	    	 timeSheets.get(index).setTimeIn(Time.typeName(in));
 	     }
 	     
 	     if(getTimeOutId()>0){
-	    	 timeSheets.get(index).setTimeOut(Time.typeName(getTimeOutId()));
+	    	 double out = timeSheets.get(index).getTimeOutId();
+	    	 timeSheets.get(index).setTimeOut(Time.typeName(out));
 	     }
 		
 	}
@@ -786,7 +822,7 @@ public class FieldTimeSheetBean implements Serializable{
 
 	public double getTimeInId() {
 		if(timeInId==0){
-			timeInId = 6.5;
+			timeInId = GlobalVar.DEFAULT_START_TIME;
 		}
 		return timeInId;
 	}
@@ -816,7 +852,7 @@ public class FieldTimeSheetBean implements Serializable{
 
 	public double getTimeOutId() {
 		if(timeOutId==0){
-			timeOutId = 14.5;
+			timeOutId = GlobalVar.DEFAULT_END_TIME;
 		}
 		return timeOutId;
 	}

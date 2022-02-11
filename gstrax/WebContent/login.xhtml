@@ -25,7 +25,7 @@ xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
             <h:outputScript name="bootstrap/js/bootstrap.bundle.min.js" target="head"/>
             <h:outputScript name="jquery-easing/jquery.easing.min.js" target="head"/>
             <h:outputScript name="js/resume.min.js" target="head"/>
-            
+             <h:outputStylesheet name="css/bodyconf.css"/>
     </f:facet>
         
     <f:facet name="last">
@@ -58,7 +58,12 @@ xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       <a class="navbar-brand js-scroll-trigger" href="#page-top">
         <span class="d-block d-lg-none">#{versionBean.copyright.appname}</span>
         <span class="d-none d-lg-block">
+          <div id="lg" style="display: block">	
           <p:graphicImage name="logo/logo.png" styleClass="img-fluid img-profile rounded-circle mx-auto mb-2" />
+          </div>
+          <div id="lod" style="display: none">
+          <p:graphicImage name="/gif/loader.gif" style="width: 10em;height: 10em"/>
+          </div>
         </span>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,25 +104,26 @@ xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
           	
           	<p:panelGrid columns="2" id="idUName" styleClass="text-primary">
           	
-          	<p:outputLabel for="uiid" value="UI" style="#{skin.label}"/>
-          	<p:selectOneRadio id="uiid" value="#{loginBean.ui}"  columns="1" styleClass="form-control">
-				<f:selectItem itemLabel="MAX" itemValue="" />
-				<f:selectItem itemLabel="Avalon" itemValue="2" />
+          	<p:outputLabel for="uiid" value="Themes"/>
+          	<p:selectOneRadio id="uiid" value="#{loginBean.themes}"  columns="1" styleClass="form-control">
+				<f:selectItem itemLabel="Saga Light" itemValue="saga" />
+				<f:selectItem itemLabel="Vela Dim" itemValue="vela" />
+				<f:selectItem itemLabel="Arya Dark" itemValue="arya" />
 			</p:selectOneRadio>
-          	<p:outputLabel for="uname" value="Username:" style="#{skin.label}"/>
-        	<p:inputText style="width: 15em;#{skin.textInput}" styleClass="form-control" a:placeholder="MARXMIND"  id="uname" value="#{loginBean.name}"/>
+          	<p:outputLabel for="uname" value="Username:"/>
+        	<p:inputText style="width: 15em;" styleClass="form-control" placeholder="MARXMIND"  id="uname" value="#{loginBean.name}"/>
         	
-			<p:outputLabel for="password" value="Password:" style="#{skin.label}"/>
-			<p:password style="width: 15em;#{skin.textInput}" styleClass="form-control" a:placeholder="SOLUTIONS" id="password" value="#{loginBean.password}"/>
+			<p:outputLabel for="password" value="Password:"/>
+			<p:password style="width: 15em;" styleClass="form-control" placeholder="SOLUTIONS" id="password" value="#{loginBean.password}"/>
 			
-			<p:outputLabel for="biz" value="Business" style="#{skin.label}"/>
-			<p:selectOneMenu value="#{loginBean.businessId}" id="biz" style="width: 15em;#{skin.select}" styleClass="form-control text-primary">
+			<p:outputLabel for="biz" value="Business" />
+			<p:selectOneMenu value="#{loginBean.businessId}" id="biz" style="width: 15em;" styleClass="form-control text-primary">
                 		<f:selectItems value="#{loginBean.business}"/>
             </p:selectOneMenu>
 			
 			<f:facet name="footer">
 				
-				<p:commandLink id="logId" action="#{loginBean.validateUserNamePassword}" immediate="false" ajax="false">
+				<p:commandLink id="logId" action="#{loginBean.validateUserNamePassword}" immediate="false" ajax="false" onclick="showLoading()">
 					 <span class="fa-stack fa-lg">
 			                  <i class="fa fa-circle fa-stack-2x"></i>
 			                  <i class="fa fa-arrow-right fa-stack-1x fa-inverse"></i>
@@ -253,8 +259,8 @@ xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       </section> -->
     </div>
 	
-<ui:include src="loader.xhtml" />
 
+<p:ajaxStatus widgetVar="loadWidget" styleClass="ui-noborder" onstart="showLoading();" onsuccess="hideLoading();" />
 <script type="text/javascript">
 function showStatus() {
 PF('statusDialog').show();
@@ -262,6 +268,16 @@ PF('statusDialog').show();
 function hideStatus() {
 PF('statusDialog').hide();
 }
+
+function showLoading() {
+	$('#lg').hide(1000);
+	$('#lod').show(1000);
+}
+function hideLoading() {
+	$('#lg').show(1000);
+	$('#lod').hide(1000);
+}
+
 </script>
 
 </h:form>

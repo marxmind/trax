@@ -23,7 +23,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             <h:outputStylesheet name="sb-admin/font-awesome/css/all.min.css" />
             <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
             <h:outputStylesheet name="sb-admin/css/bg-sidebar.css"/>
-            
+            <h:outputStylesheet name="css/bodyconf.css"/>
             <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces" />
      </f:facet>
      <f:facet name="last">       
@@ -76,7 +76,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 <h:body id="page-top">
 <h:form prependId="false" id="formId">
 <p:growl id="msg" showDetail="true" />
- <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
  </p:confirmDialog>	
@@ -84,13 +84,13 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
  
  <nav class="navbar navbar-expand navbar-intel bg-intel static-top">
 
-      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+      <ui:include src="appname.xhtml" />
       
       <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         	  
         	  
-        	  <div class="input-group">
-        	  			<p:selectOneMenu value="#{graphBean.modeId}" style="width: 15em; height: 2em"  filter="true" filterMatchMode="contains">
+        	  <div class="ui-inputgroup">
+        	  			<p:selectOneMenu value="#{graphBean.modeId}" style="width: 15em;"  filter="true" filterMatchMode="contains">
 			            	<f:selectItems value="#{graphBean.modes}"/>
 			            </p:selectOneMenu>
         	  			<p:calendar value="#{graphBean.timeSheetFrom}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 10em"/>

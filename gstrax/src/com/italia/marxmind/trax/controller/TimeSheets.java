@@ -12,6 +12,9 @@ import java.util.List;
 import com.italia.marxmind.trax.database.ConnectDB;
 import com.italia.marxmind.trax.utils.LogU;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 
  * @author mark italia
@@ -34,6 +37,7 @@ public class TimeSheets {
 	private Employee employee;
 	private ActivityTransactions activityTransactions;
 	private double totalEmployee;
+	
 	public static double totalEmployee(String sql, String[] params) {
 		
 		String s = "SELECT count(*) as totalEmployee FROM timesheets WHERE isactivetime=1 ";//and empid=146 and actransid=20531";

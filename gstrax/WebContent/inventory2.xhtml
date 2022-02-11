@@ -24,7 +24,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
             <h:outputStylesheet name="sb-admin/css/bg-sidebar.min.css"/>
             <h:outputStylesheet name="css/font-awesome.min.css" />
-            
+            <h:outputStylesheet name="css/bodyconf.css"/>
      </f:facet>
      <f:facet name="last">       
             <h:outputScript name="jquery/jquery.min.js" target="head"/>
@@ -63,7 +63,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 <h:form prependId="false" id="formId">
 
 <p:growl id="msg" life="8000" showDetail="true" />
- <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
  </p:confirmDialog>	
@@ -71,7 +71,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
  
  <nav class="navbar navbar-expand navbar-intel bg-intel static-top">
 
-      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+      <ui:include src="appname.xhtml" />
       
       <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         	  
@@ -96,7 +96,8 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		   </div>
 		   
 		   		<div id="paneltable" style="display: block">
-		   			<p:tabView orientation="left" id="tabProps" style="#{skin.tabs}">
+		   			
+		   			<p:tabView orientation="left" id="tabProps" >
 		
 	<p:ajax event="tabChange" listener="#{invBean.onTabChangeView}" update=":formId" />
 		
@@ -122,13 +123,13 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	 	</p:outputLabel>
 	 	
 	 	<p:outputLabel value="Price(per pcs):" />
-		<p:inputNumber value="#{invBean.propsPrice}" placeholder="0.00"/>
+		<p:inputNumber value="#{invBean.propsPrice}" placeholder="0.00" inputStyle="width: 15em"/>
 		
 		<p:outputLabel value="Qunatity:" />
-		<p:inputNumber value="#{invBean.propsQty}" placeholder="0.0"/>
+		<p:inputNumber value="#{invBean.propsQty}" placeholder="0.0" inputStyle="width: 15em"/>
 		
 		<p:outputLabel  value="Unit: "/>
-        <p:selectOneMenu value="#{invBean.uomId}">
+        <p:selectOneMenu value="#{invBean.uomId}" style="width: 15em" >
        		<f:selectItems value="#{invBean.uoms}"/>
         </p:selectOneMenu>
 		
@@ -153,7 +154,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	 	<p:dataTable id="matDataId" value="#{invBean.props}" var="rpt" stickyHeader="false"
 							rows="5" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
-                         scrollable="true" paginatorAlwaysVisible="false" paginatorPosition="top" style="#{skin.table}" scrollHeight="70%"
+                         scrollable="true" paginatorAlwaysVisible="false" paginatorPosition="top" scrollHeight="70%"
                          >
                          
                          <f:facet name="{Exporters}">
@@ -210,7 +211,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		</p:toolbar> 
 		
 		<p:dataGrid id="materialData" var="mar" value="#{invBean.materialSelection}" columns="4" layout="grid"
-                	rows="12" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="top" style="#{skin.table}">
+                	rows="12" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="top" >
                 	
                 	<p:commandLink update=":formId:tabProps:fldDataId" id="savecartId" actionListener="#{invBean.selectedMaterial(mar)}" onclick="PF('materialDialog').hide()">
                 		<p:panel header="#{mar.name}" style="text-align:center"/>
@@ -241,7 +242,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	 	<p:panelGrid id="fldDataOutId" columns="4" styleClass="ui-noborder" layout="grid">
 	 	
 	 	<p:outputLabel value="Date:" />
-	 	<p:calendar value="#{invBean.dateTrans}" pattern="yyyy-MM-dd" effect="slideDown"/>
+	 	<p:calendar value="#{invBean.dateTrans}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em"/>
 		
 		<p:outputLabel  value="Requested By: "/>
 	 	<p:outputLabel  value="#{invBean.employeeSelected.fullName}" style="width: 15em">&nbsp;&nbsp;
@@ -257,7 +258,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	 	<p:outputLabel  value="#{invBean.materialSelected.name} (#{invBean.uomOut})" style="width: 15em"/>
 	 	
 		<p:outputLabel value="Qunatity:" />
-		<p:inputNumber value="#{invBean.inputOutQty}" placeholder="0.0" style="width: 15em"/>
+		<p:inputNumber value="#{invBean.inputOutQty}" placeholder="0.0" inputStyle ="width: 15em"/>
 			
 		
 		</p:panelGrid>
@@ -281,7 +282,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	 	<p:dataTable id="matDataOutId" value="#{invBean.props}" var="out" stickyHeader="false"
 							rows="5" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
-                         paginatorAlwaysVisible="true" paginatorPosition="top" style="#{skin.table}" scrollable="true" scrollHeight="50%"
+                         paginatorAlwaysVisible="true" paginatorPosition="top" scrollable="true" scrollHeight="50%"
                          >
                          
                          	<p:column headerText="Details" width="10">
@@ -408,7 +409,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	  <p:panelGrid id="fldDataReturnId" columns="4" styleClass="ui-noborder" layout="grid">
 	 	
 	 	<h:outputLabel value="Date:" />
-		<p:calendar value="#{invBean.dateTransReturn}" pattern="yyyy-MM-dd" effect="slideDown"/>
+		<p:calendar value="#{invBean.dateTransReturn}" pattern="yyyy-MM-dd" effect="slideDown" inputStyle="width: 15em"/>
 		
 		<h:outputLabel  value="Return By: "/>
 	 	<h:outputLabel  value="#{invBean.employeeSelected.fullName}" style="width: 15em">&nbsp;&nbsp;
@@ -423,7 +424,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	 	<h:outputLabel  value="#{invBean.selectedOut.materials.name} (#{invBean.uomOut})" style="width: 15em"/>
 	 	
 		<h:outputLabel value="Qunatity:" />
-		<p:inputNumber value="#{invBean.returnQty}" placeholder="0.0" style="width: 15em"/>
+		<p:inputNumber value="#{invBean.returnQty}" placeholder="0.0" inputStyle="width: 15em"/>
 			
 		
 		</p:panelGrid>

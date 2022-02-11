@@ -24,7 +24,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
             <h:outputStylesheet name="sb-admin/css/bg-sidebar.min.css"/>
             <h:outputStylesheet name="css/font-awesome.min.css" />
-            
+             <h:outputStylesheet name="css/bodyconf.css"/>
      </f:facet>
      <f:facet name="last">       
             <h:outputScript name="jquery/jquery.min.js" target="head"/>
@@ -63,7 +63,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 <h:form prependId="false" id="formId">
 
 <p:growl id="msg" life="8000" showDetail="true" />
- <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
  </p:confirmDialog>	
@@ -71,14 +71,14 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
  
  <nav class="navbar navbar-expand navbar-intel bg-intel static-top">
 
-      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+      <ui:include src="appname.xhtml" />
       
       <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         	  
         	  
         	  <div class="input-group">
-		        	<p:inputText value="#{locBean.searchName}" a:placeholder="Search Location" style="width: 20em">
-    					<p:ajax event="keyup" listener="#{locBean.init}" update="locDataId fldDataId" delay="800"/>
+		        	<p:inputText value="#{locationBean.searchName}" a:placeholder="Search Location" style="width: 20em">
+    					<p:ajax event="keyup" listener="#{locationBean.init}" update="locDataId fldDataId" delay="800"/>
     			</p:inputText>
           	  </div>
      </div>
@@ -103,17 +103,17 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	</p:tooltip>
     
     <!-- Scroll Menu button-->
-    <p:commandLink id="addButtonId" styleClass="create-new rounded" update="fldDataId" actionListener="#{locBean.clear}"  oncomplete="addNew();" >
+    <p:commandLink id="addButtonId" styleClass="create-new rounded" update="fldDataId" actionListener="#{locationBean.clear}"  oncomplete="addNew();" >
       <i class="fa fa-file-o"></i>
     </p:commandLink>
-    <p:commandLink id="clearButtonId" styleClass="create-clear rounded" update="fldDataId" actionListener="#{locBean.clear}" >
+    <p:commandLink id="clearButtonId" styleClass="create-clear rounded" update="fldDataId" actionListener="#{locationBean.clear}" >
       <i class="fa fa-eraser"></i>
     </p:commandLink>
-    <p:commandLink id="saveButtonId" styleClass="create-save rounded" update="fldDataId locDataId msg" actionListener="#{locBean.saveData}" oncomplete="hideWizard();">
+    <p:commandLink id="saveButtonId" styleClass="create-save rounded" update="fldDataId locDataId msg" actionListener="#{locationBean.saveData}" oncomplete="hideWizard();">
 	     <p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
 	     <i class="fa fa-floppy-o"></i>
 	</p:commandLink>
-    <p:commandLink id="hideButtonId" styleClass="create-hide rounded" onclick="hideWizard();" update="fldDataId" actionListener="#{locBean.clear}">
+    <p:commandLink id="hideButtonId" styleClass="create-hide rounded" onclick="hideWizard();" update="fldDataId" actionListener="#{locationBean.clear}">
     	<i class="fa fa-eye-slash"></i>
     </p:commandLink>
       
@@ -126,22 +126,22 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		   	
 		   		<p:panelGrid id="fldDataId" columns="4"  layout="grid">
 			
-				<p:outputLabel value="Name:" style="#{skin.label}"/>
-				<p:inputText value="#{locBean.locName}" style="#{skin.textInput}"/>
+				<p:outputLabel value="Name:"/>
+				<p:inputText value="#{locationBean.locName}" style="width: 20em"/>
 				
-				<h:outputLabel  value="Barangay: " style="#{skin.label}"/>
-            		<p:selectOneMenu value="#{locBean.bgId}" style="width: 15em;#{skin.select}" filter="true" filterMatchMode="contains">
-                		<f:selectItems value="#{locBean.bgs}"/>
+				<h:outputLabel  value="Barangay: "/>
+            		<p:selectOneMenu value="#{locationBean.bgId}" style="width: 20em" filter="true" filterMatchMode="contains">
+                		<f:selectItems value="#{locationBean.bgs}"/>
             		</p:selectOneMenu>
 				
-				<h:outputLabel  value="Municipality: " style="#{skin.label}"/>
-            		<p:selectOneMenu value="#{locBean.munId}" style="width: 15em;#{skin.select}" filter="true" filterMatchMode="contains">
-                		<f:selectItems value="#{locBean.muns}"/>
+				<h:outputLabel  value="Municipality: "/>
+            		<p:selectOneMenu value="#{locationBean.munId}" style="width: 20em" filter="true" filterMatchMode="contains">
+                		<f:selectItems value="#{locationBean.muns}"/>
             		</p:selectOneMenu>
 				
-				<h:outputLabel  value="Province: " style="#{skin.label}"/>
-            		<p:selectOneMenu value="#{locBean.provId}" style="width: 15em;#{skin.select}" filter="true" filterMatchMode="contains">
-                		<f:selectItems value="#{locBean.provs}"/>
+				<h:outputLabel  value="Province: "/>
+            		<p:selectOneMenu value="#{locationBean.provId}" style="width: 20em" filter="true" filterMatchMode="contains">
+                		<f:selectItems value="#{locationBean.provs}"/>
             		</p:selectOneMenu>
 				
 		</p:panelGrid>
@@ -149,20 +149,20 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		   </div>
 		   
 		   		<div id="paneltable" style="display: block">
-		   			<p:dataTable id="locDataId" value="#{locBean.locs}" var="rpt" stickyHeader="false"
+		   			<p:dataTable id="locDataId" value="#{locationBean.locs}" var="rpt" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
-                         scrollable="true" style="#{skin.table}" paginatorAlwaysVisible="false" paginatorPosition="top"
+                         scrollable="true"  paginatorAlwaysVisible="false" paginatorPosition="top"
                          >
                          
                          <p:column headerText="[*]" width="20" exportable="false">
-            					<p:commandButton update=":formId:fldDataId :formId:locDataId msg" icon="fa fa-trash"  actionListener="#{locBean.deleteRow(rpt)}">
+            					<p:commandButton update=":formId:fldDataId :formId:locDataId msg" icon="fa fa-trash"  actionListener="#{locationBean.deleteRow(rpt)}">
             						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
             					</p:commandButton>
             			 </p:column>
             			 
             			 <p:column headerText="View" width="20" exportable="false">
-            			 	<p:commandButton icon="fa fa-hand-pointer-o" update="fldDataId" actionListener="#{locBean.clickItem(rpt)}" oncomplete="addNew();"/>
+            			 	<p:commandButton icon="fa fa-hand-pointer-o" update="fldDataId" actionListener="#{locationBean.clickItem(rpt)}" oncomplete="addNew();"/>
             			 </p:column>
             			 
             			 <p:column headerText="Location" width="100">

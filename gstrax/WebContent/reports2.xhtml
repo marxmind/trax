@@ -24,7 +24,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
             <h:outputStylesheet name="sb-admin/css/bg-sidebar.min.css"/>
             <h:outputStylesheet name="css/font-awesome.min.css" />
-            
+             <h:outputStylesheet name="css/bodyconf.css"/>
      </f:facet>
      <f:facet name="last">       
             <h:outputScript name="jquery/jquery.min.js" target="head"/>
@@ -63,7 +63,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 <h:form prependId="false" id="formId">
 
 <p:growl id="msg" life="8000" showDetail="true" />
- <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
  </p:confirmDialog>	
@@ -71,12 +71,12 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
  
  <nav class="navbar navbar-expand navbar-intel bg-intel static-top">
 
-      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+      <ui:include src="appname.xhtml" />
       
       <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         	  
         	  
-        	  <div class="input-group">
+        	  <div class="ui-inputgroup">
         	  			<p:selectOneMenu value="#{reportBean2.typeId}" style="width: 10em; color: black;" filter="true" filterMatchMode="contains">
 					            		<f:selectItems value="#{reportBean2.rptTypes}"/>
 					            		<p:ajax event="change" listener="#{reportBean2.init}" update="activityData"/>
@@ -118,19 +118,22 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		   			<p:dataTable id="activityData" value="#{reportBean2.reports}" var="tm" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{Exporters} {CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
-                         scrollable="true" style="#{skin.table}" paginatorAlwaysVisible="true" paginatorPosition="top"
+                         scrollable="true"  paginatorAlwaysVisible="true" paginatorPosition="top"
                          >
                          
-                         <f:facet name="{Exporters}">
-                         			
-            						<h:commandLink title="Export Report to excel format">
-                						    <p:graphicImage name="img/xls.jpg" width="24" height="24"/>
-                							<p:dataExporter type="xls" target="activityData" fileName="Activity Report" postProcessor="#{reportBean2.postProcessXLS}"  options="#{reportBean2.excelOptions}"/>
-            						</h:commandLink>
-            						<p:commandLink title="Export Report in pdf format"  actionListener="#{reportBean2.print}" update="pdfid formId">
-                						    <p:graphicImage name="img/pdf.jpg" width="24" height="24"/>
-            						</p:commandLink>
+                          <f:facet name="{Exporters}">
+                       				<div class="ui-inputgroup">
+                         			<p:menuButton id="exeForm" value="Exports" style="float: left">
+										<p:menuitem value="Download Excel" ajax="false" immediate="true" icon="fa fa-file-xls-o" target="_blank">
+											<p:dataExporter type="xls" target="activityData" fileName="Activity Report" pageOnly="false" postProcessor="#{reportBean2.postProcessXLS}"  options="#{reportBean2.excelOptions}"/>
+										</p:menuitem>
+										<p:menuitem value="Export PDF"  icon="fa fa-file-pdf-o" actionListener="#{reportBean2.print}" update="pdfid formId"/>
+									</p:menuButton> 
+									</div>
             				</f:facet>
+                         
+                         
+                         
                          
                           <p:column headerText="#{reportBean2.columnName1}" width="100">
             						<p:outputLabel  value="#{tm.f1}" />
@@ -169,7 +172,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             						<p:column colspan="1" style="text-align:right" footerText="" width="20"/>
             					</p:row>
                         		<p:row>
-                					<p:column footerText="Total Cost: Php#{reportBean2.totalActivityCost}"/>
+                					<p:column footerText="Total Cost: #{reportBean2.totalActivityCost}"/>
             					</p:row>
                         </p:columnGroup>
                          
@@ -177,13 +180,13 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		        </div>
 		        
 		        <div id="panelHidePdf" style="display: none">
-		        	<p:toolbar id="tbPdf" style="#{skin.toolbar}">
+		        	<p:toolbar id="tbPdf" >
 		    		<f:facet name="left">	
 						    <p:commandButton value="Close" onclick="hidePdf()"/>
 		    		</f:facet>
 		    		<f:facet name="right"/>
 					</p:toolbar> 
-				 	<p:media id="pdfid" value="#{reportBean2.tempPdfFile}" cache="false" player="pdf" width="1000" height="700">
+				 	<p:media id="pdfid" value="#{reportBean2.tempPdfFile}" cache="false" player="pdf"  width="100%" height="700">
 				 		<f:param name="id" value="#{reportBean2.generateRandomIdForNotCaching()}" />
 				 	</p:media>
 		        </div>    

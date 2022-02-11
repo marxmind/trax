@@ -12,6 +12,9 @@ import java.util.List;
 import com.italia.marxmind.trax.database.ConnectDB;
 import com.italia.marxmind.trax.utils.LogU;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 
  * @author mark italia
@@ -56,6 +59,12 @@ public class ActivityTransactions {
 	private boolean replicate;
 	
 	private double totalActivityExpenses;
+	
+	@Setter @Getter private List timeIns;
+	@Setter @Getter private double timeInId;
+	
+	@Setter @Getter private List timeOuts;
+	@Setter @Getter private double timeOutId;
 	
 	public static List<ActivityTransactions> retrieveOptimize(String sqlAdd, String[] params){
 		List<ActivityTransactions> acs = new ArrayList<ActivityTransactions>();

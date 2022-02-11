@@ -11,22 +11,22 @@
 		<p:dialog header="Download Database" position="center center" style="#{skin.dialog}" showEffect="clip" hideEffect="clip" widgetVar="downloadDlg" closable="false" Height="500" width="500">
 		<p:toolbar id="empdown">
     		<f:facet name="left">
-    			<p:commandButton style="#{skin.button}" icon="fa fa-floppy-o" value="Click here to Backup Database" actionListener="#{dataBean.downloadData}" update="slqDataId msg"/>
+    			<p:commandButton style="#{skin.button}" icon="fa fa-floppy-o" value="Click here to Backup Database" actionListener="#{dataTransferBean.downloadData}" update="slqDataId msg"/>
     		</f:facet>
     		<f:facet name="right">
-    			<p:commandButton style="#{skin.button}" value="Refresh" icon="fa fa-refresh" actionListener="#{dataBean.loadFiles}" update="slqDataId"/>
+    			<p:commandButton style="#{skin.button}" value="Refresh" icon="fa fa-refresh" actionListener="#{dataTransferBean.loadFiles}" update="slqDataId"/>
     			<p:commandButton style="#{skin.button}" value="Close" onclick="PF('downloadDlg').hide()"/>
     		</f:facet>
 		</p:toolbar>
 		
-		<p:dataList id="slqDataId" value="#{dataBean.slqData}" var="frm" type="ordered" a:data-inset="true">
+		<p:dataList id="slqDataId" value="#{dataTransferBean.slqData}" var="frm" type="ordered" a:data-inset="true">
 					
-						<p:commandButton update="slqDataId" icon="fa fa-trash"  actionListener="#{dataBean.deleteFile(frm)}" title="Click this button to delete">
+						<p:commandButton update="slqDataId" icon="fa fa-trash"  actionListener="#{dataTransferBean.deleteFile(frm)}" title="Click this button to delete">
             						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
             			</p:commandButton>
 					
-	        			<p:commandLink value="#{frm.f2}" ajax="false" actionListener="#{dataBean.fileDownload(frm.f2)}">
-	        				<p:fileDownload value="#{dataBean.sqlFile}"/>
+	        			<p:commandLink value="#{frm.f2}" ajax="false" actionListener="#{dataTransferBean.fileDownload(frm.f2)}">
+	        				<p:fileDownload value="#{dataTransferBean.sqlFile}"/>
 	        			</p:commandLink>
 	        			
 	        		</p:dataList>

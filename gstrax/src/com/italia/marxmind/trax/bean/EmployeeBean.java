@@ -6,14 +6,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import org.primefaces.event.CellEditEvent;
-
 import com.italia.marxmind.trax.application.Application;
 import com.italia.marxmind.trax.controller.Barangay;
 import com.italia.marxmind.trax.controller.Employee;
@@ -32,8 +30,7 @@ import com.italia.marxmind.trax.utils.DateUtils;
  * @since 08/21/2017
  *
  */
-
-@ManagedBean(name="empBean", eager=true)
+@Named
 @ViewScoped
 public class EmployeeBean implements Serializable {
 

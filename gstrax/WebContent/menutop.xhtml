@@ -9,7 +9,7 @@
     <ui:composition>
     
     <div class="navbar-nav ml-auto ml-md-0">
-    
+    	
     	<p:megaMenu styleClass="citizenBox">
 				<p:submenu label="Work Tagging" icon="ui-icon-check">
 					<p:column>
@@ -30,12 +30,12 @@
 				<p:submenu label="Data File">
 					<p:column>
 						<p:submenu label="Download">
-							<p:menuitem value="Database Backup" oncomplete="PF('downloadDlg').show();" actionListener="#{dataBean.loadFiles}" update="slqDataId"/>
+							<p:menuitem value="Database Backup" oncomplete="PF('downloadDlg').show();" actionListener="#{dataTransferBean.loadFiles}" update="slqDataId"/>
 						</p:submenu>
 					</p:column>	
 					<p:column>
 						<p:submenu label="Upload">
-							<p:menuitem value="Upload Database Backup" oncomplete="PF('uploadDlg').show();" actionListener="#{dataBean.loadUploadFiles}" update="listData"/>
+							<p:menuitem value="Upload Database Backup" oncomplete="PF('uploadDlg').show();" actionListener="#{dataTransferBean.loadUploadFiles}" update="listData"/>
 						</p:submenu>
 					</p:column>	
 					<p:column>

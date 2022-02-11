@@ -24,7 +24,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
             <h:outputStylesheet name="sb-admin/css/sb-admin.css"/>
             <h:outputStylesheet name="sb-admin/css/bg-sidebar.min.css"/>
             <h:outputStylesheet name="css/font-awesome.min.css" />
-            
+             <h:outputStylesheet name="css/bodyconf.css"/>
      </f:facet>
      <f:facet name="last">       
             <h:outputScript name="jquery/jquery.min.js" target="head"/>
@@ -63,7 +63,7 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 <h:form prependId="false" id="formId">
 
 <p:growl id="msg" life="8000" showDetail="true" />
- <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" style="#{skin.msg}">
+ <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" >
        	<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
        	<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
  </p:confirmDialog>	
@@ -71,14 +71,14 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
  
  <nav class="navbar navbar-expand navbar-intel bg-intel static-top">
 
-      <a class="navbar-brand mr-1" href="main.xhtml">#{versionBean.copyright.appname}</a>
+      <ui:include src="appname.xhtml" />
       
       <div class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         	  
         	  
         	  <div class="input-group">
-		        	<p:inputText value="#{matBean.searchMaterial}" a:placeholder="Search Material" style="width: 20em">
-    					<f:ajax event="keyup" listener="#{matBean.init}" render="matDataId fldDataId"/>
+		        	<p:inputText value="#{materialBean.searchMaterial}" a:placeholder="Search Material" style="width: 20em">
+    					<f:ajax event="keyup" listener="#{materialBean.init}" render="matDataId fldDataId"/>
     			</p:inputText>
           	  </div>
      </div>
@@ -103,17 +103,17 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 	</p:tooltip>
     
     <!-- Scroll Menu button-->
-    <p:commandLink id="addButtonId" styleClass="create-new rounded" update="fldDataId" actionListener="#{matBean.clear}"  oncomplete="addNew();" >
+    <p:commandLink id="addButtonId" styleClass="create-new rounded" update="fldDataId" actionListener="#{materialBean.clear}"  oncomplete="addNew();" >
       <i class="fa fa-file-o"></i>
     </p:commandLink>
-    <p:commandLink id="clearButtonId" styleClass="create-clear rounded" update="fldDataId" actionListener="#{matBean.clear}" >
+    <p:commandLink id="clearButtonId" styleClass="create-clear rounded" update="fldDataId" actionListener="#{materialBean.clear}" >
       <i class="fa fa-eraser"></i>
     </p:commandLink>
-    <p:commandLink id="saveButtonId" styleClass="create-save rounded" update="fldDataId matDataId msg" actionListener="#{matBean.saveData}" oncomplete="hideWizard();">
+    <p:commandLink id="saveButtonId" styleClass="create-save rounded" update="fldDataId matDataId msg" actionListener="#{materialBean.saveData}" oncomplete="hideWizard();">
 	     <p:confirm header="Confirmation" message="Are you sure you want to save?." icon="ui-icon-alert" />
 	     <i class="fa fa-floppy-o"></i>
 	</p:commandLink>
-    <p:commandLink id="hideButtonId" styleClass="create-hide rounded" onclick="hideWizard();" update="fldDataId" actionListener="#{matBean.clear}">
+    <p:commandLink id="hideButtonId" styleClass="create-hide rounded" onclick="hideWizard();" update="fldDataId" actionListener="#{materialBean.clear}">
     	<i class="fa fa-eye-slash"></i>
     </p:commandLink>
       
@@ -127,27 +127,28 @@ xmlns:my="http://java.sun.com/jsf/composite/my"
 		   		<p:panelGrid id="fldDataId" columns="2" cellpadding="0">
 				
 					<p:outputLabel value="Name:"/>
-					<p:inputText value="#{matBean.materialName}"/>
+					<p:inputText value="#{materialBean.materialName}" style="width: 50em"/>
+					
 					
 				</p:panelGrid>
 		   
 		   </div>
 		   
 		   		<div id="paneltable" style="display: block">
-		   			<p:dataTable id="matDataId" value="#{matBean.materials}" var="rpt" stickyHeader="false"
+		   			<p:dataTable id="matDataId" value="#{materialBean.materials}" var="rpt" stickyHeader="false"
 							rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          rowsPerPageTemplate="5,10,15,20,50,100"
-                         scrollable="true" style="#{skin.table}" paginatorAlwaysVisible="false" paginatorPosition="top"
+                         scrollable="true" paginatorAlwaysVisible="false" paginatorPosition="top"
                          >
                          
                          <p:column headerText="[*]" width="5" exportable="false">
-            					<p:commandButton update=":formId:fldDataId :formId:matDataId msg" icon="fa fa-trash"  actionListener="#{matBean.deleteRow(rpt)}">
+            					<p:commandButton update=":formId:fldDataId :formId:matDataId msg" icon="fa fa-trash"  actionListener="#{materialBean.deleteRow(rpt)}">
             						<p:confirm header="Confirmation" message="Are you sure you want to delete this data?" icon="ui-icon-alert" />
             					</p:commandButton>
             			 </p:column>
             			 
             			 <p:column headerText="View" width="5" exportable="false">
-            			 	<p:commandButton icon="fa fa-hand-pointer-o" update="fldDataId" actionListener="#{matBean.clickItem(rpt)}" oncomplete="addNew();"/>
+            			 	<p:commandButton icon="fa fa-hand-pointer-o" update="fldDataId" actionListener="#{materialBean.clickItem(rpt)}" oncomplete="addNew();"/>
             			 </p:column>
             			 
             			 <p:column headerText="Material" width="100">

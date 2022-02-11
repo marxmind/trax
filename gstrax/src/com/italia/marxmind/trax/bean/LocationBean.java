@@ -6,11 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.model.SelectItem;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import com.italia.marxmind.trax.application.Application;
 import com.italia.marxmind.trax.controller.Barangay;
@@ -25,7 +24,7 @@ import com.italia.marxmind.trax.controller.Province;
  * @version 1.0
  *
  */
-@ManagedBean(name="locBean", eager=true)
+@Named
 @ViewScoped
 public class LocationBean implements Serializable{
 

@@ -1,31 +1,21 @@
 package com.italia.marxmind.trax.bean;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
-
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -90,10 +80,10 @@ public class ReportBean2 implements Serializable{
 	private Date dateTo;
 	private boolean summary;
 	private final static double HOUR_IN_DAY = Double.valueOf(ReadConfig.value(Gstrax.NORMAL_RENDERED_HOURS));//8.0;
-	private final static double BREAK_TIME = 1.0; //12NN
-	private final static double DRIVER_OT = 40.0;
-	private final static double LEAD_SPRAY_MAN_OT = 35.0;
-	private final static double NORMAL_OT = 35.0;
+	//private final static double BREAK_TIME = 1.0; //12NN
+	//private final static double DRIVER_OT = 40.0;
+	//private final static double LEAD_SPRAY_MAN_OT = 35.0;
+	//private final static double NORMAL_OT = 35.0;
 	private final static double LABOR_SPRAYMAN_DAILY_RATE = Double.valueOf(ReadConfig.value(Gstrax.LABOR_SPRAYMAN_DAILY_RATE));
 	private final static double LABOR_HARVESTER_DAILY_RATE = Double.valueOf(ReadConfig.value(Gstrax.LABOR_HARVESTER_DAILY_RATE));
 	private final static String HARVESTER = "Harvester";
@@ -105,18 +95,18 @@ public class ReportBean2 implements Serializable{
 	
 	private final static String FORCING1 = ReadConfig.value(Gstrax.FORCING1);
 	private final static String FORCING2 = ReadConfig.value(Gstrax.FORCING2);
-	private final static double FORCING_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.FORCING_RATE_PER_DRUM));
-	private final static double OTHER_SPRAY_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.OTHER_SPRAY_RATE_PER_DRUM));
+	//private final static double FORCING_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.FORCING_RATE_PER_DRUM));
+	//private final static double OTHER_SPRAY_RATE_PER_DRUM = Double.valueOf(ReadConfig.value(Gstrax.OTHER_SPRAY_RATE_PER_DRUM));
 	
 	
 	//use only for init
-	private double NUMBER_OF_FORCING_EMPLOYEE=0d;
+	//private double NUMBER_OF_FORCING_EMPLOYEE=0d;
 	
 	private String totalActivityCost;
 	private ExcelOptions excelOptions;
 	private PDFOptions pdfotions;
 	
-	private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
+	//private static final int DEFAULT_BUFFER_SIZE = 10240; // 10KB.
 	private static final String REPORT_PATH = ReadConfig.value(Gstrax.REPORT);
 	private static final String REPORT_NAME_ACTIVITY = ReadXML.value(ReportTag.ACTIVITY);
 	private static final String REPORT_NAME_AREA = ReadXML.value(ReportTag.AREA);

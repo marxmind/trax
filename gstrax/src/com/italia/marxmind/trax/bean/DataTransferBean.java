@@ -12,16 +12,12 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
-
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
-
 import com.italia.marxmind.trax.application.Application;
 import com.italia.marxmind.trax.controller.Reports;
 import com.italia.marxmind.trax.enm.Gstrax;
@@ -37,13 +33,15 @@ import com.italia.marxmind.trax.utils.DateUtils;
  *
  */
 
-@ManagedBean(name="dataBean", eager=true)
+@Named
 @ViewScoped
 public class DataTransferBean implements Serializable{
 
 	/**
 	 * 
 	 */
+	private static final String DB_PATH = "C:\\Program Files\\MariaDB 10.6\\bin";
+	
 	private static final long serialVersionUID = 655667897641L;
 	
 	private static final String DOC_PATH = Gstrax.PRIMARY_DRIVE.getName() + 
@@ -129,7 +127,24 @@ public class DataTransferBean implements Serializable{
 		try{
 			InputStream is = new FileInputStream(DATABASE_BACKUP + fileName);
 			String ext = fileName.split("\\.")[1];
-			sqlFile = new DefaultStreamedContent(is, "application/"+ext,fileName);
+			//sqlFile = new DefaultStreamedContent(is, "application/"+ext,fileName);
+			
+			File pdfFile = new File(DATABASE_BACKUP +fileName);
+			sqlFile = DefaultStreamedContent.builder()
+					.contentType("application/"+ext)
+					.name(fileName)
+					.stream(()-> {
+		    			try {
+		    				return new FileInputStream(pdfFile);
+		    			} catch (FileNotFoundException e) {
+		    				// TODO Auto-generated catch block
+		    				e.printStackTrace();
+		    			}
+		    			return null;
+		    		})
+					.build();
+			
+			
 			//is.close();
 		}catch(FileNotFoundException e){
 			
@@ -142,7 +157,21 @@ public class DataTransferBean implements Serializable{
 		try{
 			InputStream is = new FileInputStream(DOC_PATH + fileName);
 			String ext = fileName.split("\\.")[1];
-			sqlFile = new DefaultStreamedContent(is, "application/"+ext,fileName);
+			//sqlFile = new DefaultStreamedContent(is, "application/"+ext,fileName);
+			File pdfFile = new File(DOC_PATH +fileName);
+			sqlFile = DefaultStreamedContent.builder()
+					.contentType("application/"+ext)
+					.name(fileName)
+					.stream(()-> {
+		    			try {
+		    				return new FileInputStream(pdfFile);
+		    			} catch (FileNotFoundException e) {
+		    				// TODO Auto-generated catch block
+		    				e.printStackTrace();
+		    			}
+		    			return null;
+		    		})
+					.build();
 			//is.close();
 		}catch(FileNotFoundException e){
 			
@@ -166,7 +195,8 @@ public class DataTransferBean implements Serializable{
 	
 	public void downloadData(){
 		
-		String bat = "cd C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin" + "\n";
+		String bat = "cd "+ DB_PATH + "\n";
+				//bat = "cd C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin" + "\n";
 			   bat += "mysqldump.exe -e -u"+getUserName()+" -p"+getPassword()+" -hlocalhost "+getDBName()+" > C:\\gstrax\\databasebackup\\"+getDBName()+"_"+ DateUtils.getCurrentDateMMDDYYYYTIMEPlain() +".sql";
 		try{	 
 			File file = new File(DOC_PATH +  "download.bat");
@@ -240,7 +270,8 @@ public class DataTransferBean implements Serializable{
 		
 		try{
 			File fileUp = new File(DOC_PATH +  "uploadData.bat");
-	   String bat ="cd C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin" + "\n" +
+	   String bat ="cd " + DB_PATH + "\n" +
+	   			//bat ="cd C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin" + "\n" +
 	    		"mysql -u"+getUserName()+" -p"+getPassword()+" -e \"use "+getDBName()+"; source "+"C:/gstrax/uploaded/"+file.getName()+";"+"\"";   
 	    PrintWriter pw = new PrintWriter(new FileWriter(fileUp));
 	    pw.println(bat);
