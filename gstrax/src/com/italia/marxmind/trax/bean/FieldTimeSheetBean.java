@@ -566,6 +566,13 @@ public class FieldTimeSheetBean implements Serializable{
 			tr.setMaterialUsed(ac.getMaterialUsed());
 			tr.setMaterialTransactions(ac.getMaterialTransactions());
 			tr.setTagOT(ac.isTagOT());
+			
+			tr.setTimeInId(Time.typeId(ac.getTimeIn()));
+			tr.setTimeIns(getTimeInList());
+			tr.setTimeOutId(Time.typeId(ac.getTimeOut()));
+			tr.setTimeOuts(getTimeOutList());
+			
+			
 			timeSheets.add(tr);
 		}
 	}
