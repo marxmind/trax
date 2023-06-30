@@ -19,10 +19,10 @@
 	<businessType>0</businessType><!--default [0]open [1]specific-->
 	<businessName>GS Fruits Dev</businessName>
 	<businessWallpaperFile>wallpaper.png</businessWallpaperFile>
-	<themeStyle>nova-dark</themeStyle>
+	<themeStyle>vela</themeStyle>
 	<receiptLog>C:\gstrax\receipts\</receiptLog>
 	<hourperday>8.0</hourperday><!--number hours of work per day -->
-	<otstart>14.5</otstart><!--2:30PM -->
+	<otstart>14.0</otstart><!--2:30PM -->
 	<laborspraymandailyrate>250.00</laborspraymandailyrate>
 	<laborharvesterdailyrate>250.00</laborharvesterdailyrate>
 	<driverperdrumrate>50.00</driverperdrumrate>

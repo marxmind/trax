@@ -3,7 +3,7 @@
 
 echo Backup database.....
 C:
-cd C:\Program Files\MariaDB 10.4\bin 
+cd C:\Program Files\MariaDB 10.5\bin 
 
 echo Creating dir if not exist
 if not exist "C:\gstrax\databasebackup" mkdir C:\gstrax\databasebackup
@@ -30,7 +30,7 @@ echo.%Date% %Time% starting backup... >>"%MyLogFile%"
 set dateNow=%date:~7,2%-%date:~4,2%-%date:~10,4%
 echo %dateNow%.sql
 
-mysqldump.exe -e -uroot -poctober181986* -hlocalhost gstrax > C:\gstrax\databasebackup\gstrax_%dateNow%.sql
+mysqldump.exe -e -uroot -poctober181986* -hlocalhost gstrax > C:\gstrax\databasebackup\gstrax.sql
 
 echo.%Date% %Time% Preparing to save the backup >>"%MyLogFile%"
 echo.%Date% %Time% Location: C:\gstrax\databasebackup >>"%MyLogFile%"
