@@ -74,3 +74,833 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+!SESSION 2024-03-01 09:43:35.176 -----------------------------------------------
+eclipse.buildId=4.30.0.20231201-1200
+java.version=21.0.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_PH
+Framework arguments:  -product org.eclipse.epp.package.jee.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.jee.product
+
+!ENTRY org.eclipse.dltk.mylyn 4 0 2024-03-01 09:43:39.004
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.dltk.mylyn [3487]
+  Unresolved requirement: Require-Bundle: org.eclipse.mylyn.tasks.ui; bundle-version="[3.0.0,5.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.mylyn.tasks.ui; bundle-version="4.1.0.v20231125-1125"; singleton:="true"
+       org.eclipse.mylyn.tasks.ui [4467]
+         Unresolved requirement: Require-Bundle: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0"
+           -> Bundle-SymbolicName: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0.v20231009-0014"; singleton:="true"
+              org.eclipse.mylyn.commons.notifications.feed [4443]
+                No resolution report for the bundle.  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"] because it is exposed to package 'javax.activation' from resources jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"] and javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=javax.activation)(version>=1.2.2))
+     |
+    export: osgi.wiring.package: javax.activation
+  jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"]
+
+Chain 2:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=com.sun.xml.bind)(version>=2.3.3))
+     |
+    export: osgi.wiring.package=com.sun.xml.bind; uses:=javax.activation
+  com.sun.xml.bind.jaxb-osgi [osgi.identity; type="osgi.bundle"; version:Version="2.4.0.b180830_0438"; osgi.identity="com.sun.xml.bind.jaxb-osgi"]
+    import: (osgi.wiring.package=javax.activation)
+     |
+    export: osgi.wiring.package: javax.activation
+  javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.emf.ecore 2 0 2024-03-01 09:43:39.283
+!MESSAGE Both 'org.eclipse.jst.j2ee.core' and 'org.eclipse.jst.j2ee.core' register a package for 'application.xmi'
+
+!ENTRY ch.qos.logback.classic 1 0 2024-03-01 09:43:39.507
+!MESSAGE Activated before the state location was initialized. Retry after the state location is initialized.
+
+!ENTRY org.eclipse.jst.server.preview.adapter 4 0 2024-03-01 09:43:39.753
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.jst.server.preview.adapter [4428]
+  Unresolved requirement: Require-Bundle: org.eclipse.wst.server.preview; bundle-version="[1.3.0,2.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.wst.server.preview; bundle-version="1.3.0.v202311130434"; singleton:="true"
+       org.eclipse.wst.server.preview [4567]
+         Unresolved requirement: Require-Bundle: org.eclipse.jetty.ee8.webapp; bundle-version="12.0.3"
+           -> Bundle-SymbolicName: org.eclipse.jetty.ee8.webapp; bundle-version="12.0.3"
+              org.eclipse.jetty.ee8.webapp [4401]
+                Unresolved requirement: Import-Package: org.eclipse.jetty.xml; version="[12.0.3,13.0.0)"
+                  -> Export-Package: org.eclipse.jetty.xml; bundle-symbolic-name="org.eclipse.jetty.xml"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.xml.catalog,javax.xml.parsers,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.xml.sax"
+                     org.eclipse.jetty.xml [4416]
+                       Unresolved requirement: Require-Capability: osgi.serviceloader; filter:="(osgi.serviceloader=org.eclipse.jetty.xml.ConfigurationProcessorFactory)"; resolution:="optional"; cardinality:="multiple"
+                Unresolved requirement: Require-Capability: osgi.serviceloader; filter:="(osgi.serviceloader=org.eclipse.jetty.ee8.webapp.Configuration)"; cardinality:="multiple"
+                  -> Provide-Capability: osgi.serviceloader; osgi.serviceloader="org.eclipse.jetty.ee8.webapp.Configuration"
+                     org.eclipse.jetty.ee8.annotations [4394]
+                       Unresolved requirement: Require-Capability: osgi.serviceloader; filter:="(osgi.serviceloader=javax.servlet.ServletContainerInitializer)"; resolution:="optional"; cardinality:="multiple"
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.plus.webapp; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.ee8.plus.webapp; bundle-symbolic-name="org.eclipse.jetty.ee8.plus"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,org.eclipse.jetty.ee8.webapp,org.eclipse.jetty.util,org.eclipse.jetty.util.resource,org.eclipse.jetty.xml"
+                            org.eclipse.jetty.ee8.plus [4396]
+                              Unresolved requirement: Import-Package: org.eclipse.jetty.jndi.local; version="[12.0.3,13.0.0)"
+                                -> Export-Package: org.eclipse.jetty.jndi.local; bundle-symbolic-name="org.eclipse.jetty.jndi"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,org.eclipse.jetty.jndi"
+                                   org.eclipse.jetty.jndi [4406]
+                              Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.webapp; version="[12.0.3,13.0.0)"
+                                -> Export-Package: org.eclipse.jetty.ee8.webapp; bundle-symbolic-name="org.eclipse.jetty.ee8.webapp"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.servlet,org.eclipse.jetty.ee8.nested,org.eclipse.jetty.ee8.security,org.eclipse.jetty.ee8.servlet,org.eclipse.jetty.server,org.eclipse.jetty.util,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.eclipse.jetty.xml"
+                              Unresolved requirement: Import-Package: org.eclipse.jetty.jndi; version="[12.0.3,13.0.0)"
+                                -> Export-Package: org.eclipse.jetty.jndi; bundle-symbolic-name="org.eclipse.jetty.jndi"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,javax.naming.spi,javax.sql,org.eclipse.jetty.util.component"
+                              Unresolved requirement: Import-Package: javax.transaction; version="[1.3.3,2.0.0)"
+                                -> Export-Package: javax.transaction; bundle-symbolic-name="jakarta.transaction-api"; bundle-version="1.3.3"; version="1.3.3"; uses:="javax.interceptor,javax.transaction.xa,javax.enterprise.util,javax.enterprise.context"
+                                   jakarta.transaction-api [2622]
+                              Unresolved requirement: Import-Package: org.eclipse.jetty.xml; version="[12.0.3,13.0.0)"
+                                -> Export-Package: org.eclipse.jetty.xml; bundle-symbolic-name="org.eclipse.jetty.xml"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.xml.catalog,javax.xml.parsers,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.xml.sax"
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.plus.annotation; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.ee8.plus.annotation; bundle-symbolic-name="org.eclipse.jetty.ee8.plus"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,org.eclipse.jetty.ee8.servlet"
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.plus.jndi; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.ee8.plus.jndi; bundle-symbolic-name="org.eclipse.jetty.ee8.plus"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,javax.transaction,org.eclipse.jetty.util.component"
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.webapp; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.ee8.webapp; bundle-symbolic-name="org.eclipse.jetty.ee8.webapp"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.servlet,org.eclipse.jetty.ee8.nested,org.eclipse.jetty.ee8.security,org.eclipse.jetty.ee8.servlet,org.eclipse.jetty.server,org.eclipse.jetty.util,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.eclipse.jetty.xml"
+         Unresolved requirement: Require-Bundle: org.eclipse.jetty.xml; bundle-version="12.0.3"
+           -> Bundle-SymbolicName: org.eclipse.jetty.xml; bundle-version="12.0.3"
+         Unresolved requirement: Require-Bundle: org.eclipse.jetty.ee8.plus; bundle-version="12.0.3"
+           -> Bundle-SymbolicName: org.eclipse.jetty.ee8.plus; bundle-version="12.0.3"
+  Unresolved requirement: Import-Package: org.slf4j.simple
+    -> Export-Package: org.slf4j.simple; bundle-symbolic-name="slf4j.simple"; bundle-version="2.0.9"; version="2.0.9"; uses:="org.slf4j,org.slf4j.event,org.slf4j.helpers,org.slf4j.spi"
+       slf4j.simple [4576]
+         No resolution report for the bundle.  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.wst.server.preview [osgi.identity; type="osgi.bundle"; version:Version="1.3.0.v202311130434"; osgi.identity="org.eclipse.wst.server.preview"; singleton:="true"] because it is exposed to package 'javax.transaction' from resources org.eclipse.osgi [osgi.identity; type="osgi.bundle"; version:Version="3.18.600.v20231110-1900"; osgi.identity="org.eclipse.osgi"; singleton:="true"] and jakarta.transaction-api [osgi.identity; type="osgi.bundle"; version:Version="1.3.3"; osgi.identity="jakarta.transaction-api"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.wst.server.preview [osgi.identity; type="osgi.bundle"; version:Version="1.3.0.v202311130434"; osgi.identity="org.eclipse.wst.server.preview"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.eclipse.core.runtime)(&(bundle-version>=3.21.0)(!(bundle-version>=4.0.0))))
+     |
+    provide: osgi.wiring.bundle: org.eclipse.core.runtime
+  org.eclipse.osgi [osgi.identity; type="osgi.bundle"; version:Version="3.18.600.v20231110-1900"; osgi.identity="org.eclipse.osgi"; singleton:="true"]
+
+Chain 2:
+  org.eclipse.wst.server.preview [osgi.identity; type="osgi.bundle"; version:Version="1.3.0.v202311130434"; osgi.identity="org.eclipse.wst.server.preview"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.eclipse.jetty.ee8.plus)(bundle-version>=12.0.3))
+     |
+    provide: osgi.wiring.bundle; bundle-version:Version="12.0.3"; osgi.wiring.bundle="org.eclipse.jetty.ee8.plus"
+  org.eclipse.jetty.ee8.plus [osgi.identity; type="osgi.bundle"; version:Version="12.0.3"; osgi.identity="org.eclipse.jetty.ee8.plus"]
+    import: (&(osgi.wiring.package=javax.transaction)(&(version>=1.3.3)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package: javax.transaction
+  jakarta.transaction-api [osgi.identity; type="osgi.bundle"; version:Version="1.3.3"; osgi.identity="jakarta.transaction-api"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.mylyn.commons.notifications.feed 4 0 2024-03-01 09:43:39.760
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.mylyn.commons.notifications.feed [4443]
+  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"] because it is exposed to package 'javax.activation' from resources jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"] and javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=javax.activation)(version>=1.2.2))
+     |
+    export: osgi.wiring.package: javax.activation
+  jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"]
+
+Chain 2:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=com.sun.xml.bind)(version>=2.3.3))
+     |
+    export: osgi.wiring.package=com.sun.xml.bind; uses:=javax.activation
+  com.sun.xml.bind.jaxb-osgi [osgi.identity; type="osgi.bundle"; version:Version="2.4.0.b180830_0438"; osgi.identity="com.sun.xml.bind.jaxb-osgi"]
+    import: (osgi.wiring.package=javax.activation)
+     |
+    export: osgi.wiring.package: javax.activation
+  javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.mylyn.context.tasks.ui 4 0 2024-03-01 09:43:39.781
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.mylyn.context.tasks.ui [4453]
+  Unresolved requirement: Require-Bundle: org.eclipse.mylyn.tasks.ui; bundle-version="4.1.0"
+    -> Bundle-SymbolicName: org.eclipse.mylyn.tasks.ui; bundle-version="4.1.0.v20231125-1125"; singleton:="true"
+       org.eclipse.mylyn.tasks.ui [4467]
+         Unresolved requirement: Require-Bundle: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0"
+           -> Bundle-SymbolicName: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0.v20231009-0014"; singleton:="true"
+              org.eclipse.mylyn.commons.notifications.feed [4443]
+                No resolution report for the bundle.  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"] because it is exposed to package 'javax.activation' from resources jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"] and javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=javax.activation)(version>=1.2.2))
+     |
+    export: osgi.wiring.package: javax.activation
+  jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"]
+
+Chain 2:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=com.sun.xml.bind)(version>=2.3.3))
+     |
+    export: osgi.wiring.package=com.sun.xml.bind; uses:=javax.activation
+  com.sun.xml.bind.jaxb-osgi [osgi.identity; type="osgi.bundle"; version:Version="2.4.0.b180830_0438"; osgi.identity="com.sun.xml.bind.jaxb-osgi"]
+    import: (osgi.wiring.package=javax.activation)
+     |
+    export: osgi.wiring.package: javax.activation
+  javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.mylyn.tasks.bugs 4 0 2024-03-01 09:43:39.792
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.mylyn.tasks.bugs [4462]
+  Unresolved requirement: Require-Bundle: org.eclipse.mylyn.tasks.ui; bundle-version="4.1.0"
+    -> Bundle-SymbolicName: org.eclipse.mylyn.tasks.ui; bundle-version="4.1.0.v20231125-1125"; singleton:="true"
+       org.eclipse.mylyn.tasks.ui [4467]
+         Unresolved requirement: Require-Bundle: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0"
+           -> Bundle-SymbolicName: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0.v20231009-0014"; singleton:="true"
+              org.eclipse.mylyn.commons.notifications.feed [4443]
+                No resolution report for the bundle.  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"] because it is exposed to package 'javax.activation' from resources jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"] and javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=javax.activation)(version>=1.2.2))
+     |
+    export: osgi.wiring.package: javax.activation
+  jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"]
+
+Chain 2:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=com.sun.xml.bind)(version>=2.3.3))
+     |
+    export: osgi.wiring.package=com.sun.xml.bind; uses:=javax.activation
+  com.sun.xml.bind.jaxb-osgi [osgi.identity; type="osgi.bundle"; version:Version="2.4.0.b180830_0438"; osgi.identity="com.sun.xml.bind.jaxb-osgi"]
+    import: (osgi.wiring.package=javax.activation)
+     |
+    export: osgi.wiring.package: javax.activation
+  javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.mylyn.tasks.ui 4 0 2024-03-01 09:43:39.804
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.mylyn.tasks.ui [4467]
+  Unresolved requirement: Require-Bundle: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0"
+    -> Bundle-SymbolicName: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0.v20231009-0014"; singleton:="true"
+       org.eclipse.mylyn.commons.notifications.feed [4443]
+         No resolution report for the bundle.  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"] because it is exposed to package 'javax.activation' from resources jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"] and javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=javax.activation)(version>=1.2.2))
+     |
+    export: osgi.wiring.package: javax.activation
+  jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"]
+
+Chain 2:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=com.sun.xml.bind)(version>=2.3.3))
+     |
+    export: osgi.wiring.package=com.sun.xml.bind; uses:=javax.activation
+  com.sun.xml.bind.jaxb-osgi [osgi.identity; type="osgi.bundle"; version:Version="2.4.0.b180830_0438"; osgi.identity="com.sun.xml.bind.jaxb-osgi"]
+    import: (osgi.wiring.package=javax.activation)
+     |
+    export: osgi.wiring.package: javax.activation
+  javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.mylyn.team.ui 4 0 2024-03-01 09:43:39.825
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.mylyn.team.ui [4468]
+  Unresolved requirement: Require-Bundle: org.eclipse.mylyn.tasks.ui; bundle-version="4.1.0"
+    -> Bundle-SymbolicName: org.eclipse.mylyn.tasks.ui; bundle-version="4.1.0.v20231125-1125"; singleton:="true"
+       org.eclipse.mylyn.tasks.ui [4467]
+         Unresolved requirement: Require-Bundle: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0"
+           -> Bundle-SymbolicName: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0.v20231009-0014"; singleton:="true"
+              org.eclipse.mylyn.commons.notifications.feed [4443]
+                No resolution report for the bundle.  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"] because it is exposed to package 'javax.activation' from resources jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"] and javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=javax.activation)(version>=1.2.2))
+     |
+    export: osgi.wiring.package: javax.activation
+  jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"]
+
+Chain 2:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=com.sun.xml.bind)(version>=2.3.3))
+     |
+    export: osgi.wiring.package=com.sun.xml.bind; uses:=javax.activation
+  com.sun.xml.bind.jaxb-osgi [osgi.identity; type="osgi.bundle"; version:Version="2.4.0.b180830_0438"; osgi.identity="com.sun.xml.bind.jaxb-osgi"]
+    import: (osgi.wiring.package=javax.activation)
+     |
+    export: osgi.wiring.package: javax.activation
+  javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.php.mylyn.ui 4 0 2024-03-01 09:43:39.850
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.php.mylyn.ui [4511]
+  Unresolved requirement: Require-Bundle: org.eclipse.dltk.mylyn
+    -> Bundle-SymbolicName: org.eclipse.dltk.mylyn; bundle-version="6.4.0.202307141201"; singleton:="true"
+       org.eclipse.dltk.mylyn [3487]
+         Unresolved requirement: Require-Bundle: org.eclipse.mylyn.tasks.ui; bundle-version="[3.0.0,5.0.0)"
+           -> Bundle-SymbolicName: org.eclipse.mylyn.tasks.ui; bundle-version="4.1.0.v20231125-1125"; singleton:="true"
+              org.eclipse.mylyn.tasks.ui [4467]
+                Unresolved requirement: Require-Bundle: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0"
+                  -> Bundle-SymbolicName: org.eclipse.mylyn.commons.notifications.feed; bundle-version="4.1.0.v20231009-0014"; singleton:="true"
+                     org.eclipse.mylyn.commons.notifications.feed [4443]
+                       No resolution report for the bundle.  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"] because it is exposed to package 'javax.activation' from resources jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"] and javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=javax.activation)(version>=1.2.2))
+     |
+    export: osgi.wiring.package: javax.activation
+  jakarta.activation [osgi.identity; type="osgi.bundle"; version:Version="1.2.2.v20221203-1659"; osgi.identity="jakarta.activation"]
+
+Chain 2:
+  org.eclipse.mylyn.commons.notifications.feed [osgi.identity; type="osgi.bundle"; version:Version="4.1.0.v20231009-0014"; osgi.identity="org.eclipse.mylyn.commons.notifications.feed"; singleton:="true"]
+    import: (&(osgi.wiring.package=com.sun.xml.bind)(version>=2.3.3))
+     |
+    export: osgi.wiring.package=com.sun.xml.bind; uses:=javax.activation
+  com.sun.xml.bind.jaxb-osgi [osgi.identity; type="osgi.bundle"; version:Version="2.4.0.b180830_0438"; osgi.identity="com.sun.xml.bind.jaxb-osgi"]
+    import: (osgi.wiring.package=javax.activation)
+     |
+    export: osgi.wiring.package: javax.activation
+  javax.activation [osgi.identity; type="osgi.bundle"; version:Version="1.1.0.v201211130549"; osgi.identity="javax.activation"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.wst.server.preview 4 0 2024-03-01 09:43:39.930
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.wst.server.preview [4567]
+  Unresolved requirement: Require-Bundle: org.eclipse.jetty.ee8.webapp; bundle-version="12.0.3"
+    -> Bundle-SymbolicName: org.eclipse.jetty.ee8.webapp; bundle-version="12.0.3"
+       org.eclipse.jetty.ee8.webapp [4401]
+         Unresolved requirement: Import-Package: org.eclipse.jetty.xml; version="[12.0.3,13.0.0)"
+           -> Export-Package: org.eclipse.jetty.xml; bundle-symbolic-name="org.eclipse.jetty.xml"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.xml.catalog,javax.xml.parsers,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.xml.sax"
+              org.eclipse.jetty.xml [4416]
+                Unresolved requirement: Require-Capability: osgi.serviceloader; filter:="(osgi.serviceloader=org.eclipse.jetty.xml.ConfigurationProcessorFactory)"; resolution:="optional"; cardinality:="multiple"
+         Unresolved requirement: Require-Capability: osgi.serviceloader; filter:="(osgi.serviceloader=org.eclipse.jetty.ee8.webapp.Configuration)"; cardinality:="multiple"
+           -> Provide-Capability: osgi.serviceloader; osgi.serviceloader="org.eclipse.jetty.ee8.webapp.Configuration"
+              org.eclipse.jetty.ee8.annotations [4394]
+                Unresolved requirement: Require-Capability: osgi.serviceloader; filter:="(osgi.serviceloader=javax.servlet.ServletContainerInitializer)"; resolution:="optional"; cardinality:="multiple"
+                Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.plus.webapp; version="[12.0.3,13.0.0)"
+                  -> Export-Package: org.eclipse.jetty.ee8.plus.webapp; bundle-symbolic-name="org.eclipse.jetty.ee8.plus"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,org.eclipse.jetty.ee8.webapp,org.eclipse.jetty.util,org.eclipse.jetty.util.resource,org.eclipse.jetty.xml"
+                     org.eclipse.jetty.ee8.plus [4396]
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.jndi.local; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.jndi.local; bundle-symbolic-name="org.eclipse.jetty.jndi"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,org.eclipse.jetty.jndi"
+                            org.eclipse.jetty.jndi [4406]
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.webapp; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.ee8.webapp; bundle-symbolic-name="org.eclipse.jetty.ee8.webapp"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.servlet,org.eclipse.jetty.ee8.nested,org.eclipse.jetty.ee8.security,org.eclipse.jetty.ee8.servlet,org.eclipse.jetty.server,org.eclipse.jetty.util,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.eclipse.jetty.xml"
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.jndi; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.jndi; bundle-symbolic-name="org.eclipse.jetty.jndi"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,javax.naming.spi,javax.sql,org.eclipse.jetty.util.component"
+                       Unresolved requirement: Import-Package: javax.transaction; version="[1.3.3,2.0.0)"
+                         -> Export-Package: javax.transaction; bundle-symbolic-name="jakarta.transaction-api"; bundle-version="1.3.3"; version="1.3.3"; uses:="javax.interceptor,javax.transaction.xa,javax.enterprise.util,javax.enterprise.context"
+                            jakarta.transaction-api [2622]
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.xml; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.xml; bundle-symbolic-name="org.eclipse.jetty.xml"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.xml.catalog,javax.xml.parsers,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.xml.sax"
+                Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.plus.annotation; version="[12.0.3,13.0.0)"
+                  -> Export-Package: org.eclipse.jetty.ee8.plus.annotation; bundle-symbolic-name="org.eclipse.jetty.ee8.plus"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,org.eclipse.jetty.ee8.servlet"
+                Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.plus.jndi; version="[12.0.3,13.0.0)"
+                  -> Export-Package: org.eclipse.jetty.ee8.plus.jndi; bundle-symbolic-name="org.eclipse.jetty.ee8.plus"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,javax.transaction,org.eclipse.jetty.util.component"
+                Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.webapp; version="[12.0.3,13.0.0)"
+                  -> Export-Package: org.eclipse.jetty.ee8.webapp; bundle-symbolic-name="org.eclipse.jetty.ee8.webapp"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.servlet,org.eclipse.jetty.ee8.nested,org.eclipse.jetty.ee8.security,org.eclipse.jetty.ee8.servlet,org.eclipse.jetty.server,org.eclipse.jetty.util,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.eclipse.jetty.xml"
+  Unresolved requirement: Require-Bundle: org.eclipse.jetty.xml; bundle-version="12.0.3"
+    -> Bundle-SymbolicName: org.eclipse.jetty.xml; bundle-version="12.0.3"
+  Unresolved requirement: Require-Bundle: org.eclipse.jetty.ee8.plus; bundle-version="12.0.3"
+    -> Bundle-SymbolicName: org.eclipse.jetty.ee8.plus; bundle-version="12.0.3"
+  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.wst.server.preview [osgi.identity; type="osgi.bundle"; version:Version="1.3.0.v202311130434"; osgi.identity="org.eclipse.wst.server.preview"; singleton:="true"] because it is exposed to package 'javax.transaction' from resources org.eclipse.osgi [osgi.identity; type="osgi.bundle"; version:Version="3.18.600.v20231110-1900"; osgi.identity="org.eclipse.osgi"; singleton:="true"] and jakarta.transaction-api [osgi.identity; type="osgi.bundle"; version:Version="1.3.3"; osgi.identity="jakarta.transaction-api"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.wst.server.preview [osgi.identity; type="osgi.bundle"; version:Version="1.3.0.v202311130434"; osgi.identity="org.eclipse.wst.server.preview"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.eclipse.core.runtime)(&(bundle-version>=3.21.0)(!(bundle-version>=4.0.0))))
+     |
+    provide: osgi.wiring.bundle: org.eclipse.core.runtime
+  org.eclipse.osgi [osgi.identity; type="osgi.bundle"; version:Version="3.18.600.v20231110-1900"; osgi.identity="org.eclipse.osgi"; singleton:="true"]
+
+Chain 2:
+  org.eclipse.wst.server.preview [osgi.identity; type="osgi.bundle"; version:Version="1.3.0.v202311130434"; osgi.identity="org.eclipse.wst.server.preview"; singleton:="true"]
+    require: (&(osgi.wiring.bundle=org.eclipse.jetty.ee8.plus)(bundle-version>=12.0.3))
+     |
+    provide: osgi.wiring.bundle; bundle-version:Version="12.0.3"; osgi.wiring.bundle="org.eclipse.jetty.ee8.plus"
+  org.eclipse.jetty.ee8.plus [osgi.identity; type="osgi.bundle"; version:Version="12.0.3"; osgi.identity="org.eclipse.jetty.ee8.plus"]
+    import: (&(osgi.wiring.package=javax.transaction)(&(version>=1.3.3)(!(version>=2.0.0))))
+     |
+    export: osgi.wiring.package: javax.transaction
+  jakarta.transaction-api [osgi.identity; type="osgi.bundle"; version:Version="1.3.3"; osgi.identity="jakarta.transaction-api"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.wst.server.preview.adapter 4 0 2024-03-01 09:43:39.965
+!MESSAGE FrameworkEvent ERROR
+!STACK 0
+org.osgi.framework.BundleException: Could not resolve module: org.eclipse.wst.server.preview.adapter [4568]
+  Unresolved requirement: Require-Bundle: org.eclipse.wst.server.preview; bundle-version="[1.3.0,2.0.0)"
+    -> Bundle-SymbolicName: org.eclipse.wst.server.preview; bundle-version="1.3.0.v202311130434"; singleton:="true"
+       org.eclipse.wst.server.preview [4567]
+         Unresolved requirement: Require-Bundle: org.eclipse.jetty.ee8.webapp; bundle-version="12.0.3"
+           -> Bundle-SymbolicName: org.eclipse.jetty.ee8.webapp; bundle-version="12.0.3"
+              org.eclipse.jetty.ee8.webapp [4401]
+                Unresolved requirement: Import-Package: org.eclipse.jetty.xml; version="[12.0.3,13.0.0)"
+                  -> Export-Package: org.eclipse.jetty.xml; bundle-symbolic-name="org.eclipse.jetty.xml"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.xml.catalog,javax.xml.parsers,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.xml.sax"
+                     org.eclipse.jetty.xml [4416]
+                       Unresolved requirement: Require-Capability: osgi.serviceloader; filter:="(osgi.serviceloader=org.eclipse.jetty.xml.ConfigurationProcessorFactory)"; resolution:="optional"; cardinality:="multiple"
+                Unresolved requirement: Require-Capability: osgi.serviceloader; filter:="(osgi.serviceloader=org.eclipse.jetty.ee8.webapp.Configuration)"; cardinality:="multiple"
+                  -> Provide-Capability: osgi.serviceloader; osgi.serviceloader="org.eclipse.jetty.ee8.webapp.Configuration"
+                     org.eclipse.jetty.ee8.annotations [4394]
+                       Unresolved requirement: Require-Capability: osgi.serviceloader; filter:="(osgi.serviceloader=javax.servlet.ServletContainerInitializer)"; resolution:="optional"; cardinality:="multiple"
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.plus.webapp; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.ee8.plus.webapp; bundle-symbolic-name="org.eclipse.jetty.ee8.plus"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,org.eclipse.jetty.ee8.webapp,org.eclipse.jetty.util,org.eclipse.jetty.util.resource,org.eclipse.jetty.xml"
+                            org.eclipse.jetty.ee8.plus [4396]
+                              Unresolved requirement: Import-Package: org.eclipse.jetty.jndi.local; version="[12.0.3,13.0.0)"
+                                -> Export-Package: org.eclipse.jetty.jndi.local; bundle-symbolic-name="org.eclipse.jetty.jndi"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,org.eclipse.jetty.jndi"
+                                   org.eclipse.jetty.jndi [4406]
+                              Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.webapp; version="[12.0.3,13.0.0)"
+                                -> Export-Package: org.eclipse.jetty.ee8.webapp; bundle-symbolic-name="org.eclipse.jetty.ee8.webapp"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.servlet,org.eclipse.jetty.ee8.nested,org.eclipse.jetty.ee8.security,org.eclipse.jetty.ee8.servlet,org.eclipse.jetty.server,org.eclipse.jetty.util,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.eclipse.jetty.xml"
+                              Unresolved requirement: Import-Package: org.eclipse.jetty.jndi; version="[12.0.3,13.0.0)"
+                                -> Export-Package: org.eclipse.jetty.jndi; bundle-symbolic-name="org.eclipse.jetty.jndi"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,javax.naming.spi,javax.sql,org.eclipse.jetty.util.component"
+                              Unresolved requirement: Import-Package: javax.transaction; version="[1.3.3,2.0.0)"
+                                -> Export-Package: javax.transaction; bundle-symbolic-name="jakarta.transaction-api"; bundle-version="1.3.3"; version="1.3.3"; uses:="javax.interceptor,javax.transaction.xa,javax.enterprise.util,javax.enterprise.context"
+                                   jakarta.transaction-api [2622]
+                              Unresolved requirement: Import-Package: org.eclipse.jetty.xml; version="[12.0.3,13.0.0)"
+                                -> Export-Package: org.eclipse.jetty.xml; bundle-symbolic-name="org.eclipse.jetty.xml"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.xml.catalog,javax.xml.parsers,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.xml.sax"
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.plus.annotation; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.ee8.plus.annotation; bundle-symbolic-name="org.eclipse.jetty.ee8.plus"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,org.eclipse.jetty.ee8.servlet"
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.plus.jndi; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.ee8.plus.jndi; bundle-symbolic-name="org.eclipse.jetty.ee8.plus"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.naming,javax.transaction,org.eclipse.jetty.util.component"
+                       Unresolved requirement: Import-Package: org.eclipse.jetty.ee8.webapp; version="[12.0.3,13.0.0)"
+                         -> Export-Package: org.eclipse.jetty.ee8.webapp; bundle-symbolic-name="org.eclipse.jetty.ee8.webapp"; bundle-version="12.0.3"; version="12.0.3"; uses:="javax.servlet,org.eclipse.jetty.ee8.nested,org.eclipse.jetty.ee8.security,org.eclipse.jetty.ee8.servlet,org.eclipse.jetty.server,org.eclipse.jetty.util,org.eclipse.jetty.util.annotation,org.eclipse.jetty.util.component,org.eclipse.jetty.util.resource,org.eclipse.jetty.xml"
+         Unresolved requirement: Require-Bundle: org.eclipse.jetty.xml; bundle-version="12.0.3"
+           -> Bundle-SymbolicName: org.eclipse.jetty.xml; bundle-version="12.0.3"
+         Unresolved requirement: Require-Bundle: org.eclipse.jetty.ee8.plus; bundle-version="12.0.3"
+           -> Bundle-SymbolicName: org.eclipse.jetty.ee8.plus; bundle-version="12.0.3"
+  Unresolved requirement: Import-Package: jakarta.servlet; version="6.0.0"
+    -> Export-Package: jakarta.servlet; bundle-symbolic-name="jakarta.servlet-api"; bundle-version="6.0.0"; version="6.0.0"; uses:="jakarta.servlet.annotation,jakarta.servlet.descriptor"
+       jakarta.servlet-api [4108]
+  Bundle was not resolved because of a uses constraint violation.
+  org.apache.felix.resolver.reason.ReasonException: Uses constraint violation. Unable to resolve resource org.eclipse.wst.server.preview.adapter [osgi.identity; type="osgi.bundle"; version:Version="1.2.0.v202311141258"; osgi.identity="org.eclipse.wst.server.preview.adapter"; singleton:="true"] because it is exposed to package 'jakarta.servlet' from resources jakarta.servlet-api [osgi.identity; type="osgi.bundle"; version:Version="6.0.0"; osgi.identity="jakarta.servlet-api"] and jakarta.servlet [osgi.identity; type="osgi.bundle"; version:Version="5.0.0.v20210105-0527"; osgi.identity="jakarta.servlet"] via two dependency chains.
+
+Chain 1:
+  org.eclipse.wst.server.preview.adapter [osgi.identity; type="osgi.bundle"; version:Version="1.2.0.v202311141258"; osgi.identity="org.eclipse.wst.server.preview.adapter"; singleton:="true"]
+    import: (&(osgi.wiring.package=jakarta.servlet)(version>=6.0.0))
+     |
+    export: osgi.wiring.package: jakarta.servlet
+  jakarta.servlet-api [osgi.identity; type="osgi.bundle"; version:Version="6.0.0"; osgi.identity="jakarta.servlet-api"]
+
+Chain 2:
+  org.eclipse.wst.server.preview.adapter [osgi.identity; type="osgi.bundle"; version:Version="1.2.0.v202311141258"; osgi.identity="org.eclipse.wst.server.preview.adapter"; singleton:="true"]
+    import: (&(osgi.wiring.package=jakarta.servlet)(version>=6.0.0))
+     |
+    export: osgi.wiring.package=jakarta.servlet; uses:=jakarta.servlet.annotation
+  jakarta.servlet-api [osgi.identity; type="osgi.bundle"; version:Version="6.0.0"; osgi.identity="jakarta.servlet-api"]
+    import: (osgi.wiring.package=jakarta.servlet.annotation)
+     |
+    export: osgi.wiring.package: jakarta.servlet.annotation; uses:=jakarta.servlet
+    export: osgi.wiring.package=jakarta.servlet
+  jakarta.servlet [osgi.identity; type="osgi.bundle"; version:Version="5.0.0.v20210105-0527"; osgi.identity="jakarta.servlet"]
+	at org.eclipse.osgi.container.Module.start(Module.java:463)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel$2.run(ModuleContainer.java:1852)
+	at org.eclipse.osgi.internal.framework.EquinoxContainerAdaptor$1$1.execute(EquinoxContainerAdaptor.java:136)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1845)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.incStartLevel(ModuleContainer.java:1786)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.doContainerStartLevel(ModuleContainer.java:1750)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1672)
+	at org.eclipse.osgi.container.ModuleContainer$ContainerStartLevel.dispatchEvent(ModuleContainer.java:1)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.EventManager$EventThread.run(EventManager.java:345)
+
+!ENTRY org.eclipse.equinox.app 0 0 2024-03-01 09:43:40.097
+!MESSAGE Product org.eclipse.epp.package.jee.product could not be found.
+
+!ENTRY org.apache.felix.scr 4 0 2024-03-01 09:43:52.973
+!MESSAGE bundle org.apache.felix.scr:2.2.6 (1982) Circular reference detected trying to get service {org.eclipse.m2e.core.project.IMavenProjectChangedListener}={service.id=248, service.bundleid=4064, service.scope=bundle, osgi.ds.satisfying.condition.target=(osgi.condition.id=true), component.name=org.eclipse.m2e.core.internal.project.WorkspaceStateWriter, component.id=20}
+ stack of references: ServiceReference: {org.eclipse.m2e.core.project.IMavenProjectChangedListener}={service.id=248, service.bundleid=4064, service.scope=bundle, osgi.ds.satisfying.condition.target=(osgi.condition.id=true), component.name=org.eclipse.m2e.core.internal.project.WorkspaceStateWriter, component.id=20}
+ServiceReference: {org.eclipse.m2e.core.project.IMavenProjectRegistry}={service.id=241, service.bundleid=4064, service.scope=bundle, osgi.ds.satisfying.condition.target=(osgi.condition.id=true), component.name=org.eclipse.m2e.core.internal.project.registry.MavenProjectManager, component.id=23}
+    Dependency: DependencyManager: Component [Component: org.eclipse.m2e.core.embedder.MavenModelManager (8)] reference [projectManager]
+
+!STACK 0
+java.lang.Exception: stack trace
+	at org.apache.felix.scr.impl.ComponentRegistry.enterCreate(ComponentRegistry.java:493)
+	at org.apache.felix.scr.impl.BundleComponentActivator.enterCreate(BundleComponentActivator.java:722)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getService(SingleComponentManager.java:901)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:218)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:215)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:114)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:48)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:568)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:542)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:660)
+	at org.apache.felix.scr.impl.manager.SingleRefPair.getServiceObject(SingleRefPair.java:88)
+	at org.apache.felix.scr.impl.inject.methods.BindMethod.getServiceObject(BindMethod.java:675)
+	at org.apache.felix.scr.impl.manager.DependencyManager.getServiceObject(DependencyManager.java:2612)
+	at org.apache.felix.scr.impl.manager.DependencyManager$MultipleDynamicCustomizer.prebind(DependencyManager.java:434)
+	at org.apache.felix.scr.impl.manager.DependencyManager.prebind(DependencyManager.java:1830)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.collectDependencies(AbstractComponentManager.java:1060)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getServiceInternal(SingleComponentManager.java:955)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getService(SingleComponentManager.java:920)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:218)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:215)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:114)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:48)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:568)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:542)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:660)
+	at org.apache.felix.scr.impl.manager.SingleRefPair.getServiceObject(SingleRefPair.java:88)
+	at org.apache.felix.scr.impl.inject.field.FieldHandler$ReferenceMethodImpl.getServiceObject(FieldHandler.java:550)
+	at org.apache.felix.scr.impl.manager.DependencyManager.getServiceObject(DependencyManager.java:2612)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.prebind(DependencyManager.java:1401)
+	at org.apache.felix.scr.impl.manager.DependencyManager.prebind(DependencyManager.java:1830)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.collectDependencies(AbstractComponentManager.java:1060)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getServiceInternal(SingleComponentManager.java:955)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.activateInternal(AbstractComponentManager.java:776)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.addedService(DependencyManager.java:1274)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.addedService(DependencyManager.java:1225)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.customizerAdded(ServiceTracker.java:1232)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.customizerAdded(ServiceTracker.java:1152)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$AbstractTracked.trackAdding(ServiceTracker.java:959)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$AbstractTracked.track(ServiceTracker.java:895)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.serviceChanged(ServiceTracker.java:1184)
+	at org.apache.felix.scr.impl.BundleComponentActivator$ListenerInfo.serviceChanged(BundleComponentActivator.java:116)
+	at org.eclipse.osgi.internal.serviceregistry.FilteredServiceListener.serviceChanged(FilteredServiceListener.java:123)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.dispatchEvent(BundleContextImpl.java:961)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:151)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEventPrivileged(ServiceRegistry.java:945)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEvent(ServiceRegistry.java:882)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.register(ServiceRegistrationImpl.java:144)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.registerService(ServiceRegistry.java:270)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.registerService(BundleContextImpl.java:500)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager$3.register(AbstractComponentManager.java:929)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager$3.register(AbstractComponentManager.java:915)
+	at org.apache.felix.scr.impl.manager.RegistrationManager.changeRegistration(RegistrationManager.java:133)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.registerService(AbstractComponentManager.java:984)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.activateInternal(AbstractComponentManager.java:752)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.addedService(DependencyManager.java:1274)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.addedService(DependencyManager.java:1225)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.customizerAdded(ServiceTracker.java:1232)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.customizerAdded(ServiceTracker.java:1152)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$AbstractTracked.trackAdding(ServiceTracker.java:959)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$AbstractTracked.track(ServiceTracker.java:895)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.serviceChanged(ServiceTracker.java:1184)
+	at org.apache.felix.scr.impl.BundleComponentActivator$ListenerInfo.serviceChanged(BundleComponentActivator.java:116)
+	at org.eclipse.osgi.internal.serviceregistry.FilteredServiceListener.serviceChanged(FilteredServiceListener.java:123)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.dispatchEvent(BundleContextImpl.java:961)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:151)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEventPrivileged(ServiceRegistry.java:945)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEvent(ServiceRegistry.java:882)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.register(ServiceRegistrationImpl.java:144)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.registerService(ServiceRegistry.java:270)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.registerService(BundleContextImpl.java:500)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.registerService(BundleContextImpl.java:519)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.registerService(BundleContextImpl.java:1047)
+	at org.eclipse.core.resources.ResourcesPlugin$WorkspaceInitCustomizer.addingService(ResourcesPlugin.java:574)
+	at org.eclipse.core.resources.ResourcesPlugin$WorkspaceInitCustomizer.addingService(ResourcesPlugin.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:947)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:258)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:185)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:324)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:267)
+	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:545)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$2.run(BundleContextImpl.java:818)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$2.run(BundleContextImpl.java:1)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.startActivator(BundleContextImpl.java:810)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.start(BundleContextImpl.java:767)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.startWorker0(EquinoxBundle.java:1032)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$EquinoxModule.startWorker(EquinoxBundle.java:371)
+	at org.eclipse.osgi.container.Module.doStart(Module.java:605)
+	at org.eclipse.osgi.container.Module.start(Module.java:468)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:513)
+	at org.eclipse.osgi.internal.hooks.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:117)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findLocalClass(ClasspathManager.java:570)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.findLocalClass(ModuleClassLoader.java:335)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:397)
+	at org.eclipse.osgi.internal.loader.sources.SingleSourcePackage.loadClass(SingleSourcePackage.java:41)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass0(BundleLoader.java:496)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:416)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:168)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:153)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:208)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:402)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:651)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:588)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1459)
+
+!ENTRY org.apache.felix.scr 4 0 2024-03-01 09:43:52.985
+!MESSAGE bundle org.apache.felix.scr:2.2.6 (1982) Circular reference detected trying to get service {org.eclipse.m2e.core.project.IMavenProjectChangedListener}={service.id=248, service.bundleid=4064, service.scope=bundle, osgi.ds.satisfying.condition.target=(osgi.condition.id=true), component.name=org.eclipse.m2e.core.internal.project.WorkspaceStateWriter, component.id=20}
+ stack of references: ServiceReference: {org.eclipse.m2e.core.project.IMavenProjectChangedListener}={service.id=248, service.bundleid=4064, service.scope=bundle, osgi.ds.satisfying.condition.target=(osgi.condition.id=true), component.name=org.eclipse.m2e.core.internal.project.WorkspaceStateWriter, component.id=20}
+    Dependency: DependencyManager: Component [Component: org.eclipse.m2e.core.internal.project.registry.MavenProjectManager (23)] reference [MavenProjectChangedListener]
+ServiceReference: {org.eclipse.m2e.core.project.IMavenProjectRegistry}={service.id=241, service.bundleid=4064, service.scope=bundle, osgi.ds.satisfying.condition.target=(osgi.condition.id=true), component.name=org.eclipse.m2e.core.internal.project.registry.MavenProjectManager, component.id=23}
+    Dependency: DependencyManager: Component [Component: org.eclipse.m2e.core.embedder.MavenModelManager (8)] reference [projectManager]
+    Dependency: DependencyManager: Component [Component: org.eclipse.m2e.core.embedder.MavenModelManager (8)] reference [projectManager]
+ServiceReference: {org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager}={service.id=239, service.bundleid=4064, service.scope=bundle, osgi.ds.satisfying.condition.target=(osgi.condition.id=true), component.name=org.eclipse.m2e.core.internal.project.registry.ProjectRegistryManager, component.id=25}
+
+!STACK 0
+java.lang.Exception: stack trace
+	at org.apache.felix.scr.impl.ComponentRegistry.enterCreate(ComponentRegistry.java:493)
+	at org.apache.felix.scr.impl.BundleComponentActivator.enterCreate(BundleComponentActivator.java:722)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getService(SingleComponentManager.java:901)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:218)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:215)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:114)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:48)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:568)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:542)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:660)
+	at org.apache.felix.scr.impl.manager.SingleRefPair.getServiceObject(SingleRefPair.java:88)
+	at org.apache.felix.scr.impl.inject.methods.BindMethod.getServiceObject(BindMethod.java:675)
+	at org.apache.felix.scr.impl.manager.DependencyManager.getServiceObject(DependencyManager.java:2612)
+	at org.apache.felix.scr.impl.manager.DependencyManager$MultipleDynamicCustomizer.prebind(DependencyManager.java:434)
+	at org.apache.felix.scr.impl.manager.DependencyManager.prebind(DependencyManager.java:1830)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.collectDependencies(AbstractComponentManager.java:1060)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getServiceInternal(SingleComponentManager.java:955)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getService(SingleComponentManager.java:920)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:218)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:215)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:114)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:48)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:568)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:542)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:660)
+	at org.apache.felix.scr.impl.manager.SingleRefPair.getServiceObject(SingleRefPair.java:88)
+	at org.apache.felix.scr.impl.inject.field.FieldHandler$ReferenceMethodImpl.getServiceObject(FieldHandler.java:550)
+	at org.apache.felix.scr.impl.manager.DependencyManager.getServiceObject(DependencyManager.java:2612)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.prebind(DependencyManager.java:1401)
+	at org.apache.felix.scr.impl.manager.DependencyManager.prebind(DependencyManager.java:1830)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.collectDependencies(AbstractComponentManager.java:1060)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getServiceInternal(SingleComponentManager.java:955)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getService(SingleComponentManager.java:920)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse$1.run(ServiceFactoryUse.java:218)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.factoryGetService(ServiceFactoryUse.java:215)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceFactoryUse.getService(ServiceFactoryUse.java:114)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceConsumer$2.getService(ServiceConsumer.java:48)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.getService(ServiceRegistrationImpl.java:568)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.getService(ServiceRegistry.java:542)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.getService(BundleContextImpl.java:660)
+	at org.apache.felix.scr.impl.manager.SingleRefPair.getServiceObject(SingleRefPair.java:88)
+	at org.apache.felix.scr.impl.inject.field.FieldHandler$ReferenceMethodImpl.getServiceObject(FieldHandler.java:550)
+	at org.apache.felix.scr.impl.manager.DependencyManager.getServiceObject(DependencyManager.java:2612)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.prebind(DependencyManager.java:1401)
+	at org.apache.felix.scr.impl.manager.DependencyManager.prebind(DependencyManager.java:1830)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.collectDependencies(AbstractComponentManager.java:1060)
+	at org.apache.felix.scr.impl.manager.SingleComponentManager.getServiceInternal(SingleComponentManager.java:955)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.activateInternal(AbstractComponentManager.java:776)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.addedService(DependencyManager.java:1274)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.addedService(DependencyManager.java:1225)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.customizerAdded(ServiceTracker.java:1232)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.customizerAdded(ServiceTracker.java:1152)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$AbstractTracked.trackAdding(ServiceTracker.java:959)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$AbstractTracked.track(ServiceTracker.java:895)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.serviceChanged(ServiceTracker.java:1184)
+	at org.apache.felix.scr.impl.BundleComponentActivator$ListenerInfo.serviceChanged(BundleComponentActivator.java:116)
+	at org.eclipse.osgi.internal.serviceregistry.FilteredServiceListener.serviceChanged(FilteredServiceListener.java:123)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.dispatchEvent(BundleContextImpl.java:961)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:151)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEventPrivileged(ServiceRegistry.java:945)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEvent(ServiceRegistry.java:882)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.register(ServiceRegistrationImpl.java:144)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.registerService(ServiceRegistry.java:270)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.registerService(BundleContextImpl.java:500)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager$3.register(AbstractComponentManager.java:929)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager$3.register(AbstractComponentManager.java:915)
+	at org.apache.felix.scr.impl.manager.RegistrationManager.changeRegistration(RegistrationManager.java:133)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.registerService(AbstractComponentManager.java:984)
+	at org.apache.felix.scr.impl.manager.AbstractComponentManager.activateInternal(AbstractComponentManager.java:752)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.addedService(DependencyManager.java:1274)
+	at org.apache.felix.scr.impl.manager.DependencyManager$SingleStaticCustomizer.addedService(DependencyManager.java:1225)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.customizerAdded(ServiceTracker.java:1232)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.customizerAdded(ServiceTracker.java:1152)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$AbstractTracked.trackAdding(ServiceTracker.java:959)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$AbstractTracked.track(ServiceTracker.java:895)
+	at org.apache.felix.scr.impl.manager.ServiceTracker$Tracked.serviceChanged(ServiceTracker.java:1184)
+	at org.apache.felix.scr.impl.BundleComponentActivator$ListenerInfo.serviceChanged(BundleComponentActivator.java:116)
+	at org.eclipse.osgi.internal.serviceregistry.FilteredServiceListener.serviceChanged(FilteredServiceListener.java:123)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.dispatchEvent(BundleContextImpl.java:961)
+	at org.eclipse.osgi.framework.eventmgr.EventManager.dispatchEvent(EventManager.java:234)
+	at org.eclipse.osgi.framework.eventmgr.ListenerQueue.dispatchEventSynchronous(ListenerQueue.java:151)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEventPrivileged(ServiceRegistry.java:945)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.publishServiceEvent(ServiceRegistry.java:882)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistrationImpl.register(ServiceRegistrationImpl.java:144)
+	at org.eclipse.osgi.internal.serviceregistry.ServiceRegistry.registerService(ServiceRegistry.java:270)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.registerService(BundleContextImpl.java:500)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.registerService(BundleContextImpl.java:519)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.registerService(BundleContextImpl.java:1047)
+	at org.eclipse.core.resources.ResourcesPlugin$WorkspaceInitCustomizer.addingService(ResourcesPlugin.java:574)
+	at org.eclipse.core.resources.ResourcesPlugin$WorkspaceInitCustomizer.addingService(ResourcesPlugin.java:1)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:947)
+	at org.osgi.util.tracker.ServiceTracker$Tracked.customizerAdding(ServiceTracker.java:1)
+	at org.osgi.util.tracker.AbstractTracked.trackAdding(AbstractTracked.java:258)
+	at org.osgi.util.tracker.AbstractTracked.trackInitial(AbstractTracked.java:185)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:324)
+	at org.osgi.util.tracker.ServiceTracker.open(ServiceTracker.java:267)
+	at org.eclipse.core.resources.ResourcesPlugin.start(ResourcesPlugin.java:545)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$2.run(BundleContextImpl.java:818)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl$2.run(BundleContextImpl.java:1)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:571)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.startActivator(BundleContextImpl.java:810)
+	at org.eclipse.osgi.internal.framework.BundleContextImpl.start(BundleContextImpl.java:767)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle.startWorker0(EquinoxBundle.java:1032)
+	at org.eclipse.osgi.internal.framework.EquinoxBundle$EquinoxModule.startWorker(EquinoxBundle.java:371)
+	at org.eclipse.osgi.container.Module.doStart(Module.java:605)
+	at org.eclipse.osgi.container.Module.start(Module.java:468)
+	at org.eclipse.osgi.framework.util.SecureAction.start(SecureAction.java:513)
+	at org.eclipse.osgi.internal.hooks.EclipseLazyStarter.postFindLocalClass(EclipseLazyStarter.java:117)
+	at org.eclipse.osgi.internal.loader.classpath.ClasspathManager.findLocalClass(ClasspathManager.java:570)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.findLocalClass(ModuleClassLoader.java:335)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findLocalClass(BundleLoader.java:397)
+	at org.eclipse.osgi.internal.loader.sources.SingleSourcePackage.loadClass(SingleSourcePackage.java:41)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass0(BundleLoader.java:496)
+	at org.eclipse.osgi.internal.loader.BundleLoader.findClass(BundleLoader.java:416)
+	at org.eclipse.osgi.internal.loader.ModuleClassLoader.loadClass(ModuleClassLoader.java:168)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at org.eclipse.ui.internal.ide.application.IDEApplication.start(IDEApplication.java:153)
+	at org.eclipse.equinox.internal.app.EclipseAppHandle.run(EclipseAppHandle.java:208)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.runApplication(EclipseAppLauncher.java:136)
+	at org.eclipse.core.runtime.internal.adaptor.EclipseAppLauncher.start(EclipseAppLauncher.java:104)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:402)
+	at org.eclipse.core.runtime.adaptor.EclipseStarter.run(EclipseStarter.java:255)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.eclipse.equinox.launcher.Main.invokeFramework(Main.java:651)
+	at org.eclipse.equinox.launcher.Main.basicRun(Main.java:588)
+	at org.eclipse.equinox.launcher.Main.run(Main.java:1459)
+
+!ENTRY ch.qos.logback.classic 1 0 2024-03-01 09:43:53.305
+!MESSAGE Logback config file: C:\workspace-june-2022\github\trax\.metadata\.plugins\org.eclipse.m2e.logback\logback.2.2.1.20231030-1438.xml
+
+!ENTRY org.eclipse.jface 2 0 2024-03-01 09:43:54.972
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2024-03-01 09:43:54.972
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.lsp4e.symbolinworkspace,Go to Symbol in Workspace,
+		,
+		Category(org.eclipse.lsp4e.category,Language Servers,null,true),
+		WorkbenchHandlerServiceHandler("org.eclipse.lsp4e.symbolinworkspace"),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		WorkbenchHandlerServiceHandler("org.eclipse.jdt.ui.navigate.open.type"),
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.e4.ui.workbench 2 0 2024-03-01 09:43:56.642
+!MESSAGE Removing PartDescriptorImpl with the "org.eclipse.mylyn.tasks.ui.views.tasks" id and the "Task List" label.It points to the non available "bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" class. Bundle might have been uninstalled
+
+!ENTRY org.eclipse.egit.ui 2 0 2024-03-01 09:43:56.644
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\Mark'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.e4.ui.workbench 2 0 2024-03-01 09:43:56.645
+!MESSAGE Removing PartDescriptorImpl with the "org.eclipse.mylyn.tasks.ui.views.repositories" id and the "Task Repositories" label.It points to the non available "bundleclass://org.eclipse.ui.workbench/org.eclipse.ui.internal.e4.compatibility.CompatibilityView" class. Bundle might have been uninstalled
+
+!ENTRY org.eclipse.oomph.setup.ui 1 0 2024-03-01 09:44:07.616
+!MESSAGE Setup tasks were performed during startup updating 57 preferences. See 'C:\Program Files\eclipse-ide\june 2022\eclipse\configuration\org.eclipse.oomph.setup\setup.log' for details

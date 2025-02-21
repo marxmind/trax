@@ -46,6 +46,11 @@ public class TimeSetDtlsBean implements Serializable{
 	private double overtimeStartAt;
 	private double laborSprayManDailyRate;
 	private double laborHarvesterDailyRate;
+	private double driverPerDrumRate;
+	private int perDrumDivider;
+	private double forcingRatePerDrum;
+	private double fieldSprayDriver;
+	private double otherSprayRate;
 	
 	
 	
@@ -54,6 +59,11 @@ public class TimeSetDtlsBean implements Serializable{
 		setOvertimeStartAt(Double.valueOf(ReadConfig.getTagValue("otstart")));
 		setLaborSprayManDailyRate(Double.valueOf(ReadConfig.getTagValue("laborspraymandailyrate")));
 		setLaborHarvesterDailyRate(Double.valueOf(ReadConfig.getTagValue("laborharvesterdailyrate")));
+		setDriverPerDrumRate(Double.valueOf(ReadConfig.getTagValue("driverperdrumrate")));
+		setPerDrumDivider(Integer.valueOf(ReadConfig.getTagValue("perdrumdivider")));
+		setForcingRatePerDrum(Double.valueOf(ReadConfig.getTagValue("forcingrateperdrum")));
+		setFieldSprayDriver(Double.valueOf(ReadConfig.getTagValue("fieldspraydriver")));
+		setOtherSprayRate(Double.valueOf(ReadConfig.getTagValue("othersprayrate")));
 	}
 	
 	public void updateLaborSprayManDailyRate() {
@@ -92,6 +102,51 @@ public class TimeSetDtlsBean implements Serializable{
 		}
 	}
 	
+	public void updateDriverPerDrumRate() {
+		if(getDriverPerDrumRate()>0) {
+			ReadConfig.updateTagValue("driverperdrumrate", getDriverPerDrumRate()+"");
+			Application.addMessage(1, "Success", "Successfully updating the value of driver per drumrate");
+		}else {
+			Application.addMessage(3, "Error", "Please provide value");
+		}
+	}
+	
+	public void updatePerDrumDivider() {
+		if(getPerDrumDivider()>0) {
+			ReadConfig.updateTagValue("perdrumdivider", getPerDrumDivider()+"");
+			Application.addMessage(1, "Success", "Successfully updating the value of per drum divider");
+		}else {
+			Application.addMessage(3, "Error", "Please provide value");
+		}
+	}
+	
+	public void updateForcingPerDrum() {
+		if(getForcingRatePerDrum()>0) {
+			ReadConfig.updateTagValue("forcingrateperdrum", getForcingRatePerDrum()+"");
+			Application.addMessage(1, "Success", "Successfully updating the value of forcing rate per drum");
+		}else {
+			Application.addMessage(3, "Error", "Please provide value");
+		}
+	}
+	
+	public void updateFieldSprayDriver() {
+		if(getFieldSprayDriver()>0) {
+			ReadConfig.updateTagValue("fieldspraydriver", getFieldSprayDriver()+"");
+			Application.addMessage(1, "Success", "Successfully updating the value of field spray driver rate");
+		}else {
+			Application.addMessage(3, "Error", "Please provide value");
+		}
+	}
+	
+	public void updateOtherFieldSprayDriver() {
+		if(getOtherSprayRate()>0) {
+			ReadConfig.updateTagValue("othersprayrate", getOtherSprayRate()+"");
+			Application.addMessage(1, "Success", "Successfully updating the value of other field spray driver rate");
+		}else {
+			Application.addMessage(3, "Error", "Please provide value");
+		}
+	}
+	
 	public double getHoursPerDay() {
 		return hoursPerDay;
 	}
@@ -122,5 +177,45 @@ public class TimeSetDtlsBean implements Serializable{
 
 	public void setLaborHarvesterDailyRate(double laborHarvesterDailyRate) {
 		this.laborHarvesterDailyRate = laborHarvesterDailyRate;
+	}
+
+	public double getDriverPerDrumRate() {
+		return driverPerDrumRate;
+	}
+
+	public void setDriverPerDrumRate(double driverPerDrumRate) {
+		this.driverPerDrumRate = driverPerDrumRate;
+	}
+
+	public int getPerDrumDivider() {
+		return perDrumDivider;
+	}
+
+	public void setPerDrumDivider(int perDrumDivider) {
+		this.perDrumDivider = perDrumDivider;
+	}
+
+	public double getForcingRatePerDrum() {
+		return forcingRatePerDrum;
+	}
+
+	public void setForcingRatePerDrum(double forcingRatePerDrum) {
+		this.forcingRatePerDrum = forcingRatePerDrum;
+	}
+
+	public double getFieldSprayDriver() {
+		return fieldSprayDriver;
+	}
+
+	public void setFieldSprayDriver(double fieldSprayDriver) {
+		this.fieldSprayDriver = fieldSprayDriver;
+	}
+
+	public double getOtherSprayRate() {
+		return otherSprayRate;
+	}
+
+	public void setOtherSprayRate(double otherSprayRate) {
+		this.otherSprayRate = otherSprayRate;
 	}
 }

@@ -1156,7 +1156,9 @@ public class TimeSheetActivityBean implements Serializable{
 					double drums = Double.valueOf(getDrums());
 					double totalEmployee = NUMBER_OF_FORCING_EMPLOYEE;
 					//double totalRate = drums * OTHER_SPRAY_RATE_PER_DRUM;
+					System.out.println("getJobs().get(em.getJob().getJobid()).getSprayRegularRate() : " + getJobs().get(em.getJob().getJobid()).getSprayRegularRate());
 					totalRate = drums * getJobs().get(em.getJob().getJobid()).getSprayRegularRate();
+					System.out.println("Regular Total Rate: " + totalRate);
 					double salaryPerEmployee = totalRate / totalEmployee;
 					
 					//hourlyRate = OTHER_SPRAY_RATE_PER_DRUM;
